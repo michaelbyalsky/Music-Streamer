@@ -1,0 +1,9 @@
+
+    .main {
+        display: grid;
+        grid-template-columns: auto 95%;
+        margin-top: 2rem;
+    }
+    
+    
+     

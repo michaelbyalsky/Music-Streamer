@@ -1,0 +1,87 @@
+const express = require('express')
+const albumsRouter = express.Router()
+const db = require('../modules/connections')
+
+albumsRouter
+.get("/getalbums", (req, res, next) => {
+    if (req.query.searchText) {
+
+      let sql = `CALL get_albums_by_name("${req.query.searchText}")`
+      let query = db.query(sql, (err, result) => {
+        if (err) {
+            next(err)
+        };
+            res.send(result[0]);
+      });
+    } else {
+      let sql = `CALL get_albums()`            
+      let query = db.query(sql, (err, result) => {
+        if (err) {
+            next(err)
+        };
+        res.send(result[0]);
+      });
+    }
+  });
+
+  albumsRouter
+  .get(`/album/:id`, (req, res, next) => {
+    let id = Number(req.params.id);
+    console.log(id);
+    let sql = `CALL get_album_by_id(${id}) 
+                `;
+    db.query(sql, (err, result) => {
+        if (err) {
+            next(err)
+        };
+      console.log(result);  
+      res.send(result[0]);
+    });
+  });
+
+  albumsRouter
+  .post("/addalbum", (req, res, next) => {
+    console.log(req.body);
+    let sql = `INSERT INTO albums SET ?`;
+    let data = req.body;
+    console.log(data);
+    db.query(sql, data, (err, result) => {
+        if (err) {
+            next(err)
+        };
+      console.log(result);
+      res.json(result);
+    });
+  });
+
+  
+  albumsRouter
+  .put("/album", async (req, res, next) => {
+    mysqlCon.query(
+      "UPDATE albums SET album_name = ?, artist_id = ?, cover_img = ? WHERE album_id = ?",
+      [req.body.album_name, req.body.artist_id, req.body.cover_img],
+      (error, results) => {
+        if (err) {
+            next(err)
+        };
+        res.send(results);
+      }
+    );
+  });
+
+
+  albumsRouter
+  .delete("/album/:id", async (req, res, next) => {
+    mysqlCon.query(
+      "DELETE FROM albums WHERE album_id = ?",
+      [req.params.id],
+      (error, results) => {
+        if (err) {
+            next(err)
+        };
+        res.send(results);
+      }
+    );
+  });
+  
+  module.exports = albumsRouter
