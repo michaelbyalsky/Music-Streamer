@@ -73,30 +73,24 @@ export default function Developers() {
   };
 
   const onAddArtist = (data) => {
-    console.log(data);
     create("artists/addartist", data)
       .then((result) => {
-        console.log(result);
         setOpenArtist(false);
       })
       .then((res) => {
         read("artists/all").then((res) => {
-          console.log(res);
           setArtistsData(res);
         });
       });
   };
 
   const onAddAlbum = (data) => {
-    console.log(data);
     create("albums/addalbum", data)
       .then((result) => {
-        console.log(result);
         setOpenAlbums(false);
       })
       .then((res) => {
         read("albums/all").then((res) => {
-          console.log(res);
           setAlbumsData(res);
         });
       });
@@ -104,18 +98,13 @@ export default function Developers() {
 
   useEffect(() => {
     read("albums/all").then((res) => {
-      console.log(res);
       setAlbumsData(res);
     });
     read("artists/all").then((res) => {
-        console.log(res);
         setArtistsData(res);
       });
   }, []);
 
-
-
-  console.log(artistsData);
   return (
     <>
       <div className="main">

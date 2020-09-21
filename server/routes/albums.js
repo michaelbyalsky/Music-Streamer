@@ -27,29 +27,24 @@ albumsRouter
   albumsRouter
   .get(`/:id`, (req, res, next) => {
     let id = Number(req.params.id);
-    console.log(id);
     let sql = `CALL get_album_by_id(${id}) 
                 `;
     db.query(sql, (err, result) => {
         if (err) {
             next(err)
         };
-      console.log(result);  
       res.send(result[0]);
     });
   });
 
   albumsRouter
   .post("/addalbum", (req, res, next) => {
-    console.log(req.body);
     let sql = `INSERT INTO albums SET ?`;
     let data = req.body;
-    console.log(data);
     db.query(sql, data, (err, result) => {
         if (err) {
             next(err)
         };
-      console.log(result);
       res.json(result);
     });
   });

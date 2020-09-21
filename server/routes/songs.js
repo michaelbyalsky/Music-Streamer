@@ -3,9 +3,7 @@ const songsRouter = express.Router();
 const db = require("../modules/connections");
 
 songsRouter.get("/all", (req, res, next) => {
-  console.log("first");
   if (req.query.searchText) {
-    console.log("hrer");
     let sql = `CALL get_songs_by_name("${req.query.searchText}")`;
     db.query(sql, (err, result) => {
       if (err) {
@@ -24,27 +22,22 @@ songsRouter.get("/all", (req, res, next) => {
   }
 });
 
-songsRouter.get(`/song/:id`, (req, res) => {
+songsRouter.get(`/:id`, (req, res) => {
   let id = Number(req.params.id);
-  console.log(id);
   let sql = `CALL get_song_by_id(${id})`;
   db.query(sql, (err, result) => {
     if (err) {
       next(err);
     }
-    console.log(result);
     res.send(result[0]);
   });
 });
 
 songsRouter.post("/addsong", (req, res) => {
-  console.log(req.body);
   let sql = `INSERT INTO songs SET ?`;
   let data = req.body;
-  console.log(data);
   db.query(sql, data, (err, result) => {
     if (err) throw err;
-    console.log(result);
     res.json(result);
   });
 });

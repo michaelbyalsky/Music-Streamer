@@ -26,7 +26,6 @@ export default function Home() {
   const getSongs = () => {
     read('songs/all')
     .then(result => {
-      console.log(result);
       setSongsData(result)
     })
   }
@@ -34,7 +33,6 @@ export default function Home() {
   const getAlbums = () => {
     read('albums/all')
     .then(result => {
-      console.log(result);
       setAlbumsData(result)
     }) 
   }
@@ -42,7 +40,6 @@ export default function Home() {
   const getArtists = () => {
     read('artists/all')
     .then(result => {
-      console.log(result);
       setArtistsData(result)
     }) 
   }
@@ -50,7 +47,6 @@ export default function Home() {
   const getPlaylists = () => {
     read('playlists/top_playlist')
     .then(result => {
-      console.log(result);
       setPlaylistsData(result)
     }) 
   }

@@ -28,14 +28,11 @@ artistsRouter
 
   artistsRouter
   .post("/addartist", (req, res, next) => {
-    console.log(req.body);
     let sql = `CALL add_artist('${req.body.artist_name}', '${req.body.artist_img}', '${req.body.created_at}')`;
-    console.log(sql);
     db.query(sql, (err, result) => {
         if (err) {
             next(err)
         };
-      console.log(result);
       res.json(result);
     });
   });

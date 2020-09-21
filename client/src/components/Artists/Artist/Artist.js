@@ -12,7 +12,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import './Artist.css'
 import { Link } from 'react-router-dom'
 import CardMedia from '@material-ui/core/CardMedia';
-
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,14 +57,13 @@ export default function Artist({ artistData }) {
         image={artistData.artist_img}
       />
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+        </IconButton> */}
         <Link to={`/Artists/${artistData.artist_id}`}>
-        <Button>Move To Artist</Button>
+        <IconButton>
+          <QueueMusicIcon/>
+        </IconButton>
         </Link>
       </CardActions>
     </Card>

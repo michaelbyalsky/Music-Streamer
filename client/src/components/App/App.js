@@ -27,8 +27,6 @@ export default function App() {
   const [searchText, setSearchText] = useState([]); // search input text
   const [searchQuery, setSearchQuery] = useState([]); // search input text
   const [songData, setSongData] = useState(null);
-  console.log(loggedIn);
-  console.log(userName);
 
   useEffect(() => {
     let rememberMeValue = localStorage.getItem("rememberMe");
@@ -52,6 +50,7 @@ export default function App() {
     <NavBar/>
     {loggedIn ? 
       <Switch>
+    <Route exact path="/" component={Home} />
     <Route path="/Songs" exact component={Songs} />
     <Route path="/Register" exact component={Register} />
     <Route path="/Artists" exact component={Artists} />
@@ -62,8 +61,7 @@ export default function App() {
     <Route exact path="/Artists/:id?" component={ArtistSong}/>
     <Route exact path="/Playlists/:id?" component={playlistSongs}/>
     <Route  path="/Songs/:id" exact component={SingleSong} />
-    <Route exact path="/" component={Home} />
-     <Route exact path='*' component={NotFound} />
+    <Route path='*' component={NotFound} />
     </ Switch>
      :
      <Switch>

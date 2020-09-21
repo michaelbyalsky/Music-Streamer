@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SongsList({song, index, type}) {
   const classes = useStyles();
-  console.log(type);
 
   return (
       <List dense className={classes.root}>

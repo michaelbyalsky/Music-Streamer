@@ -65,14 +65,10 @@ function Login({ setLoggedIn }) {
       userName: user,
       password: password,
     };
-    console.log(body);
     create(`users/validation`, body)
       .then(async (res) => {
-        console.log("got hree", res);
         let id = res[0].user_id;
         let name = res[0].user_name
-        console.log(name);
-        console.log(id);
         if(rememberMe) {
           setUserName(name)
           localStorage.setItem("rememberMe", rememberMe);

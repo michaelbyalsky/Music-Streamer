@@ -59,7 +59,6 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
       }
     })
     setSongsData(copyData)
-    console.log(song);
     let body = {
       user_id: localStorage.getItem("id"),
       song_id: song.unique_id,
@@ -105,9 +104,6 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
         <IconButton aria-label="add to favorites" onClick={() => onSongLike(songData)}>
           <FavoriteIcon color={songData.is_liked ? "error" : "action"} />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
         <IconButton onClick={() => setOpenPlaylist(true)}>
           <PlaylistAddIcon />
         </IconButton>
@@ -134,7 +130,7 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
     </Card>
     {openPlaylist && (
           <AddToPlayList
-          songId={songData.id}
+          songId={songData.unique_id}
           openPlaylist={openPlaylist}
           handleClose={handleClose}
           setOpenPlaylist={setOpenPlaylist}

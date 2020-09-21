@@ -105,7 +105,6 @@ export default function NavBar(props) {
   const [searchResult, setSearchResult] = useState("");
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -113,6 +112,7 @@ export default function NavBar(props) {
 
   const onLogout = () => {
     localStorage.clear();
+    history.push("/")
     window.location.reload();
     };
 
@@ -121,7 +121,6 @@ export default function NavBar(props) {
       setAnchorEl(null);
     } 
     read(`/songs/all?searchText=${searchText}`).then((result) => {
-      console.log(result);
       setSearchResult(result);
     });
   }, [searchText]);
@@ -138,9 +137,7 @@ const handleSearch = (e) => {
 }
 
 const onSongChoose = (chosenSong) => {
-  console.log(location.pathname.split('/'));
   if(location.pathname === '/') {
-    console.log(chosenSong);
     history.push(`/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
   } else {
     history.push(`/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)

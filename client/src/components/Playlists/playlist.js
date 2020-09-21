@@ -62,12 +62,9 @@ export default function Album({ playlistData }) {
         title={playlistData.album_name}
       />
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+        </IconButton> */}
         <Link to={`/playlists/${playlistData.playlist_id}`}>
         <IconButton><PlaylistPlayIcon/></IconButton>
         </Link>

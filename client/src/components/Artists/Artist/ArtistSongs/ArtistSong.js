@@ -37,12 +37,10 @@ export default function ArtistSongs({ match }) {
 
   const fetchAlbum = () => {
     read(`/artists/${match.params.id}`).then((res) => {
-      console.log(res);
       SetArtistData(res);
     });
   };
 
-  console.log(match.params.id);
 
   return (
     <>

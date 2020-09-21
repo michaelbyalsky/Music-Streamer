@@ -9,7 +9,6 @@ export default function Playlists() {
   useEffect(() => {
     read("playlists/top_playlist")
       .then((result) => {
-        console.log(result);
         setPlaylistsData(result);
       })
       .catch((err) => {

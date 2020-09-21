@@ -17,8 +17,10 @@ import SideBar from "../SideBar/SideBar";
 import { useParams, useLocation } from "react-router-dom";
 import SingleSongLists from "./SingleSongList";
 import Container from "@material-ui/core/Container";
-import YouTube from 'react-youtube';
-import AuthApi from '../../helpers/context'
+import YouTube from "react-youtube";
+import AuthApi from "../../helpers/context";
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import AddToPlayList from '../Song/AddToPlaylist'
 
 const queryString = require("query-string");
 
@@ -26,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "grid",
     gridTemplateRows: "auto auto",
-    '@media (min-width: 780px)' : {
+    "@media (min-width: 780px)": {
       display: "grid",
-    gridTemplateColumns: "78% 22%",
-    justifyContent: "center",
-    height: "400px",
-    }
+      gridTemplateColumns: "78% 22%",
+      justifyContent: "center",
+      height: "400px",
+    },
   },
   media: {
     paddingTop: "56.25%", // 16:9
@@ -50,16 +52,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   singleSongList: {
-    '@media (max-width: 780px)' : {
-      display: 'flex',
-    overflow: "hidden", 
-    overflowX: "scroll",
+    "@media (max-width: 780px)": {
+      display: "flex",
+      overflow: "hidden",
+      overflowX: "scroll",
     },
-    '@media (min-width: 780px)' : {
+    "@media (min-width: 780px)": {
       height: "100%",
-    overflow: "hidden", 
-    overflowY: "scroll",
-    }
+      overflow: "hidden",
+      overflowY: "scroll",
+    },
   },
 }));
 
@@ -67,28 +69,27 @@ export default function SingleSong({ match }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [relatedData, setRelatedData] = useState(null);
-  const [nextSong, setNextSong] = useState(1)
-  const { playSongValue } = React.useContext(AuthApi)
-  const [songData, setSongData] = playSongValue
+  const [nextSong, setNextSong] = useState(1);
+  const { playSongValue } = React.useContext(AuthApi);
+  const [songData, setSongData] = playSongValue;
   const params = useParams();
   const location = useLocation();
+  const [openPlaylist, setOpenPlaylist] = React.useState(false);
+
 
   const parsed = queryString.parse(location.search);
 
   useEffect(() => {
     fetchSong();
     fetchRelated();
-    console.log('rendered')
   }, []);
 
   useEffect(() => {
     fetchRelated();
-    console.log('changed');
-  }, [songData])
+  }, [songData]);
 
   const fetchSong = () => {
-    read(`/songs/song/${match.params.id}`).then((res) => {
-      console.log(res);
+    read(`/songs/${match.params.id}`).then((res) => {
       setSongData(res[0]);
     });
   };
@@ -96,7 +97,6 @@ export default function SingleSong({ match }) {
   const fetchRelated = () => {
     let type = Object.keys(parsed)[0];
     let url;
-    console.log(type);
     switch (type) {
       case "Album":
         url = `/albums/${parsed[type]}`;
@@ -107,9 +107,7 @@ export default function SingleSong({ match }) {
       case "Playlist":
         url = `/playlists/${parsed[type]}`;
     }
-    console.log(url);
     read(url).then((res) => {
-      console.log(res);
       setRelatedData(res);
     });
   };
@@ -117,7 +115,6 @@ export default function SingleSong({ match }) {
   const onSongLike = (song) => {
     song.is_liked = song.is_liked === null ? true : !song.is_liked;
     setSongData(song);
-    console.log(song);
     let body = {
       user_id: localStorage.getItem("id"),
       song_id: song.song_id,
@@ -134,36 +131,38 @@ export default function SingleSong({ match }) {
   const onReady = (event) => {
     // access to player in all event handlers via event.target
     event.target.playVideo();
-  }
+  };
 
   const onSongChoose = (data, index) => {
-    setSongData(data)
-    if(index === relatedData.length - 1){
-      setNextSong(0)
+    setSongData(data);
+    if (index === relatedData.length - 1) {
+      setNextSong(0);
     } else {
-      setNextSong(index + 1)
+      setNextSong(index + 1);
     }
-  }
+  };
 
   const onEnd = (event) => {
-    setSongData(relatedData[nextSong])
-    console.log(nextSong);
-    console.log(relatedData.length);
-    if(nextSong === relatedData.length - 1){
-      setNextSong(0)
+    setSongData(relatedData[nextSong]);
+    if (nextSong === relatedData.length - 1) {
+      setNextSong(0);
     } else {
-      setNextSong(nextSong + 1)
+      setNextSong(nextSong + 1);
     }
-  }
+  };
 
   const opts = {
     // height:,
-    width: '100%',
+    width: "100%",
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
     },
-  }
+  };
+
+  const handleClose = () => {
+    setOpenPlaylist(false);
+  };
 
   return (
     <>
@@ -171,7 +170,6 @@ export default function SingleSong({ match }) {
         <SideBar />
         {songData && (
           <div className={classes.root}>
-            
             <div className={classes.songContainer}>
               <Container maxWidth="sm">
                 <CardHeader
@@ -188,7 +186,14 @@ export default function SingleSong({ match }) {
                   }
                 />
                 <div>
-                <YouTube videoId={songData.youtube_link.split("embed/")[1].split("?list")[0]} opts={opts} onReady={(e) => onReady(e)} onEnd={(e) => onEnd(e)} />
+                  <YouTube
+                    videoId={
+                      songData.youtube_link.split("embed/")[1].split("?list")[0]
+                    }
+                    opts={opts}
+                    onReady={(e) => onReady(e)}
+                    onEnd={(e) => onEnd(e)}
+                  />
                 </div>
                 <CardActions disableSpacing>
                   <IconButton
@@ -199,8 +204,8 @@ export default function SingleSong({ match }) {
                       color={songData.is_liked ? "error" : "action"}
                     />
                   </IconButton>
-                  <IconButton aria-label="share">
-                    <ShareIcon />
+                  <IconButton onClick={() => setOpenPlaylist(true)}>
+                    <PlaylistAddIcon />
                   </IconButton>
                   <IconButton
                     className={clsx(classes.expand, {
@@ -222,19 +227,32 @@ export default function SingleSong({ match }) {
                 </Collapse>
               </Container>
             </div>
-              {relatedData &&
-            <div className={classes.singleSongList}>
+            {relatedData && (
+              <div className={classes.singleSongList}>
                 {relatedData.map((data, index) => {
                   return (
                     <div key={index}>
-                      <SingleSongLists index={index} data={data} onSongChoose={onSongChoose}/>
+                      <SingleSongLists
+                        index={index}
+                        data={data}
+                        onSongChoose={onSongChoose}
+                      />
                     </div>
                   );
                 })}
-            </div>}
+              </div>
+            )}
           </div>
         )}
       </div>
+      {openPlaylist && (
+        <AddToPlayList
+          songId={songData.unique_id}
+          openPlaylist={openPlaylist}
+          handleClose={handleClose}
+          setOpenPlaylist={setOpenPlaylist}
+        />
+      )}
     </>
   );
 }

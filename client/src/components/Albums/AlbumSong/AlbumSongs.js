@@ -38,12 +38,9 @@ export default function AlbumSongs({ match }) {
 
   const fetchAlbum = () => {
     read(`/albums/${match.params.id}`).then((res) => {
-      console.log(res);
       setAlbumData(res);
     });
   };
-
-  console.log(match.params.id);
 
   return (
     <>

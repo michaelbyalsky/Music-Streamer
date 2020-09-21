@@ -6,7 +6,6 @@ playlistsRouter.get("/top_playlist", (req, res) => {
     let sql = `CALL top_20_playlists()`;
     db.query(sql, (err, result) => {
       if (err) throw err;
-      console.log(result[0]);
       res.send(result[0]);
     });
   });
@@ -16,31 +15,22 @@ playlistsRouter.get("/top_playlist", (req, res) => {
     let sql = `call get_playlist_by_id(${id})`;
     db.query(sql, (err, result) => {
       if (err) throw err;
-      console.log(result[0]);
       res.send(result[0]);
     });
   });
 
   playlistsRouter.post("/addsong", (req, res) => {
-    console.log(req.body);
     let sql = `CALL add_to_playlist(${req.body.song_id}, ${req.body.playlist_id})`;
-    let data = req.body;
-    console.log(data);
-    db.query(sql, data, (err, result) => {
+    db.query(sql, (err, result) => {
       if (err) throw err;
-      console.log(result);
       res.json(result);
     });
   });
 
   playlistsRouter.post("/add", (req, res) => {
-    console.log(req.body);
     let sql = `CALL create_playlist('${req.body.playlist_name}', '${req.body.cover_img}')`;
-    let data = req.body;
-    console.log(data);
-    db.query(sql, data, (err, result) => {
+    db.query(sql, (err, result) => {
       if (err) throw err;
-      console.log(result);
       res.json(result);
     });
   });

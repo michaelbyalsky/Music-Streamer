@@ -12,7 +12,6 @@ export default function Albums() {
   useEffect(() => {
     read('albums/all')
     .then(result => {
-      console.log(result);
       setAlbumsData(result)
     })
   }, []);

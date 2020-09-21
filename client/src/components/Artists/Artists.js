@@ -13,7 +13,6 @@ export default function Albums() {
   useEffect(() => {
     read('artists/all')
     .then(result => {
-      console.log(result);
       setArtistsData(result)
     })
   }, []);
