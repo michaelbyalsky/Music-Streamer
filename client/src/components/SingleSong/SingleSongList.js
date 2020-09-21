@@ -1,12 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,23 +15,26 @@ const useStyles = makeStyles((theme) => ({
   inline: {
     display: 'inline',
   },
+  player: {
+    pointerEvents: "none"
+  }
 }));
 
-export default function AlignItemsList({data}) {
+export default function AlignItemsList({data, onSongChoose, index}) {
   const classes = useStyles();
 
   return (
-    <List className={classes.root}>
-      <ListItem alignItems="flex-start">
-        <ListItemText
+    <List className={classes.root} >
+      <IconButton type="button" alignItems="flex-start" onClick={() => onSongChoose(data, index)}>
+        <ListItemText 
           primary={data.title}
           secondary={
-            <React.Fragment>
-                   <iframe height="100px" width="200px" src={data.youtube_link} frameborder="0" allowfullscreen></iframe>
+            <React.Fragment >
+                   <iframe className={classes.player} height="100px" width="200px" src={data.youtube_link} frameBorder="0" allowFullScreen></iframe>
             </React.Fragment>
           }
         />
-      </ListItem>
+      </IconButton>
       <Divider variant="inset" component="li" /> 
     </List>
   );

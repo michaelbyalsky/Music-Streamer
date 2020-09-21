@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -7,14 +7,20 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import ListItem from "@material-ui/core/ListItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import { Link } from "react-router-dom";
-import HomeIcon from "@material-ui/icons/Home";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import './NavBar.css'
+import "./NavBar.css";
+import AuthApi from "../../helpers/context";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import { read } from "../../helpers/ajax";
+import List from "@material-ui/core/List";
+import Popover from '@material-ui/core/Popover'
+import PlayCircleFilledRounded from '@material-ui/icons/PlayCircleFilledRounded'
+import { Link, useLocation, useHistory, useParams } from 'react-router-dom'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -44,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
+  pop: {
+    width: "30%"
+  },
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: "100%",
@@ -66,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  powerSection: {},
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -78,77 +88,78 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  typography: {
+    padding: theme.spacing(2),
+  },
 }));
 
-export default function NavBar({ setSearchText, searchText }) {
+export default function NavBar(props) {
+  const { userValue, searchQueryValue, searchTextValue, playSongValue } = React.useContext(
+    AuthApi
+  );
+  const [songData, setSongData] = playSongValue
+  const [userName, setUserName] = userValue;
+  const [searchText, setSearchText] = searchQueryValue;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [searchResult, setSearchResult] = useState("");
+  const history = useHistory();
+  const location = useLocation();
+  console.log(location);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  const onLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+    };
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+  useEffect(() => {
+    if(searchText.length === 0) {
+      setAnchorEl(null);
+    } 
+    read(`/songs/all?searchText=${searchText}`).then((result) => {
+      console.log(result);
+      setSearchResult(result);
+    });
+  }, [searchText]);
 
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <ListItem onClick={handleMenuClose}>Profile</ListItem>
-      <ListItem onClick={handleMenuClose}>My account</ListItem>
-    </Menu>
-  );
+  useEffect(() => {
+    setTimeout(() => {    
+      handleClose()
+    }, 100);
+    }, [location])
+
+const handleSearch = (e) => {
+  setSearchText(e.target.value)
+  setAnchorEl(e.currentTarget)
+}
+
+const onSongChoose = (chosenSong) => {
+  console.log(location.pathname.split('/'));
+  if(location.pathname === '/') {
+    console.log(chosenSong);
+    history.push(`/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
+  } else {
+    history.push(`/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
+    setSongData(chosenSong)
+  }
+  setSearchText('')
+}
+
+
+
+
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
 
   return (
     <div className={classes.grow}>
-      <AppBar className="mainn" position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             ZionMusic
@@ -158,8 +169,10 @@ export default function NavBar({ setSearchText, searchText }) {
               <SearchIcon />
             </div>
             <InputBase
+              autoFocus={true}
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => handleSearch(e)}
+              onKeyUp={e => setAnchorEl(e.currentTarget)}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
@@ -167,34 +180,52 @@ export default function NavBar({ setSearchText, searchText }) {
               }}
               inputProps={{ "aria-label": "search" }}
             />
+            {searchResult && (
+              <Popover
+              disableAutoFocus 
+              className={classes.pop}
+              onKeyDown={handleClose}
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                {searchResult.map((song, i) => {
+                  return (
+                    <div key={i}>
+                    <ListItem >
+                    <IconButton variant="h6" onClick={() => onSongChoose(song)} >
+                      <PlayCircleFilledRounded/>
+                    </IconButton>
+                      {song.title}
+                      </ListItem>
+                      </div>
+                  );
+                })}
+              </Popover>
+            )}
           </div>
-          <MenuItem onClick={handleProfileMenuOpen}>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <p>Profile</p>
+          <Grid item xs={6}>
+          </Grid>
+          {userName &&
+          <MenuItem>
+            <Typography color="initial">{`Hello ${userName}`}</Typography>
           </MenuItem>
-          {/* <div className={classes.grow} />
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div> */}
+}
+          <IconButton color="action" onClick={onLogout} className={classes.title} variant="h6" noWrap>
+          <ExitToAppIcon/>
+          </IconButton>
+    
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }

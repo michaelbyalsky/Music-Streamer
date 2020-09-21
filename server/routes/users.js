@@ -3,7 +3,7 @@ const usersRouter = express.Router()
 const db = require('../modules/connections')
 
 usersRouter
-.post("/getuser", (req, res, next) => {
+.post("/validation", (req, res, next) => {
     console.log(req.body)
   console.log(req.body);
     let sql = `CALL validation("${req.body.userName}", "${req.body.password}")`;

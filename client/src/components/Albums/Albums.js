@@ -8,19 +8,9 @@ import { read } from '../../helpers/ajax'
 
 export default function Albums() {
   const [albumsData, setAlbumsData] = useState(null);
-  const [searchText, setSearchText] = useState([]); // search input text
 
   useEffect(() => {
-    read(`/albums/getalbums?searchText=${searchText}`)
-    .then(result => {
-      console.log(result);
-      setAlbumsData(result)
-    })
-  }, [searchText]);
-
-
-  useEffect(() => {
-    read('albums/getalbums')
+    read('albums/all')
     .then(result => {
       console.log(result);
       setAlbumsData(result)
@@ -28,18 +18,15 @@ export default function Albums() {
   }, []);
   return (
     <>
-    <NavBar
-    searchText={searchText}
-    setSearchText={setSearchText}
-    />
+
     <div className="main">
     <div className="sideBar" > 
     <SideBar />
     </div>
     <div className="albumWrapper">
       {albumsData &&
-        albumsData.map((albumData) => {
-        return <Album albumData={albumData} />;
+        albumsData.map((albumData, i) => {
+        return <div key={i}><Album albumData={albumData} /></div>;
         })}
         </div>
     </div>

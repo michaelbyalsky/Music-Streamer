@@ -17,10 +17,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import './Song.css'
 import { create } from '../../helpers/ajax'
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import AddToPlayList from './AddToPlaylist'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    maxWidth: 330,
   },
   media: {
     height: 0,
@@ -44,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
 export default function RecipeReviewCard({ songsData, setSongsData, songData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [openPlaylist, setOpenPlaylist] = React.useState(false);
+ 
+
 
   const onSongLike = (song) => {
     let copyData = Array.from(songsData)
@@ -69,6 +75,12 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
     setExpanded(!expanded);
   };
 
+
+  const handleClose = () => {
+    setOpenPlaylist(false);
+  };
+
+
   return (
     <div>
     <Card className={classes.root}>
@@ -82,11 +94,12 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
             <MoreVertIcon />
           </IconButton>
         }
+        titleTypographyProps={{variant:'subtitle1'}}
         title={`${songData.title}`}
         subheader={songData.created_at && songData.created_at.slice(0, 10)}
       />
       <div className="video-con">
-      <iframe src={songData.youtube_link} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe src={songData.youtube_link} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
       </div>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={() => onSongLike(songData)}>
@@ -94,6 +107,9 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
+        </IconButton>
+        <IconButton onClick={() => setOpenPlaylist(true)}>
+          <PlaylistAddIcon />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
@@ -116,6 +132,14 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
         </CardContent>
       </Collapse>
     </Card>
+    {openPlaylist && (
+          <AddToPlayList
+          songId={songData.id}
+          openPlaylist={openPlaylist}
+          handleClose={handleClose}
+          setOpenPlaylist={setOpenPlaylist}
+          />
+        )}
     </div>
   );
 }

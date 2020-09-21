@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import axios from "axios";
 import Song from "../Song/Song";
-import NavBar from "../NavBar/NavBar";
 import './Home.css'
 import SideBar from '../SideBar/SideBar'
 import { read } from '../../helpers/ajax'
@@ -14,7 +11,6 @@ import Playlist from '../Playlists/playlist'
 
 export default function Home() {
   const [songsData, setSongsData] = useState(null);
-  const [searchText, setSearchText] = useState([]); // search input text
   const [albumsData, setAlbumsData] = useState(null);
   const [artistsData, setArtistsData] = useState(null);
   const [playlistsData, setPlaylistsData] = useState(null);
@@ -28,7 +24,7 @@ export default function Home() {
   };
 
   const getSongs = () => {
-    read('songs/getsongs')
+    read('songs/all')
     .then(result => {
       console.log(result);
       setSongsData(result)
@@ -36,7 +32,7 @@ export default function Home() {
   }
 
   const getAlbums = () => {
-    read('albums/getalbums')
+    read('albums/all')
     .then(result => {
       console.log(result);
       setAlbumsData(result)
@@ -44,7 +40,7 @@ export default function Home() {
   }
 
   const getArtists = () => {
-    read('artists/getartists')
+    read('artists/all')
     .then(result => {
       console.log(result);
       setArtistsData(result)
@@ -66,20 +62,10 @@ export default function Home() {
     getPlaylists();
   }, []);
 
-  useEffect(() => {
-    read(`songs/getsongs?searchText=${searchText}`)
-    .then(result => {
-      console.log(result);
-      setSongsData(result)
-    })
-  }, [searchText]);
+
 
   return (
     <>
-      <NavBar  
-      searchText={searchText}
-      setSearchText={setSearchText}
-      />
       <div className="main">
       <div className="sideBar" > 
       <SideBar />

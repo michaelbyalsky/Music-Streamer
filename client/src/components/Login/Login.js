@@ -10,10 +10,10 @@ import {
   InputLabel,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Link, withRouter, Redirect } from "react-router-dom";
-import firebase from "../../helpers/firebase";
+
 import { create } from "../../helpers/ajax";
+import { useHistory } from 'react-router-dom'
+import AuthApi from '../../helpers/context'
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -49,12 +49,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login({ history }) {
+function Login({ setLoggedIn }) {
+  const { userValue } = React.useContext(AuthApi)
+  const [userName, setUserName] = userValue
   const classes = useStyles();
-
+  // const [state, dispatch] = useReducer(appReducer, false)
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const history = useHistory()
   // const [redirect, setRedirect] = useState(false)
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -63,26 +66,36 @@ function Login({ history }) {
       password: password,
     };
     console.log(body);
-    create(`users/getuser`, body)
+    create(`users/validation`, body)
       .then(async (res) => {
         console.log("got hree", res);
         let id = res[0].user_id;
+        let name = res[0].user_name
+        console.log(name);
         console.log(id);
-        localStorage.setItem("rememberMe", rememberMe);
-        localStorage.setItem("user", rememberMe ? user : "");
+        if(rememberMe) {
+          setUserName(name)
+          localStorage.setItem("rememberMe", rememberMe);
+          localStorage.setItem("id", id);
+          localStorage.setItem("name", name);
+          history.push("/");
+      } else {
+        setUserName(name)
         localStorage.setItem("id", id);
-        history.push("/home");
+          localStorage.setItem("name", name);
+          // localStorage.setItem("loggedIn", true);
+          history.push("/");
+      }
+      setLoggedIn(true)
       })
       .catch((err) => {
-        console.log();
+        console.log(err);
+      setLoggedIn(false)
       });
   };
 
-  useEffect(() => {
-    let rememberMeValue = localStorage.getItem("rememberMe");
-    let userValue = localStorage.getItem("user");
-    if (rememberMeValue) history.push("/home");
-  }, []);
+  
+  
 
   return (
     <main className={classes.main}>

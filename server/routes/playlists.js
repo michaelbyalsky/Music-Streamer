@@ -11,7 +11,7 @@ playlistsRouter.get("/top_playlist", (req, res) => {
     });
   });
   
-  playlistsRouter.get(`/playlist/:id`, (req, res) => {
+  playlistsRouter.get(`/:id`, (req, res) => {
     let id = req.params.id;
     let sql = `call get_playlist_by_id(${id})`;
     db.query(sql, (err, result) => {
@@ -21,9 +21,21 @@ playlistsRouter.get("/top_playlist", (req, res) => {
     });
   });
 
-  playlistsRouter.post("/addplaylist", (req, res) => {
+  playlistsRouter.post("/addsong", (req, res) => {
     console.log(req.body);
-    let sql = `INSERT INTO playlists SET ?`;
+    let sql = `CALL add_to_playlist(${req.body.song_id}, ${req.body.playlist_id})`;
+    let data = req.body;
+    console.log(data);
+    db.query(sql, data, (err, result) => {
+      if (err) throw err;
+      console.log(result);
+      res.json(result);
+    });
+  });
+
+  playlistsRouter.post("/add", (req, res) => {
+    console.log(req.body);
+    let sql = `CALL create_playlist('${req.body.playlist_name}', '${req.body.cover_img}')`;
     let data = req.body;
     console.log(data);
     db.query(sql, data, (err, result) => {

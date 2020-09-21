@@ -10,17 +10,8 @@ export default function Albums() {
   const [artistsData, setArtistsData] = useState(null);
   const [searchText, setSearchText] = useState([]); // search input text
 
-  // useEffect(() => {
-  //   read(`/artisyts/getalbums?searchText=${searchText}`)
-  //   .then(result => {
-  //     console.log(result);
-  //     setArtistsData(result)
-  //   })
-  // }, [searchText]);
-
-
   useEffect(() => {
-    read('artists/getartists')
+    read('artists/all')
     .then(result => {
       console.log(result);
       setArtistsData(result)
@@ -28,18 +19,15 @@ export default function Albums() {
   }, []);
   return (
     <>
-    <NavBar
-    searchText={searchText}
-    setSearchText={setSearchText}
-    />
+
     <div className="main">
     <div className="sideBar" > 
     <SideBar />
     </div>
     <div className="albumWrapper">
       {artistsData &&
-        artistsData.map((artistData) => {
-        return <Artist artistData={artistData} />;
+        artistsData.map((artistData, index) => {
+        return <Artist key={index} artistData={artistData} />;
         })}
         </div>
     </div>

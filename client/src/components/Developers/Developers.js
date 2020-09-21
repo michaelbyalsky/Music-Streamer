@@ -80,7 +80,7 @@ export default function Developers() {
         setOpenArtist(false);
       })
       .then((res) => {
-        read("artists/getartists").then((res) => {
+        read("artists/all").then((res) => {
           console.log(res);
           setArtistsData(res);
         });
@@ -95,7 +95,7 @@ export default function Developers() {
         setOpenAlbums(false);
       })
       .then((res) => {
-        read("albums/getalbums").then((res) => {
+        read("albums/all").then((res) => {
           console.log(res);
           setAlbumsData(res);
         });
@@ -103,11 +103,11 @@ export default function Developers() {
   };
 
   useEffect(() => {
-    read("albums/getalbums").then((res) => {
+    read("albums/all").then((res) => {
       console.log(res);
       setAlbumsData(res);
     });
-    read("artists/getartists").then((res) => {
+    read("artists/all").then((res) => {
         console.log(res);
         setArtistsData(res);
       });
@@ -118,7 +118,6 @@ export default function Developers() {
   console.log(artistsData);
   return (
     <>
-      <NavBar />
       <div className="main">
         <div className="sideBar">
           <SideBar />
@@ -180,9 +179,9 @@ export default function Developers() {
                  
                   >
                     <option aria-label="None"></option>
-                    {artistsData.map((artist) => {
+                    {artistsData.map((artist, index) => {
                       return (
-                        <option value={artist.artist_id}>
+                        <option key={index} value={artist.artist_id}>
                           {artist.artist_name}
                         </option>
                       );
@@ -208,9 +207,9 @@ export default function Developers() {
                     inputRef={register({ required: true })}
                   >
                     <option aria-label="None"></option>
-                    {albumsData.map((album) => {
+                    {albumsData.map((album, index) => {
                       return (
-                        <option value={album.album_id}>
+                        <option key={index} value={album.album_id}>
                           {album.album_name}
                         </option>
                       );

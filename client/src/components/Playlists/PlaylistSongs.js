@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import NavBar from "../NavBar/NavBar";
 import SideBar from "../SideBar/SideBar";
 import { read } from "../../helpers/ajax";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,19 +11,18 @@ import SongsList from "../Albums/AlbumSong/SongsList/SongsList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    width: 1000,
   },
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
     maxWidth: "70%",
-    height: "45%"
   },
   img: {
     margin: "auto",
     display: "block",
-    width: "300px",
-    height: "200px",
+    width: "auto",
+    height: "auto",
   },
 }));
 
@@ -35,11 +32,11 @@ export default function AlbumSongs({ match, history }) {
   const classes = useStyles();
 
   useEffect(() => {
-    fetchAlbum();
+    fetchPlaylist();
   }, []);
 
-  const fetchAlbum = () => {
-    read(`/playlists/playlist/${match.params.id}`).then((res) => {
+  const fetchPlaylist = () => {
+    read(`/playlists/${match.params.id}`).then((res) => {
       console.log(res);
       res.length !== 0 ? setPlaylistData(res) : setPlaylistData(null);
     });
@@ -49,14 +46,13 @@ export default function AlbumSongs({ match, history }) {
 
   return (
     <>
-      <NavBar />
       <div className="main">
         <SideBar />
         {playlistData ? (
           <div className={classes.root}>
             <Paper className={classes.paper}>
               <Grid container spacing={2}>
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={6} lg={4} xs={3}>
                   <ButtonBase className={classes.image}>
                     <img
                       className={classes.img}
@@ -66,8 +62,8 @@ export default function AlbumSongs({ match, history }) {
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>
-                  <Grid item xs con ntainer direction="column" spacing={2}>
-                    <Grid item xs>
+                  <Grid item container direction="column" spacing={2}>
+                    <Grid item>
                       <Typography gutterBottom variant="subtitle1">
                         {playlistData[0].album_name}
                       </Typography>
@@ -95,12 +91,12 @@ export default function AlbumSongs({ match, history }) {
             </Paper>
             <div className={classes.paper}>
               {playlistData.map((song, index) => {
-               return <SongsList index={index} song={song} />;
+                return <SongsList type="Playlist" index={index} song={song} />;
               })}
             </div>
           </div>
         ) : (
-            <h1>this playlist is empty</h1>
+          <h1>this playlist is empty</h1>
         )}
       </div>
     </>

@@ -3,7 +3,7 @@ const artistsRouter = express.Router()
 const db = require('../modules/connections')
 
 artistsRouter
-    .get("/getartists", (req, res, next) => {
+    .get("/all", (req, res, next) => {
     let sql = `Call get_artists()`;
     let query = db.query(sql, (err, result) => {
         if (err) {
@@ -15,7 +15,7 @@ artistsRouter
   
 
   artistsRouter
-.get(`/artist/:id`, (req, res, next) => {
+.get(`/:id`, (req, res, next) => {
     let id = req.params.id;
     let sql = `call get_artist_by_id(${id})`;
     let query = db.query(sql, (err, result) => {
@@ -29,10 +29,9 @@ artistsRouter
   artistsRouter
   .post("/addartist", (req, res, next) => {
     console.log(req.body);
-    let sql = `INSERT INTO artists SET ?`;
-    let data = req.body;
-    console.log(data);
-    db.query(sql, data, (err, result) => {
+    let sql = `CALL add_artist('${req.body.artist_name}', '${req.body.artist_img}', '${req.body.created_at}')`;
+    console.log(sql);
+    db.query(sql, (err, result) => {
         if (err) {
             next(err)
         };

@@ -13,24 +13,22 @@ import SongsList from "./SongsList/SongsList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    width: 1000
   },
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
     maxWidth: "70%",
-    height: "45%"
   },
   img: {
     margin: "auto",
     display: "block",
-    width: "300px",
-    height: "200px",
+    width: "auto",
+    height: "auto",
   },
 }));
 
 export default function AlbumSongs({ match }) {
-  const [searchText, setSearchText] = useState(""); // search input text
   const [albumData, setAlbumData] = useState(null);
   const classes = useStyles();
 
@@ -39,7 +37,7 @@ export default function AlbumSongs({ match }) {
   }, []);
 
   const fetchAlbum = () => {
-    read(`/albums/album/${match.params.id}`).then((res) => {
+    read(`/albums/${match.params.id}`).then((res) => {
       console.log(res);
       setAlbumData(res);
     });
@@ -49,14 +47,13 @@ export default function AlbumSongs({ match }) {
 
   return (
     <>
-      <NavBar />
       <div className="main">
         <SideBar />
         {albumData && (
           <div className={classes.root}>
             <Paper className={classes.paper}>
-              <Grid container spacing={2}>
-                <Grid item xs={5}>
+              <Grid container spacing={10}>
+                <Grid item xs={12} sm={6} lg={4} xs={3}>
                   <ButtonBase className={classes.image}>
                     <img
                       className={classes.img}
@@ -90,15 +87,12 @@ export default function AlbumSongs({ match }) {
                       </Button>
                     </Grid>
                   </Grid>
-                  {/* <Grid item>
-              <Typography variant="subtitle1">$19.00</Typography>
-            </Grid> */}
                 </Grid>
               </Grid>
             </Paper>
             <div className={classes.paper}>
               {albumData.map((song, index) => {
-               return <SongsList index={index} song={song} />;
+               return <SongsList key={song.title} type="Album" index={index} song={song} />;
               })}
             </div>
           </div>

@@ -2,10 +2,11 @@ const express = require("express");
 const songsRouter = express.Router();
 const db = require("../modules/connections");
 
-songsRouter.get("/getsongs", (req, res, next) => {
+songsRouter.get("/all", (req, res, next) => {
+  console.log("first");
   if (req.query.searchText) {
+    console.log("hrer");
     let sql = `CALL get_songs_by_name("${req.query.searchText}")`;
-
     db.query(sql, (err, result) => {
       if (err) {
         next(err);

@@ -1,8 +1,8 @@
-import React from "react";
+import React,{useState, useEffect, useReducer} from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Switch
+  Switch,
 } from 'react-router-dom';
 import Register from '../Register/Register'
 import Login from '../Login/Login'
@@ -14,22 +14,46 @@ import Playlists from '../Playlists/Playlists'
 import Developers from '../Developers/Developers'
 import AlbumSongs from '../Albums/AlbumSong/AlbumSongs'
 import SingleSong from '../SingleSong/SingleSong'
-import SideBar from '../SideBar/SideBar'
-import NavBar from '../NavBar/NavBar' 
 import NotFound from '../NotFound/NotFound'
-import Artist from "../Artists/Artist/Artist";
 import ArtistSong from '../Artists/Artist/ArtistSongs/ArtistSong'
 import playlistSongs from '../Playlists/PlaylistSongs'
+import NavBar from '../NavBar/NavBar' 
+import AuthApi from '../../helpers/context'
 
 export default function App() {
+  const [userName, setUserName] = useState('')
+  const [loggedIn, setLoggedIn] = useState(false)
+  // const [state, dispatch] = useReducer(appReducer, "")
+  const [searchText, setSearchText] = useState([]); // search input text
+  const [searchQuery, setSearchQuery] = useState([]); // search input text
+  const [songData, setSongData] = useState(null);
+  console.log(loggedIn);
+  console.log(userName);
+
+  useEffect(() => {
+    let rememberMeValue = localStorage.getItem("rememberMe");
+    if (rememberMeValue){
+      let name = localStorage.getItem('name')
+      setLoggedIn(true)
+      setUserName(name)
+    }
+  }, []);
+
   return (
     <>
+    <AuthApi.Provider 
+    value={{
+    userValue: [userName, setUserName], 
+    searchTextValue: [searchText, setSearchText], 
+    searchQueryValue: [searchQuery, setSearchQuery],
+    playSongValue: [songData, setSongData]
+    }}>
   <Router>
-    <Switch>
-    <Route path="/Home" exact component={Home} />
+    <NavBar/>
+    {loggedIn ? 
+      <Switch>
     <Route path="/Songs" exact component={Songs} />
     <Route path="/Register" exact component={Register} />
-    <Route path="/" exact component={Login} />
     <Route path="/Artists" exact component={Artists} />
     <Route path="/Albums" exact component={Albums} />
     <Route path="/Playlists" exact component={Playlists} />
@@ -37,10 +61,19 @@ export default function App() {
     <Route exact path="/Albums/:id?" component={AlbumSongs}/>
     <Route exact path="/Artists/:id?" component={ArtistSong}/>
     <Route exact path="/Playlists/:id?" component={playlistSongs}/>
-    <Route exact path="/Songs/:id" component={SingleSong} />
-    <Route path='*' exact={true} component={NotFound} />
+    <Route  path="/Songs/:id" exact component={SingleSong} />
+    <Route exact path="/" component={Home} />
+     <Route exact path='*' component={NotFound} />
     </ Switch>
+     :
+     <Switch>
+     <Route exact path="/" >
+     <Login setLoggedIn={setLoggedIn} />
+     </Route>
+     </Switch>
+}  
 </Router>
+</AuthApi.Provider>
 </>
   );
 }

@@ -20,37 +20,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SongsList({song, index}) {
+export default function SongsList({song, index, type}) {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([1]);
-
-
-  const location = useLocation();
-  const type = location.pathname.split('/')[1].slice(0, -1);
   console.log(type);
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
 
   return (
       <List dense className={classes.root}>
-        {/* const labelId = `checkbox-list-secondary-label-${value}`; */}
           <ListItem button>
+            {type === 'Album' &&
               <Link to={`/songs/${song.song_id}?${type}=${song.album_id}`}>
             <IconButton>
               <PlayCircleOutlineIcon/>
             </IconButton>
             </Link>
+            }
+            {type === 'Artist' &&
+              <Link to={`/songs/${song.song_id}?${type}=${song.artist_id}`}>
+            <IconButton>
+              <PlayCircleOutlineIcon/>
+            </IconButton>
+            </Link>
+            }
+            {type === 'Playlist' &&
+              <Link to={`/songs/${song.song_id}?${type}=${song.playlist_id}`}>
+            <IconButton>
+              <PlayCircleOutlineIcon/>
+            </IconButton>
+            </Link>
+            }
             <ListItemText id={index} primary={`${index + 1}. ${song.title} `} />
             <ListItemSecondaryAction>
             </ListItemSecondaryAction>

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import NavBar from "../../../NavBar/NavBar";
 import SideBar from "../../../SideBar/SideBar";
 import { read } from "../../../../helpers/ajax";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,29 +8,26 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import SongsList from "../../../Albums/AlbumSong/SongsList/SongsList";
-import Container from '@material-ui/core/Container';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    width: 1000
   },
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
     maxWidth: "70%",
-    height: "45%"
   },
   img: {
     margin: "auto",
     display: "block",
-    width: "300px",
-    height: "200px",
+    width: "auto",
+    height: "auto",
   },
 }));
 
 export default function ArtistSongs({ match }) {
-  const [searchText, setSearchText] = useState(""); // search input text
   const [artistData, SetArtistData] = useState(null);
   const classes = useStyles();
 
@@ -41,7 +36,7 @@ export default function ArtistSongs({ match }) {
   }, []);
 
   const fetchAlbum = () => {
-    read(`/artists/artist/${match.params.id}`).then((res) => {
+    read(`/artists/${match.params.id}`).then((res) => {
       console.log(res);
       SetArtistData(res);
     });
@@ -51,14 +46,13 @@ export default function ArtistSongs({ match }) {
 
   return (
     <>
-      <NavBar />
       <div className="main">
         <SideBar />
         {artistData && (
           <div className={classes.root}>
             <Paper className={classes.paper}>
               <Grid container spacing={2}>
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={6} lg={4} xs={3}>
                   <ButtonBase className={classes.image}>
                     <img
                       className={classes.img}
@@ -95,7 +89,7 @@ export default function ArtistSongs({ match }) {
             </Paper>
             <div className={classes.paper}>
               {artistData.map((song, index) => {
-               return <SongsList index={index} song={song} />;
+               return <SongsList type="Artist" index={index} song={song} />;
               })}
             </div>
           </div>

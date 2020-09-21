@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -6,10 +6,7 @@ import Select from "@material-ui/core/Select";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Grid from "@material-ui/core/Grid";
 
 export default function AddArtist({
@@ -27,7 +24,6 @@ export default function AddArtist({
       aria-labelledby="form-dialog-title"
     >
       <form
-        // className={classes.root}
         onSubmit={SubmitAlbum(onAddAlbum)}
         noValidate
         autoComplete="off"
@@ -65,9 +61,9 @@ export default function AddArtist({
                 name="artist_id"
               >
                 <option aria-label="None"></option>
-                {artistsData.map((artist) => {
+                {artistsData.map((artist, index) => {
                   return (
-                    <option value={artist.artist_id}>
+                    <option key={index} value={artist.artist_id}>
                       {artist.artist_name}
                     </option>
                   );

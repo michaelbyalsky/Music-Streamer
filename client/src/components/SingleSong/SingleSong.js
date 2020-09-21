@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
@@ -14,26 +12,26 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-// import './Song.css'
 import { create, read } from "../../helpers/ajax";
-import NavBar from "../NavBar/NavBar";
 import SideBar from "../SideBar/SideBar";
-import { Grid } from "@material-ui/core";
 import { useParams, useLocation } from "react-router-dom";
 import SingleSongLists from "./SingleSongList";
-import "./SingleSong.css";
 import Container from "@material-ui/core/Container";
+import YouTube from 'react-youtube';
+import AuthApi from '../../helpers/context'
 
 const queryString = require("query-string");
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 1000,
     display: "grid",
+    gridTemplateRows: "auto auto",
+    '@media (min-width: 780px)' : {
+      display: "grid",
     gridTemplateColumns: "78% 22%",
     justifyContent: "center",
     height: "400px",
+    }
   },
   media: {
     paddingTop: "56.25%", // 16:9
@@ -52,28 +50,41 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   singleSongList: {
-    height: "100%",
+    '@media (max-width: 780px)' : {
+      display: 'flex',
     overflow: "hidden", 
-    overflowY: "scroll"
+    overflowX: "scroll",
+    },
+    '@media (min-width: 780px)' : {
+      height: "100%",
+    overflow: "hidden", 
+    overflowY: "scroll",
+    }
   },
 }));
 
 export default function SingleSong({ match }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  const [songData, setSongData] = useState(null);
   const [relatedData, setRelatedData] = useState(null);
-
+  const [nextSong, setNextSong] = useState(1)
+  const { playSongValue } = React.useContext(AuthApi)
+  const [songData, setSongData] = playSongValue
   const params = useParams();
   const location = useLocation();
 
   const parsed = queryString.parse(location.search);
-  console.log(parsed);
 
   useEffect(() => {
     fetchSong();
     fetchRelated();
+    console.log('rendered')
   }, []);
+
+  useEffect(() => {
+    fetchRelated();
+    console.log('changed');
+  }, [songData])
 
   const fetchSong = () => {
     read(`/songs/song/${match.params.id}`).then((res) => {
@@ -85,16 +96,16 @@ export default function SingleSong({ match }) {
   const fetchRelated = () => {
     let type = Object.keys(parsed)[0];
     let url;
-    debugger
+    console.log(type);
     switch (type) {
-      case "album":
-        url = `/albums/album/${parsed[type]}`;
+      case "Album":
+        url = `/albums/${parsed[type]}`;
         break;
-      case "artist":
-        url = `/artists/artist/${parsed[type]}`;
+      case "Artist":
+        url = `/artists/${parsed[type]}`;
         break;
-      case "playlist":
-        url = `/playlists/playlist/${parsed[type]}`;
+      case "Playlist":
+        url = `/playlists/${parsed[type]}`;
     }
     console.log(url);
     read(url).then((res) => {
@@ -120,15 +131,48 @@ export default function SingleSong({ match }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const onReady = (event) => {
+    // access to player in all event handlers via event.target
+    event.target.playVideo();
+  }
+
+  const onSongChoose = (data, index) => {
+    setSongData(data)
+    if(index === relatedData.length - 1){
+      setNextSong(0)
+    } else {
+      setNextSong(index + 1)
+    }
+  }
+
+  const onEnd = (event) => {
+    setSongData(relatedData[nextSong])
+    console.log(nextSong);
+    console.log(relatedData.length);
+    if(nextSong === relatedData.length - 1){
+      setNextSong(0)
+    } else {
+      setNextSong(nextSong + 1)
+    }
+  }
+
+  const opts = {
+    // height:,
+    width: '100%',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 1,
+    },
+  }
 
   return (
     <>
-      <NavBar />
       <div className="main">
         <SideBar />
         {songData && (
           <div className={classes.root}>
-            <div className="songContainer">
+            
+            <div className={classes.songContainer}>
               <Container maxWidth="sm">
                 <CardHeader
                   avatar={
@@ -138,24 +182,13 @@ export default function SingleSong({ match }) {
                       className={classes.avatar}
                     ></Avatar>
                   }
-                  // action={
-                  //   <IconButton aria-label="settings">
-                  //     <MoreVertIcon />
-                  //   </IconButton>
-                  // }
                   title={`${songData.title}`}
                   subheader={
                     songData.created_at && songData.created_at.slice(0, 10)
                   }
                 />
                 <div>
-                  <iframe
-                    height="250px"
-                    width="500px"
-                    src={songData.youtube_link}
-                    frameborder="0"
-                    allowfullscreen
-                  ></iframe>
+                <YouTube videoId={songData.youtube_link.split("embed/")[1].split("?list")[0]} opts={opts} onReady={(e) => onReady(e)} onEnd={(e) => onEnd(e)} />
                 </div>
                 <CardActions disableSpacing>
                   <IconButton
@@ -189,16 +222,16 @@ export default function SingleSong({ match }) {
                 </Collapse>
               </Container>
             </div>
-            <div className={classes.singleSongList}>
               {relatedData &&
-                relatedData.map((data, index) => {
+            <div className={classes.singleSongList}>
+                {relatedData.map((data, index) => {
                   return (
                     <div key={index}>
-                      <SingleSongLists data={data} />
+                      <SingleSongLists index={index} data={data} onSongChoose={onSongChoose}/>
                     </div>
                   );
                 })}
-            </div>
+            </div>}
           </div>
         )}
       </div>

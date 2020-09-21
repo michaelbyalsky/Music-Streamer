@@ -1,12 +1,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
-  TextField,
   List,
   Drawer,
   ListItem,
   IconButton,
-  ListItemText,
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
@@ -14,14 +12,11 @@ import ComputerIcon from "@material-ui/icons/Computer";
 import AlbumIcon from "@material-ui/icons/Album";
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import clsx from "clsx";
 import "./SideBar.css";
 import HomeIcon from '@material-ui/icons/Home';
 
-const drawerWidth = 240;
+const drawerWidth = "auto";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,16 +70,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBar() {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Drawer
@@ -100,32 +86,8 @@ export default function SideBar() {
         }),
       }}
     >
-      {open && (
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "rtl" ? (
-            <ChevronRightIcon />
-          ) : (
-            <ChevronLeftIcon />
-          )}
-        </IconButton>
-      )}
       <List>
-        {!open && (
-          <ListItem>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-          </ListItem>
-        )}
-        <NavLink to={`/Home`} activeStyle={{backgroundColor: 'grey'}} >
+        <NavLink to={`/`} activeStyle={{backgroundColor: 'grey'}} >
           <ListItem>
             <IconButton aria-label="Home">
               <HomeIcon />
