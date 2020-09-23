@@ -1,8 +1,23 @@
 import React from 'react'
 import './NotFound.css'
 import { Link } from 'react-router-dom'
+import AuthApi from '../../helpers/context'
+import { useHistory } from 'react-router-dom'
 
 export default function NotFound() {
+	const { loggedInValue } = React.useContext(AuthApi)
+	const  [loggedIn, setLoggedIn] = loggedInValue 
+	const history = useHistory()
+	const handleClick = () => {
+		let loggedIn = localStorage.getItem('loggedIn')
+		if (loggedIn) {
+			setLoggedIn(true)
+			history.push('/home')
+		} else {
+			setLoggedIn(false)
+			history.push('/')
+		}
+	}
     return (
         <section class="page_404">
 	<div class="container">
@@ -21,9 +36,7 @@ export default function NotFound() {
 		</h3>
 		
 		<p>the page you are looking for not avaible!</p>
-		<Link to="/Home">
-		<a href="" class="link_404">Go to Home</a>
-        </Link>
+		<button onClick={handleClick} href="" class="link_404">Go to Home</button>
 	</div>
 		</div>
 		</div>

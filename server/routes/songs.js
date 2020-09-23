@@ -1,8 +1,9 @@
 const express = require("express");
 const songsRouter = express.Router();
 const db = require("../modules/connections");
+const verify = require('./verifyToken')
 
-songsRouter.get("/all", (req, res, next) => {
+songsRouter.get("/all", verify, (req, res, next) => {
   if (req.query.searchText) {
     let sql = `CALL get_songs_by_name("${req.query.searchText}")`;
     db.query(sql, (err, result) => {

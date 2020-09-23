@@ -18,6 +18,7 @@ import NotFound from '../NotFound/NotFound'
 import ArtistSong from '../Artists/Artist/ArtistSongs/ArtistSong'
 import playlistSongs from '../Playlists/PlaylistSongs'
 import NavBar from '../NavBar/NavBar' 
+import { read } from '../../helpers/ajax'
 import AuthApi from '../../helpers/context'
 
 export default function App() {
@@ -28,9 +29,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState([]); // search input text
   const [songData, setSongData] = useState(null);
 
+  console.log(loggedIn);
+
   useEffect(() => {
-    let rememberMeValue = localStorage.getItem("rememberMe");
-    if (rememberMeValue){
+    console.log(localStorage.getItem("loggedIn"));
+    if (localStorage.getItem("loggedIn")){
       let name = localStorage.getItem('name')
       setLoggedIn(true)
       setUserName(name)
@@ -44,13 +47,16 @@ export default function App() {
     userValue: [userName, setUserName], 
     searchTextValue: [searchText, setSearchText], 
     searchQueryValue: [searchQuery, setSearchQuery],
-    playSongValue: [songData, setSongData]
+    playSongValue: [songData, setSongData],
+    loggedInValue: [loggedIn, setLoggedIn]  
     }}>
   <Router>
+  {loggedIn && 
     <NavBar/>
+  }
     {loggedIn ? 
       <Switch>
-    <Route exact path="/" component={Home} />
+    <Route exact path="/Home" component={Home} />
     <Route path="/Songs" exact component={Songs} />
     <Route path="/Register" exact component={Register} />
     <Route path="/Artists" exact component={Artists} />
@@ -60,13 +66,13 @@ export default function App() {
     <Route exact path="/Albums/:id?" component={AlbumSongs}/>
     <Route exact path="/Artists/:id?" component={ArtistSong}/>
     <Route exact path="/Playlists/:id?" component={playlistSongs}/>
-    <Route  path="/Songs/:id" exact component={SingleSong} />
-    <Route path='*' component={NotFound} />
+    <Route exact path="/Songs/:id" component={SingleSong} />
+    <Route  path='*' exact component={NotFound} />
     </ Switch>
      :
      <Switch>
      <Route exact path="/" >
-     <Login setLoggedIn={setLoggedIn} />
+     <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
      </Route>
      </Switch>
 }  

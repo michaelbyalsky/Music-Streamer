@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login({ setLoggedIn }) {
+function Login({ loggedIn, setLoggedIn }) {
   const { userValue } = React.useContext(AuthApi)
   const [userName, setUserName] = userValue
   const classes = useStyles();
@@ -59,6 +59,18 @@ function Login({ setLoggedIn }) {
   const [rememberMe, setRememberMe] = useState(false);
   const history = useHistory()
   // const [redirect, setRedirect] = useState(false)
+  
+  useEffect(() => {
+    let rememberMeValue = localStorage.getItem("rememberMe");
+    if (rememberMeValue){
+      localStorage.setItem("loggedIn", true)
+      let name = localStorage.getItem('name')
+      setLoggedIn(true)
+      setUserName(name)
+      history.push("/home")
+    }
+  }, []);
+  
   const handleFormSubmit = (e) => {
     e.preventDefault();
     let body = {
@@ -74,15 +86,16 @@ function Login({ setLoggedIn }) {
           localStorage.setItem("rememberMe", rememberMe);
           localStorage.setItem("id", id);
           localStorage.setItem("name", name);
-          history.push("/");
+          localStorage.setItem("loggedIn", true)
       } else {
         setUserName(name)
         localStorage.setItem("id", id);
           localStorage.setItem("name", name);
+          localStorage.setItem("loggedIn", true)
           // localStorage.setItem("loggedIn", true);
-          history.push("/");
-      }
-      setLoggedIn(true)
+          setLoggedIn(true)
+        }
+        history.push("/Home");
       })
       .catch((err) => {
         console.log(err);
