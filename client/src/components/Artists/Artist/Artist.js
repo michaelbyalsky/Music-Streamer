@@ -50,7 +50,7 @@ export default function Artist({ artistData }) {
           </IconButton>
         }
         titleTypographyProps={{variant:'subtitle1'}}
-        title={`${artistData.artist_name}`}
+        title={`${artistData.name}`}
       />
       <CardMedia
         className={classes.media}

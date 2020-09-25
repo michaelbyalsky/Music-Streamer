@@ -20,6 +20,8 @@ import playlistSongs from '../Playlists/PlaylistSongs'
 import NavBar from '../NavBar/NavBar' 
 import { read } from '../../helpers/ajax'
 import AuthApi from '../../helpers/context'
+import {ProtectedRoute} from '../protectedRoute'
+import Cookies from 'js-cookie' 
 
 export default function App() {
   const [userName, setUserName] = useState('')
@@ -32,8 +34,7 @@ export default function App() {
   console.log(loggedIn);
 
   useEffect(() => {
-    console.log(localStorage.getItem("loggedIn"));
-    if (localStorage.getItem("loggedIn")){
+    if (Cookies.get('token')){
       let name = localStorage.getItem('name')
       setLoggedIn(true)
       setUserName(name)
@@ -56,6 +57,11 @@ export default function App() {
   }
     {loggedIn ? 
       <Switch>
+    {/* <ProtectedRoute
+    exact
+    path='/Home'
+    component={Home}
+    />     */}
     <Route exact path="/Home" component={Home} />
     <Route path="/Songs" exact component={Songs} />
     <Route path="/Register" exact component={Register} />

@@ -53,7 +53,7 @@ export default function Album({ playlistData }) {
           </IconButton>
         }
         titleTypographyProps={{variant:'subtitle1'}}
-        title={`${playlistData.playlist_name}`}
+        title={`${playlistData.name}`}
         subheader={playlistData.created_at && playlistData.created_at.slice(0, 10)}
       />
       <CardMedia

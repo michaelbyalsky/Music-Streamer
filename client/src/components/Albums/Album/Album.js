@@ -50,7 +50,7 @@ export default function Album({ albumData }) {
           </IconButton>
         }
         titleTypographyProps={{variant:'subtitle1'}}
-        title={`${albumData.album_name}`}
+        title={`${albumData.name}`}
         subheader={albumData.created_at && albumData.created_at.slice(0, 10)}
       />
       <CardMedia
@@ -62,7 +62,7 @@ export default function Album({ albumData }) {
         {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton> */}
-        <Link to={`/Albums/${albumData.album_id}`}>
+        <Link to={`/Albums/${albumData.id}`}>
         <IconButton>
           <QueueMusicIcon/>
         </IconButton>

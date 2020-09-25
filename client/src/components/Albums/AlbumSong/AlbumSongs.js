@@ -38,6 +38,7 @@ export default function AlbumSongs({ match }) {
 
   const fetchAlbum = () => {
     read(`/albums/${match.params.id}`).then((res) => {
+      console.log(res);
       setAlbumData(res);
     });
   };
@@ -55,7 +56,7 @@ export default function AlbumSongs({ match }) {
                     <img
                       className={classes.img}
                       alt="complex"
-                      src={albumData[0].cover_img}
+                      src={albumData.cover_img}
                     />
                   </ButtonBase>
                 </Grid>
@@ -63,16 +64,16 @@ export default function AlbumSongs({ match }) {
                   <Grid item xs con ntainer direction="column" spacing={2}>
                     <Grid item xs>
                       <Typography gutterBottom variant="subtitle1">
-                        {albumData[0].album_name}
+                        {albumData.album_name}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
-                        {albumData[0].artist_name}
+                        {albumData.artist_name}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
                         {albumData.length} songs
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        <span>{albumData[0].created_at.slice(0, 4)}</span>
+                        <span>{albumData.createdAt.slice(0, 4)}</span>
                       </Typography>
                     </Grid>
                     <Grid item>
@@ -88,7 +89,7 @@ export default function AlbumSongs({ match }) {
               </Grid>
             </Paper>
             <div className={classes.paper}>
-              {albumData.map((song, index) => {
+              {albumData.Artist.Songs.map((song, index) => {
                return <SongsList key={song.title} type="Album" index={index} song={song} />;
               })}
             </div>

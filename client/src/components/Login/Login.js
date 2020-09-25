@@ -49,9 +49,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login({ loggedIn, setLoggedIn }) {
-  const { userValue } = React.useContext(AuthApi)
+function Login() {
+  const { userValue, loggedInValue } = React.useContext(AuthApi)
   const [userName, setUserName] = userValue
+  const [loggedIn, setLoggedIn] = loggedInValue
   const classes = useStyles();
   // const [state, dispatch] = useReducer(appReducer, false)
   const [user, setUser] = useState("");
@@ -63,10 +64,8 @@ function Login({ loggedIn, setLoggedIn }) {
   useEffect(() => {
     let rememberMeValue = localStorage.getItem("rememberMe");
     if (rememberMeValue){
-      localStorage.setItem("loggedIn", true)
-      let name = localStorage.getItem('name')
       setLoggedIn(true)
-      setUserName(name)
+      // setUserName(name)
       history.push("/home")
     }
   }, []);
@@ -74,26 +73,19 @@ function Login({ loggedIn, setLoggedIn }) {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     let body = {
-      userName: user,
+      email: user,
       password: password,
     };
     create(`users/validation`, body)
       .then(async (res) => {
-        let id = res[0].user_id;
-        let name = res[0].user_name
+        console.log(res);
+        let id = res.user_id;
+        let name = res.user_name
         if(rememberMe) {
           setUserName(name)
-          localStorage.setItem("rememberMe", rememberMe);
-          localStorage.setItem("id", id);
-          localStorage.setItem("name", name);
-          localStorage.setItem("loggedIn", true)
       } else {
         setUserName(name)
-        localStorage.setItem("id", id);
-          localStorage.setItem("name", name);
-          localStorage.setItem("loggedIn", true)
-          // localStorage.setItem("loggedIn", true);
-          setLoggedIn(true)
+        setLoggedIn(true)
         }
         history.push("/Home");
       })

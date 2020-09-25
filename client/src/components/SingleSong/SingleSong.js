@@ -90,7 +90,8 @@ export default function SingleSong({ match }) {
 
   const fetchSong = () => {
     read(`/songs/${match.params.id}`).then((res) => {
-      setSongData(res[0]);
+      console.log(res);
+      setSongData(res);
     });
   };
 
@@ -108,6 +109,7 @@ export default function SingleSong({ match }) {
         url = `/playlists/${parsed[type]}`;
     }
     read(url).then((res) => {
+      console.log(res);
       setRelatedData(res);
     });
   };
@@ -229,7 +231,7 @@ export default function SingleSong({ match }) {
             </div>
             {relatedData && (
               <div className={classes.singleSongList}>
-                {relatedData.map((data, index) => {
+                {relatedData.Artist.Songs.map((data, index) => {
                   return (
                     <div key={index}>
                       <SingleSongLists

@@ -1,9 +1,14 @@
-function network(endpoint, {body, ...customConfig} = {}) {
-  // const token = window.localStorage.getItem(localStorageKey)
-  const headers = { "Content-Type": "application/json" };
-  // if (token) {
-  //   headers.Authorization = `Bearer ${token}`
-  // }
+import Cookies from 'js-cookie'
+
+function network(endpoint, { body, ...customConfig } = {}) {
+  const token = Cookies.get('token')
+  console.log(token);
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers.Authorization = token
+  }
   const config = {
     method: body ? "POST" : "GET",
     ...customConfig,
@@ -17,6 +22,7 @@ function network(endpoint, {body, ...customConfig} = {}) {
   }
 
   return fetch(`${endpoint}`, config).then(async (response) => {
+    console.log(response);
     const data = await response.json();
     // if (response.status === 401) {
     //   logout()
@@ -35,4 +41,4 @@ function network(endpoint, {body, ...customConfig} = {}) {
 //   window.localStorage.removeItem(localStorageKey)
 // }
 
-export default network
+export default network;
