@@ -1,82 +1,91 @@
-const express = require('express')
+const express = require('express');
+const Sequelize = require('sequelize')
+const { Album, Artist, Song } = require('../models');
 const albumsRouter = express.Router()
-const db = require('../modules/connections')
+const Op = Sequelize.Op;
 
 albumsRouter
-.get("/all", (req, res, next) => {
+.get("/all", async (req, res, next) => {
+  try {
     if (req.query.searchText) {
-
-      let sql = `CALL get_albums_by_name("${req.query.searchText}")`
-      db.query(sql, (err, result) => {
-        if (err) {
-            next(err)
-        };
-            res.send(result[0]);
-      });
+      console.log("intro");
+    const result = await Album.findAll({
+      attributes: ['id', 'artist_id', 'name', 'cover_img', 'createdAt', 'updatedAt'],
+      where: {
+        name: {
+          [Op.like]: `%${req.query.searchText}%`
+        } 
+      },
+      include: {
+        model: Artist,
+        attributes: ['name', 'artist_img', 'createdAt', 'updatedAt']
+      }
+    }) 
+    res.json(result)
     } else {
-      let sql = `CALL get_albums()`            
-      db.query(sql, (err, result) => {
-        if (err) {
-            next(err)
-        };
-        res.send(result[0]);
-      });
+      const result = await Album.findAll({
+        attributes: ['id', 'artist_id', 'name', 'cover_img', 'createdAt', 'updatedAt'],
+        include: {
+          model: Artist,
+          attributes: ['id', 'name', 'artist_img', 'createdAt', 'updatedAt'],
+        },
+      })
+      res.json(result)
     }
+  } catch(err) {
+    console.log(err);
+    res.status(400).send("data not found")
+  } 
+  
   });
 
   albumsRouter
-  .get(`/:id`, (req, res, next) => {
-    let id = Number(req.params.id);
-    let sql = `CALL get_album_by_id(${id}) 
-                `;
-    db.query(sql, (err, result) => {
-        if (err) {
-            next(err)
-        };
-      res.send(result[0]);
-    });
+  .get(`/:id`, async (req, res, next) => {
+    const result = await Album.findOne({
+      attributes: ['id', 'artist_id', 'name', 'cover_img', 'createdAt', 'updatedAt'],
+      where: {
+        id: req.params.id
+      },
+      include: {
+        model: Artist,
+        attributes: ['id', ['name', 'artist_name'], 'artist_img'], 
+        include: {
+          model: Song,
+          attributes: [['id', 'song_id'], 'title', 'artist_id', 'youtube_link', 'album_id', 'length', 'track_number', 'lyrics', 'createdAt', 'updatedAt'] 
+        }
+      }
+    }) 
+    res.send(result)
   });
 
   albumsRouter
-  .post("/addalbum", (req, res, next) => {
-    let sql = `INSERT INTO albums SET ?`;
-    let data = req.body;
-    db.query(sql, data, (err, result) => {
-        if (err) {
-            next(err)
-        };
-      res.json(result);
-    });
+  .post("/addalbum", async (req, res, next) => {
+    try {
+      console.log(req.body);
+      const result = await Album.create(req.body)
+      res.send(result)
+    } catch(err) {
+      res.status(400).send("bad body")
+    }
+    
   });
 
   
   albumsRouter
   .put("/album", async (req, res, next) => {
-    mysqlCon.query(
-      "UPDATE albums SET album_name = ?, artist_id = ?, cover_img = ? WHERE album_id = ?",
-      [req.body.album_name, req.body.artist_id, req.body.cover_img],
-      (error, results) => {
-        if (err) {
-            next(err)
-        };
-        res.send(results);
-      }
-    );
+    try {
+      console.log(req.body);
+      const result = await Album.create(req.body)
+      res.send(result)
+    } catch(err) {
+      res.status(400).send("bad body")
+    }
   });
 
 
   albumsRouter
   .delete("/album/:id", async (req, res, next) => {
-    mysqlCon.query(
-      "DELETE FROM albums WHERE album_id = ?",
-      [req.params.id],
-      (error, results) => {
-        if (err) {
-            next(err)
-        };
-        res.send(results);
-      }
-    );
+    
   });
   
   module.exports = albumsRouter
