@@ -1,3 +1,4 @@
+import React from 'react'
 import Cookies from 'js-cookie'
 
 function network(endpoint, { body, ...customConfig } = {}) {
@@ -24,11 +25,11 @@ function network(endpoint, { body, ...customConfig } = {}) {
   return fetch(`${endpoint}`, config).then(async (response) => {
     console.log(response);
     const data = await response.json();
-    // if (response.status === 401) {
-    //   logout()
-    //   window.location.assign(window.location)
-    //   return
-    // }
+    if (response.status === 401) {
+      logout()
+      window.location.assign(window.location)
+      return
+    }
     if (response.ok) {
       return data;
     } else {
@@ -37,8 +38,8 @@ function network(endpoint, { body, ...customConfig } = {}) {
   });
 }
 
-// function logout() {
-//   window.localStorage.removeItem(localStorageKey)
-// }
+function logout() {
+  Cookies.remove('token')
+}
 
 export default network;

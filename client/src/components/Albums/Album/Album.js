@@ -13,6 +13,8 @@ import './Album.css'
 import { Link } from 'react-router-dom'
 import CardMedia from '@material-ui/core/CardMedia';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+import Cookies from 'js-cookie'
+import { create } from '../../../helpers/ajax'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,9 +39,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Album({ albumData }) {
+export default function Album({ albumData, albumsData, setAlbumsData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+
+  const onAlbumLike = (album) => {
+    console.log(albumsData);
+    let copyData = Array.from(albumsData)
+    copyData.forEach(data => {
+      if (data.id === album.id) {
+        console.log(data);
+        console.log(album);
+        data.Interactions_Albums[0].is_like = album.Interactions_Albums[0] === undefined ? true : !album.Interactions_Albums[0].is_like
+      }
+    })
+    setAlbumsData(copyData)
+    let body = {
+      user_id: Cookies.get("id"),
+      album_id: album.id,
+      is_like: album.Interactions_Albums[0].is_like === null ? true : !album.Interactions_Albums[0].is_like
+    }
+    create(`/albums/Interactions_Albums`, body)
+    .then(response => {
+      console.log(response);
+    }) 
+  }
+
 
   return (
     <Card className={classes.root}>
@@ -59,9 +84,14 @@ export default function Album({ albumData }) {
         title={albumData.album_name}
       />
       <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton> */}
+      <IconButton aria-label="add to favorites" onClick={() => onAlbumLike(albumData)}>
+      {albumData.Interactions_Albums[0] &&
+          <FavoriteIcon color={albumData.Interactions_Albums[0].is_like ? "error" : "action"} />
+          }
+          {!albumData.Interactions_Albums[0] &&
+          <FavoriteIcon color="action" />
+          }
+        </IconButton>
         <Link to={`/Albums/${albumData.id}`}>
         <IconButton>
           <QueueMusicIcon/>

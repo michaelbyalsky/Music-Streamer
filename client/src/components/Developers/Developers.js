@@ -98,9 +98,11 @@ export default function Developers() {
 
   useEffect(() => {
     read("albums/all").then((res) => {
+      console.log(res);
       setAlbumsData(res);
     });
     read("artists/all").then((res) => {
+      console.log(res);
         setArtistsData(res);
       });
   }, []);
@@ -162,7 +164,7 @@ export default function Developers() {
                   <Select
                     native
                     id="selectArtist"
-                    name="artist_id"
+                    name="id"
                     placeholder="Artist"
                     inputRef={register({ required: true })}
                  
@@ -170,8 +172,8 @@ export default function Developers() {
                     <option aria-label="None"></option>
                     {artistsData.map((artist, index) => {
                       return (
-                        <option key={index} value={artist.artist_id}>
-                          {artist.artist_name}
+                        <option key={index} value={artist.id}>
+                          {artist.name}
                         </option>
                       );
                     })}
@@ -191,15 +193,15 @@ export default function Developers() {
                   <Select
                     native
                     id="selectAlbums"
-                    name="album_id"
+                    name="id"
                     placeholder="Albums"
                     inputRef={register({ required: true })}
                   >
                     <option aria-label="None"></option>
                     {albumsData.map((album, index) => {
                       return (
-                        <option key={index} value={album.album_id}>
-                          {album.album_name}
+                        <option key={index} value={album.id}>
+                          {album.name}
                         </option>
                       );
                     })}

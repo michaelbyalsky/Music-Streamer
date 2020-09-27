@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     display: "block",
     width: "auto",
-    height: "auto",
+    height: "250px",
   },
 }));
 
@@ -37,6 +37,7 @@ export default function ArtistSongs({ match }) {
 
   const fetchAlbum = () => {
     read(`/artists/${match.params.id}`).then((res) => {
+      console.log(res);
       SetArtistData(res);
     });
   };
@@ -55,7 +56,7 @@ export default function ArtistSongs({ match }) {
                     <img
                       className={classes.img}
                       alt="complex"
-                      src={artistData[0].cover_img}
+                      src={artistData.artist_img}
                     />
                   </ButtonBase>
                 </Grid>
@@ -63,13 +64,13 @@ export default function ArtistSongs({ match }) {
                   <Grid item xs con ntainer direction="column" spacing={2}>
                     <Grid item xs>
                       <Typography gutterBottom variant="subtitle1">
-                        {artistData[0].album_name}
+                        {artistData.album_name}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
-                        {artistData[0].artist_name}
+                        {artistData.artist_name}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
-                        {artistData.length} songs
+                        {artistData.Songs.length} songs
                       </Typography>
                     </Grid>
                     <Grid item>
@@ -86,7 +87,7 @@ export default function ArtistSongs({ match }) {
             
             </Paper>
             <div className={classes.paper}>
-              {artistData.map((song, index) => {
+              {artistData.Songs.map((song, index) => {
                return <SongsList type="Artist" index={index} song={song} />;
               })}
             </div>

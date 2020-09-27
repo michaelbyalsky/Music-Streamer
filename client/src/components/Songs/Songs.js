@@ -10,6 +10,7 @@ export default function Songs() {
   useEffect(() => {
     read('songs/all')
     .then(result => {
+      console.log(result);
       setSongsData(result)
     })
   }, []);

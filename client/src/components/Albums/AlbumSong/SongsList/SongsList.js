@@ -27,21 +27,21 @@ export default function SongsList({song, index, type}) {
       <List dense className={classes.root}>
           <ListItem button>
             {type === 'Album' &&
-              <Link to={`/songs/${song.song_id}?${type}=${song.album_id}`}>
+              <Link to={`/songs/${song.id}?${type}=${song.album_id}`}>
             <IconButton>
               <PlayCircleOutlineIcon/>
             </IconButton>
             </Link>
             }
             {type === 'Artist' &&
-              <Link to={`/songs/${song.song_id}?${type}=${song.artist_id}`}>
+              <Link to={`/songs/${song.id}?${type}=${song.artist_id}`}>
             <IconButton>
               <PlayCircleOutlineIcon/>
             </IconButton>
             </Link>
             }
             {type === 'Playlist' &&
-              <Link to={`/songs/${song.song_id}?${type}=${song.playlist_id}`}>
+              <Link to={`/songs/${song.id}?${type}=${song.playlist_id}`}>
             <IconButton>
               <PlayCircleOutlineIcon/>
             </IconButton>

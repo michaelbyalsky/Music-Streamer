@@ -35,7 +35,7 @@ return (
                     margin="dense"
                     id="name"
                     label="Artist Name"
-                    name="artist_name"
+                    name="name"
                     type="text"
                     fullWidth
                   />

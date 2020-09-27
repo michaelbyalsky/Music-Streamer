@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Song, {
         foreignKey: 'artist_id',
       });
+      this.hasMany(models.Interactions_Artists , {
+        foreignKey: 'artist_id',
+      })
     }
   };
   Artist.init({

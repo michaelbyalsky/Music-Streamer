@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     display: "block",
     width: "auto",
-    height: "auto",
+    height: "250px",
   },
 }));
 
@@ -70,7 +70,7 @@ export default function AlbumSongs({ match }) {
                         {albumData.artist_name}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
-                        {albumData.length} songs
+                        {albumData.Songs.length} songs
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
                         <span>{albumData.createdAt.slice(0, 4)}</span>
@@ -89,7 +89,7 @@ export default function AlbumSongs({ match }) {
               </Grid>
             </Paper>
             <div className={classes.paper}>
-              {albumData.Artist.Songs.map((song, index) => {
+              {albumData.Songs.map((song, index) => {
                return <SongsList key={song.title} type="Album" index={index} song={song} />;
               })}
             </div>

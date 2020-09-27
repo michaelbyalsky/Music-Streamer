@@ -110,17 +110,17 @@ export default function SingleSong({ match }) {
     }
     read(url).then((res) => {
       console.log(res);
-      setRelatedData(res);
+      setRelatedData(res.Songs);
     });
   };
 
   const onSongLike = (song) => {
-    song.is_liked = song.is_liked === null ? true : !song.is_liked;
+    song.is_like = song.is_like === null ? true : !song.is_like;
     setSongData(song);
     let body = {
       user_id: localStorage.getItem("id"),
       song_id: song.song_id,
-      is_liked: song.is_liked,
+      is_like: song.is_like,
     };
     create(`/interactions/addinteraction`, body).then((response) => {
       console.log(response);
@@ -203,7 +203,7 @@ export default function SingleSong({ match }) {
                     onClick={() => onSongLike(songData)}
                   >
                     <FavoriteIcon
-                      color={songData.is_liked ? "error" : "action"}
+                      color={songData.is_like ? "error" : "action"}
                     />
                   </IconButton>
                   <IconButton onClick={() => setOpenPlaylist(true)}>
@@ -231,7 +231,7 @@ export default function SingleSong({ match }) {
             </div>
             {relatedData && (
               <div className={classes.singleSongList}>
-                {relatedData.Artist.Songs.map((data, index) => {
+                {relatedData.map((data, index) => {
                   return (
                     <div key={index}>
                       <SingleSongLists

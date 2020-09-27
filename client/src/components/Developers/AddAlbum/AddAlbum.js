@@ -58,13 +58,13 @@ export default function AddArtist({
                 id="selectArtist"
                 placeholder="Artist"
                 inputRef={addAlbum({ required: true })}
-                name="artist_id"
+                name="id"
               >
                 <option aria-label="None"></option>
                 {artistsData.map((artist, index) => {
                   return (
-                    <option key={index} value={artist.artist_id}>
-                      {artist.artist_name}
+                    <option key={index} value={artist.id}>
+                      {artist.name}
                     </option>
                   );
                 })}

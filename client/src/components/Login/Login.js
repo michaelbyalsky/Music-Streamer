@@ -12,8 +12,9 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import { create } from "../../helpers/ajax";
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import AuthApi from '../../helpers/context'
+import Cookies from 'js-cookie'
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -62,16 +63,16 @@ function Login() {
   // const [redirect, setRedirect] = useState(false)
   
   useEffect(() => {
-    let rememberMeValue = localStorage.getItem("rememberMe");
-    if (rememberMeValue){
+    let rememberMeValue = Cookies.get("rememberMe");
+    let token = Cookies.get("token")
+    if (rememberMeValue && token){
       setLoggedIn(true)
-      // setUserName(name)
+      setUserName(Cookies.get("name"))
       history.push("/home")
     }
   }, []);
   
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const login = (e) => {
     let body = {
       email: user,
       password: password,
@@ -82,6 +83,7 @@ function Login() {
         let id = res.user_id;
         let name = res.user_name
         if(rememberMe) {
+          Cookies.set('rememberMe', true)
           setUserName(name)
       } else {
         setUserName(name)
@@ -110,7 +112,7 @@ function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={handleFormSubmit}>
+        <form className={classes.form} onSubmit={e => e.preventDefault() && false }>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="User">User</InputLabel>
             <Input
@@ -147,12 +149,12 @@ function Login() {
             fullWidth
             variant="contained"
             color="primary"
-            // onClick={login}
+            onClick={login}
             className={classes.submit}
           >
             Sign in
           </Button>
-          {/* <Button
+          <Button
 						type="submit"
 						fullWidth
 						variant="contained"
@@ -161,7 +163,7 @@ function Login() {
 						to="/register"
 						className={classes.submit}>
 						Register
-          			</Button> */}
+          			</Button>
         </form>
       </Paper>
     </main>

@@ -15,6 +15,8 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import clsx from "clsx";
 import "./SideBar.css";
 import HomeIcon from '@material-ui/icons/Home';
+import StarsIcon from '@material-ui/icons/Stars';
+
 
 const drawerWidth = "auto";
 
@@ -119,6 +121,13 @@ export default function SideBar() {
           <ListItem>
             <IconButton aria-label="Playlists">
               <QueueMusicIcon />
+            </IconButton>
+          </ListItem>
+        </Link>
+        <Link to={`/Defaults`}>
+          <ListItem>
+            <IconButton aria-label="Defaults">
+              <StarsIcon />
             </IconButton>
           </ListItem>
         </Link>

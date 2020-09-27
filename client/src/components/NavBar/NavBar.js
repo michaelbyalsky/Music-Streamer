@@ -21,6 +21,7 @@ import { Link, useLocation, useHistory, useParams } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Cookies from 'js-cookie'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -111,7 +112,8 @@ export default function NavBar(props) {
   };
 
   const onLogout = () => {
-    localStorage.clear();
+    Cookies.remove('token');
+    Cookies.remove('rememberMe');
     history.push("/")
     window.location.reload();
     };

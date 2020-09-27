@@ -19,6 +19,7 @@ import './Song.css'
 import { create } from '../../helpers/ajax'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import AddToPlayList from './AddToPlaylist'
+import Cookies from 'js-cookie'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,16 +55,17 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
   const onSongLike = (song) => {
     let copyData = Array.from(songsData)
     copyData.forEach(data => {
-      if (data.unique_id === song.unique_id) {
-        data.is_liked = song.is_liked === null ? true : !song.is_liked
+      if (data.id === song.id) {
+        data.Interactions[0].is_like = song.Interactions[0].is_like === null ? true : !song.Interactions[0].is_like
       }
     })
     setSongsData(copyData)
     let body = {
-      user_id: localStorage.getItem("id"),
-      song_id: song.unique_id,
-      is_liked: song.is_liked === null ? true : !song.is_liked
+      user_id: Cookies.get("id"),
+      song_id: song.id,
+      is_like: song.Interactions[0].is_like === null ? true : !song.Interactions[0].is_like
     }
+    console.log(body);
     create(`/interactions/addinteraction`, body)
     .then(response => {
       console.log(response);
@@ -78,6 +80,7 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
   const handleClose = () => {
     setOpenPlaylist(false);
   };
+
 
 
   return (
@@ -102,8 +105,13 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
       </div>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={() => onSongLike(songData)}>
-          <FavoriteIcon color={songData.is_liked ? "error" : "action"} />
-        </IconButton>
+          {songData.Interactions[0] &&
+          <FavoriteIcon color={songData.Interactions[0].is_like ? "error" : "action"} />
+          }
+          {!songData.Interactions[0] &&
+          <FavoriteIcon color="action" />
+          }
+          </IconButton>
         <IconButton onClick={() => setOpenPlaylist(true)}>
           <PlaylistAddIcon />
         </IconButton>

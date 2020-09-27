@@ -3,13 +3,14 @@ import './NotFound.css'
 import { Link } from 'react-router-dom'
 import AuthApi from '../../helpers/context'
 import { useHistory } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 export default function NotFound() {
 	const { loggedInValue } = React.useContext(AuthApi)
 	const  [loggedIn, setLoggedIn] = loggedInValue 
 	const history = useHistory()
 	const handleClick = () => {
-		let loggedIn = localStorage.getItem('loggedIn')
+		let loggedIn = Cookies.get('token')
 		if (loggedIn) {
 			setLoggedIn(true)
 			history.push('/home')

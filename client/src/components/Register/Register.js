@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Typography, Paper, Avatar, Button, FormControl, Input, InputLabel } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Link, withRouter } from 'react-router-dom'
-import firebase from '../../helpers/firebase'
+import { Link, useHistory } from 'react-router-dom'
+import { read, create} from '../../helpers/ajax'
+
 const styles = theme => ({
 	main: {
 		width: 'auto',
@@ -42,7 +43,22 @@ function Register(props) {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [quote, setQuote] = useState('')
+	const [birthDate, setBirthDate] = useState('')
+	const history = useHistory()
+
+	const onRegister = (e) => {
+		let body = {
+			name: name,
+			email: email,
+			birthDate: birthDate, 
+			password: password,
+		}
+		create('/users/register', body)
+		.then(res => {
+			console.log(res);
+			history.push('/')
+		})
+	}
 
 	return (
 		<main className={classes.main}>
@@ -67,8 +83,8 @@ function Register(props) {
 						<Input name="password" type="password" id="password" autoComplete="off" value={password} onChange={e => setPassword(e.target.value)}  />
 					</FormControl>
 					<FormControl margin="normal" required fullWidth>
-						<InputLabel htmlFor="quote">Your Favorite Quote</InputLabel>
-						<Input name="quote" type="text" id="quote" autoComplete="off" value={quote} onChange={e => setQuote(e.target.value)}  />
+						<InputLabel shrink htmlFor="birthDate">Birth Date</InputLabel>
+						<Input name="birthDate" type="date" id="birthDate" autoComplete="off" value={birthDate} onChange={e => setBirthDate(e.target.value)}  />
 					</FormControl>
 
 					<Button
@@ -87,7 +103,7 @@ function Register(props) {
 						variant="contained"
 						color="secondary"
 						component={Link}
-						to="/login"
+						to="/"
 						className={classes.submit}>
 						Go back to Login
           			</Button>
@@ -96,15 +112,6 @@ function Register(props) {
 		</main>
 	)
 
-	async function onRegister() {
-		try {
-			await firebase.register(name, email, password)
-			await firebase.addQuote(quote)
-			props.history.replace('/dashboard')
-		} catch(error) {
-			alert(error.message)
-		}
-	}
 }
 
-export default withRouter(withStyles(styles)(Register))
+export default (withStyles(styles)(Register))

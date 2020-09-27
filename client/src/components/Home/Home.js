@@ -8,8 +8,11 @@ import "react-multi-carousel/lib/styles.css";
 import Album from '../Albums/Album/Album'
 import Artist from '../Artists/Artist/Artist'
 import Playlist from '../Playlists/playlist'
+import { useHistory } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 export default function Home() {
+  const history = useHistory()
   const [songsData, setSongsData] = useState(null);
   const [albumsData, setAlbumsData] = useState(null);
   const [artistsData, setArtistsData] = useState(null);
@@ -23,6 +26,16 @@ export default function Home() {
     },
   };
 
+  const checkValidation = () => {
+    const token = Cookies.get('token')
+    console.log(token);
+    if(!token) {
+      console.log('hello');
+      history.push('./')
+    }
+    return  
+  }
+
   const getSongs = () => {
     read('songs/all')
     .then(result => {
@@ -33,8 +46,9 @@ export default function Home() {
   const getAlbums = () => {
     read('albums/all')
     .then(result => {
+      console.log(result);
       setAlbumsData(result)
-    }) 
+    })  
   }
 
   const getArtists = () => {
@@ -52,6 +66,7 @@ export default function Home() {
   }
 
   useEffect(() => {
+    checkValidation();
     getAlbums();
     getSongs();
     getArtists();
@@ -82,7 +97,7 @@ export default function Home() {
         {albumsData &&
         <Carousel responsive={responsive}>
           {albumsData.map((albumData) => {
-              return <div><Album albumData={albumData} /></div>;
+              return <div><Album albumsData={albumsData} setAlbumsData={setAlbumsData} albumData={albumData} /></div>;
             })}
             </Carousel>
          }

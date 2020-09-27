@@ -60,7 +60,7 @@ export default function Artist({ artistData }) {
         {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton> */}
-        <Link to={`/Artists/${artistData.artist_id}`}>
+        <Link to={`/Artists/${artistData.id}`}>
         <IconButton>
           <QueueMusicIcon/>
         </IconButton>

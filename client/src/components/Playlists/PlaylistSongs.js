@@ -88,7 +88,7 @@ export default function AlbumSongs({ match, history }) {
               </Grid>
             </Paper>
             <div className={classes.paper}>
-              {playlistData.map((song, index) => {
+              {playlistData.Songs.map((song, index) => {
                 return <SongsList type="Playlist" index={index} song={song} />;
               })}
             </div>

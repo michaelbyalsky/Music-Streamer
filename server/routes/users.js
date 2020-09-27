@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 
 usersRouter.post("/validation", async (req, res, next) => {
+  console.log(req.body);
   try {
     const validation = loginValidation(req.body);
-    console.log(validation);
     if (validation.error) {
       return res.status(400).send(validation.error.details[0].message);
     }
@@ -20,7 +20,6 @@ usersRouter.post("/validation", async (req, res, next) => {
     if (count === 0) {
       res.status(400).send("email not exists");
     }
-    console.log(req.body.email);
     const result = await User.findOne({
       attributes: ["id", "name", "email", "user_password"],
       where: {
@@ -29,7 +28,6 @@ usersRouter.post("/validation", async (req, res, next) => {
       raw: true,
       nest: true,
     });
-    console.log(result);
     const validPass = await bcrypt.compare(
       req.body.password,
       result.user_password
@@ -41,11 +39,11 @@ usersRouter.post("/validation", async (req, res, next) => {
       res.cookie('token', token)
       res.cookie('name', result.name)
       res.cookie('id', result.id)
-      res.send({success: true});
+      res.header('Authorization', token).send(token);
     }
   } catch (err) {
     console.log(err);
-    res.status(400).send(err);
+    res.status(400).json(err);
   }
 });
 
@@ -60,7 +58,6 @@ usersRouter.post("/register", async (req, res, next) => {
         email: req.body.email,
       },
     });
-    console.log(count);
     if (count !== 0) {
       return res.status(400).send("email already exists");
     }
@@ -74,7 +71,7 @@ usersRouter.post("/register", async (req, res, next) => {
       user_password: hashedPassword,
     });
     console.log(register);
-    res.status(201).send("success");
+    res.status(201).send({message: "success"});
   } catch (err) {
     res.status(400).send(err);
   }

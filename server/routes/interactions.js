@@ -1,38 +1,45 @@
-const express = require('express')
-const interactionsRouter = express.Router()
-const { Artist, Album, Song } = require('../models'); 
-const { Op } = require('sequelize');
-const interaction = require('../models/interaction');
+const express = require("express");
+const interactionsRouter = express.Router();
+const { Artist, Album, Song, Interaction } = require("../models");
+const { Op } = require("sequelize");
+const interaction = require("../models/interaction");
 
 //create or updates interactions using stored procedure
 interactionsRouter.post("/addinteraction", async (req, res, next) => {
+  console.log(req.body);
   try {
-    await Interactions.count({
-         where: {
-           id: req.body.user_id,
-           song_id: req.body.song_id
-         }
-       }).then(count => {
-        if(count === 1) {
-          Interactions.findOne({
-            where: {
-              id: req.body.user_id,
-              'song_id': req.body.song_id
-            }
-          }).then(res => {
-            const updated = res.play_count + 1
-            interaction.update({
-              play_count: updated
-            }).then(res => {
-              res.send
-            })
-          })
-        }
-       })
-  } catch(err){
-    res.status(400).send("bad")
-  }  
+    const count = await Interaction.count({
+      where: {
+        user_id: req.body.user_id,
+        song_id: req.body.song_id,
+      },
+    });
+    console.log(count);
+    if (count !== 0) {
+      const result = await Interaction.findOne({
+        where: {
+          user_id: req.body.user_id,
+          song_id: req.body.song_id,
+        },
+        raw: true
+      });
+      const updatedInteraction = await Interaction.update(
+        {play_count: result.play_count + 1},
+          {where: {
+            user_id: req.body.user_id,
+            song_id: req.body.song_id
+          }},
+      );
+      res.send(updatedInteraction);
+    } else {
+      console.log(req.body);
+      const newInteraction = await Interaction.create(req.body);
+      res.send(newInteraction);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("bad");
+  }
+});
 
-  });
-  
-    module.exports = interactionsRouter
+module.exports = interactionsRouter;
