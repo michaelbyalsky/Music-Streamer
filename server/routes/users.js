@@ -18,7 +18,7 @@ usersRouter.post("/validation", async (req, res, next) => {
       },
     });
     if (count === 0) {
-      res.status(400).send("email not exists");
+      res.status(400).send({message : "email not exists"});
     }
     const result = await User.findOne({
       attributes: ["id", "name", "email", "user_password"],
@@ -33,13 +33,14 @@ usersRouter.post("/validation", async (req, res, next) => {
       result.user_password
     );
     if (!validPass) {
-      return res.status(400).send("invalidPassword");
+      return res.status(400).send({message : "invalidPassword"});
     } else {
       const token = jwt.sign({ id: result.id, name: result.name }, process.env.TOKEN_SECRET);
+      console.log(token);
       res.cookie('token', token)
       res.cookie('name', result.name)
       res.cookie('id', result.id)
-      res.header('Authorization', token).send(token);
+      res.header('Authorization', token);
     }
   } catch (err) {
     console.log(err);

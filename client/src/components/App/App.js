@@ -59,7 +59,7 @@ import Defaults from '../Defaults/Defaults'
   }
     {loggedIn ? 
     <Switch>
-    <Route exact path="/Home" component={Home} />
+    <Route exact path="/" component={Home} />
     <Route path="/Songs" exact component={Songs} />
     <Route path="/Register" exact component={Register} />
     <Route path="/Artists" exact component={Artists} />

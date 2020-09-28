@@ -89,7 +89,7 @@ export default function SideBar() {
       }}
     >
       <List>
-        <NavLink to={`/Home`} activeStyle={{backgroundColor: 'grey'}} >
+        <NavLink to={`/`} activeStyle={{backgroundColor: 'grey'}} >
           <ListItem>
             <IconButton aria-label="Home">
               <HomeIcon />

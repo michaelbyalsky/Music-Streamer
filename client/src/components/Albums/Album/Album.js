@@ -43,23 +43,26 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
+  console.log(albumData);
+
   const onAlbumLike = (album) => {
     console.log(albumsData);
-    let copyData = Array.from(albumsData)
-    copyData.forEach(data => {
-      if (data.id === album.id) {
-        console.log(data);
-        console.log(album);
-        data.Interactions_Albums[0].is_like = album.Interactions_Albums[0] === undefined ? true : !album.Interactions_Albums[0].is_like
-      }
-    })
-    setAlbumsData(copyData)
+    // let copyData = Array.from(albumsData)
+    // copyData.forEach(data => {
+    //   if (data.id === album.id) {
+    //     console.log(data);
+    //     console.log(album);
+    //     data.Interactions_Albums.is_like = album.Interactions_Albums === undefined ? true : !album.Interactions_Albums[0].is_like
+    //   }
+    // })
+    // setAlbumsData(copyData)
     let body = {
       user_id: Cookies.get("id"),
       album_id: album.id,
-      is_like: album.Interactions_Albums[0].is_like === null ? true : !album.Interactions_Albums[0].is_like
+      is_like: album.Interactions_Albums === [] ? true : !album.Interactions_Albums.is_like
     }
-    create(`/albums/Interactions_Albums`, body)
+    console.log(body);
+    create(`/albums/interaction`, body)
     .then(response => {
       console.log(response);
     }) 
@@ -84,16 +87,16 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
         title={albumData.album_name}
       />
       <CardActions disableSpacing>
-      <IconButton aria-label="add to favorites" onClick={() => onAlbumLike(albumData)}>
-      {albumData.Interactions_Albums[0] &&
-          <FavoriteIcon color={albumData.Interactions_Albums[0].is_like ? "error" : "action"} />
+      {/* <IconButton aria-label="add to favorites" onClick={() => onAlbumLike(albumData)}>
+      {albumData.Interactions_Albums &&
+          <FavoriteIcon color={albumData.Interactions_Albums.is_like ? "error" : "action"} />
           }
-          {!albumData.Interactions_Albums[0] &&
+          {!albumData.Interactions_Albums &&
           <FavoriteIcon color="action" />
           }
-        </IconButton>
+        </IconButton> */}
         <Link to={`/Albums/${albumData.id}`}>
-        <IconButton>
+        <IconButton onClick={() => onAlbumLike(albumData)} >
           <QueueMusicIcon/>
         </IconButton>
         </Link>

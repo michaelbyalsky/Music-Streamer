@@ -43,6 +43,29 @@ songsRouter.get(`/:id`, async (req, res) => {
   }
 });
 
+songsRouter.get(`/top/:id`, async (req, res) => {
+  try {
+    const result = await Song.findAll({
+      include: {
+        model: Artist,
+        include: {
+          model: Album,
+        },
+      },
+      include: {
+        model: Interaction,
+        where: {
+          user_id: req.params.id
+        }
+      }
+    });
+    console.log(result);
+    res.json(result);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 songsRouter.post("/addsong", async (req, res) => {
   try {
     const result = await Song.create(req.body);

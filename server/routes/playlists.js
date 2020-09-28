@@ -13,6 +13,27 @@ playlistsRouter.get("/top_playlist", async (req, res) => {
   }
 });
 
+playlistsRouter.get(`/top/:id`, async (req, res, next) => {
+  const result = await Playlist.findAll({
+    attributes: [
+      "id",
+      "artist_id",
+      "name",
+      "cover_img",
+      "createdAt",
+      "updatedAt",
+    ],
+    include: {
+      model: Interactions_Playlists,
+      where: {
+        user_id: req.params.id,
+      },
+    }
+  });
+  console.log(result);
+  res.send(result);
+});
+
 playlistsRouter.get(`/:id`, async (req, res) => {
   try {
     const result = await Playlist.findOne({

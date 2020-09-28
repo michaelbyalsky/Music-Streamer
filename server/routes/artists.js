@@ -51,12 +51,38 @@ artistsRouter.get("/all", async (req, res, next) => {
   }
 });
 
+artistsRouter.get(`/top/:id`, async (req, res, next) => {
+  const result = await Artist.findAll({
+    limit: 20,
+    include: {
+      model: Song,
+      attributes: [
+        "id",
+        "title",
+        "artist_id",
+        "youtube_link",
+        "album_id",
+        "length",
+        "track_number",
+        "lyrics",
+        "createdAt",
+        "updatedAt",
+      ],
+    },
+    include: {
+      model: Interactions_Artists,
+      where: {
+        user_id: req.params.id,
+      },
+    }
+  });
+  console.log(result);
+  res.send(result);
+});
+
 artistsRouter.get(`/:id`, async (req, res, next) => {
   const result = await Artist.findOne({
     attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
-    where: {
-      id: req.params.id,
-    },
     include: {
       model: Song,
       attributes: [

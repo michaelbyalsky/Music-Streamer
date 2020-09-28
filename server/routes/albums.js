@@ -27,8 +27,8 @@ albumsRouter.get("/all", async (req, res, next) => {
           attributes: ["name", "artist_img", "createdAt", "updatedAt"],
         },
         include: {
-          model: Interactions_Albums
-        }
+          model: Interactions_Albums,
+        },
       });
       res.json(result);
     } else {
@@ -46,8 +46,8 @@ albumsRouter.get("/all", async (req, res, next) => {
           attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
         },
         include: {
-          model: Interactions_Albums
-        }
+          model: Interactions_Albums,
+        },
       });
       res.json(result);
     }
@@ -57,14 +57,13 @@ albumsRouter.get("/all", async (req, res, next) => {
   }
 });
 
-albumsRouter
-.post('/interaction', async (req, res) => {
+albumsRouter.post("/interaction", async (req, res) => {
   console.log(req.body);
   try {
     const count = await Interactions_Albums.count({
       where: {
         user_id: req.body.user_id,
-        album_id: req.body.song_id,
+        album_id: req.body.album_id,
       },
     });
     console.log(count);
@@ -72,19 +71,22 @@ albumsRouter
       const result = await Interactions_Albums.findOne({
         where: {
           user_id: req.body.user_id,
-          album_id: req.body.song_id,
+          album_id: req.body.album_id,
         },
-        raw: true
+        raw: true,
       });
       const updatedInteraction = await Interactions_Albums.update(
-        {play_count: result.play_count + 1},
-          {where: {
+        { play_count: result.play_count + 1 },
+        {
+          where: {
             user_id: req.body.user_id,
-            album_id: req.body.song_id
-          }},
+            album_id: req.body.album_id,
+          },
+        }
       );
-      res.send(updatedInteraction);
+      console.log(updatedInteraction);
     } else {
+      console.log("here");
       console.log(req.body);
       const newInteraction = await Interactions_Albums.create(req.body);
       res.send(newInteraction);
@@ -93,7 +95,7 @@ albumsRouter
     console.log(err);
     res.status(400).send("bad");
   }
-})
+});
 
 albumsRouter.get(`/:id`, async (req, res, next) => {
   const result = await Album.findOne({
@@ -125,6 +127,46 @@ albumsRouter.get(`/:id`, async (req, res, next) => {
       include: {
         model: Artist,
         attributes: ["id", "name", "artist_img"],
+      },
+    },
+  });
+  console.log(result);
+  res.send(result);
+});
+
+albumsRouter.get(`/top/:id`, async (req, res, next) => {
+  const result = await Album.findAll({
+    attributes: [
+      "id",
+      "artist_id",
+      "name",
+      "cover_img",
+      "createdAt",
+      "updatedAt",
+    ],
+    include: {
+      model: Song,
+      attributes: [
+        "id",
+        "title",
+        "artist_id",
+        "youtube_link",
+        "album_id",
+        "length",
+        "track_number",
+        "lyrics",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: {
+        model: Artist,
+        attributes: ["id", "name", "artist_img"],
+      },
+    },
+    include: {
+      model: Interactions_Albums,
+      where: {
+        user_id: req.params.id,
       },
     },
   });
