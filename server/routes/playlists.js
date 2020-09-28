@@ -5,7 +5,9 @@ const { Playlist, Song, Artist, Album, List_of_songs, Interactions_Playlists } =
 playlistsRouter.get("/top_playlist", async (req, res) => {
   try {
     const result = await Playlist.findAll({
-      limit: 20,
+      include: {
+        model: Interactions_Playlists,
+      }
     });
     res.send(result);
   } catch (err) {
@@ -15,14 +17,6 @@ playlistsRouter.get("/top_playlist", async (req, res) => {
 
 playlistsRouter.get(`/top/:id`, async (req, res, next) => {
   const result = await Playlist.findAll({
-    attributes: [
-      "id",
-      "artist_id",
-      "name",
-      "cover_img",
-      "createdAt",
-      "updatedAt",
-    ],
     include: {
       model: Interactions_Playlists,
       where: {
@@ -64,7 +58,7 @@ playlistsRouter
     const count = await Interactions_Playlists.count({
       where: {
         user_id: req.body.user_id,
-        album_id: req.body.song_id,
+        playlist_id: req.body.playlist_id,
       },
     });
     console.log(count);
@@ -72,7 +66,7 @@ playlistsRouter
       const result = await Interactions_Playlists.findOne({
         where: {
           user_id: req.body.user_id,
-          album_id: req.body.song_id,
+          playlist_id: req.body.playlist_id,
         },
         raw: true
       });
@@ -80,7 +74,7 @@ playlistsRouter
         {play_count: result.play_count + 1},
           {where: {
             user_id: req.body.user_id,
-            album_id: req.body.song_id
+            playlist_id: req.body.playlist_id
           }},
       );
       res.send(updatedInteraction);

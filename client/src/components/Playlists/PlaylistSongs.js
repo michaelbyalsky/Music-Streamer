@@ -55,7 +55,7 @@ export default function AlbumSongs({ match, history }) {
                     <img
                       className={classes.img}
                       alt="complex"
-                      src={playlistData[0].cover_img}
+                      src={playlistData.cover_img}
                     />
                   </ButtonBase>
                 </Grid>
@@ -63,16 +63,13 @@ export default function AlbumSongs({ match, history }) {
                   <Grid item container direction="column" spacing={2}>
                     <Grid item>
                       <Typography gutterBottom variant="subtitle1">
-                        {playlistData[0].album_name}
-                      </Typography>
-                      <Typography variant="body2" gutterBottom>
-                        {playlistData[0].artist_name}
+                        {playlistData.name}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
                         {playlistData.length} songs
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        <span>{playlistData[0].created_at.slice(0, 4)}</span>
+                        <span>{playlistData.createdAt.slice(0, 4)}</span>
                       </Typography>
                     </Grid>
                     <Grid item>

@@ -11,7 +11,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom'
 import CardMedia from '@material-ui/core/CardMedia';
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
-
+import { create } from '../../helpers/ajax'
+import Cookies from 'js-cookie'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,13 +37,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Album({ playlistData }) {
+export default function Playlist({ playlistData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const onPlaylistLike = (playlist) => {
+    // let copyData = Array.from(albumsData)
+    // copyData.forEach(data => {
+    //   if (data.id === album.id) {
+    //     console.log(data);
+    //     console.log(album);
+    //     data.Interactions_Albums.is_like = album.Interactions_Albums === undefined ? true : !album.Interactions_Albums[0].is_like
+    //   }
+    // })
+    // setAlbumsData(copyData)
+    let body = {
+      user_id: Cookies.get("id"),
+      playlist_id: Playlist.id,
+      is_like: playlist.Interactions_Playlists === [] ? true : !playlist.Interactions_Playlists.is_like
+    }
+    console.log(body);
+    create(`/playlists/interaction`, body)
+    .then(response => {
+      console.log(response);
+    }) 
+  }
+
 
   return (
     <Card className={classes.root}>
@@ -65,8 +89,10 @@ export default function Album({ playlistData }) {
         {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton> */}
-        <Link to={`/playlists/${playlistData.playlist_id}`}>
-        <IconButton><PlaylistPlayIcon/></IconButton>
+        <Link to={`/playlists/${playlistData.id}`}>
+        <IconButton onClick={() => onPlaylistLike(playlistData)}>
+          <PlaylistPlayIcon/>
+        </IconButton>
         </Link>
       </CardActions>
     </Card>
