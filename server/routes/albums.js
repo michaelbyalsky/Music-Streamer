@@ -7,7 +7,6 @@ const Op = Sequelize.Op;
 albumsRouter.get("/all", async (req, res, next) => {
   try {
     if (req.query.searchText) {
-      console.log("intro");
       const result = await Album.findAll({
         attributes: [
           "id",
@@ -45,9 +44,9 @@ albumsRouter.get("/all", async (req, res, next) => {
           model: Artist,
           attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
         },
-        include: {
-          model: Interactions_Albums,
-        },
+        // include: {
+        //   model: Interactions_Albums,
+        // },
       });
       res.json(result);
     }
@@ -58,7 +57,6 @@ albumsRouter.get("/all", async (req, res, next) => {
 });
 
 albumsRouter.post("/interaction", async (req, res) => {
-  console.log(req.body);
   try {
     const count = await Interactions_Albums.count({
       where: {
@@ -66,7 +64,6 @@ albumsRouter.post("/interaction", async (req, res) => {
         album_id: req.body.album_id,
       },
     });
-    console.log(count);
     if (count !== 0) {
       const result = await Interactions_Albums.findOne({
         where: {
@@ -84,10 +81,7 @@ albumsRouter.post("/interaction", async (req, res) => {
           },
         }
       );
-      console.log(updatedInteraction);
     } else {
-      console.log("here");
-      console.log(req.body);
       const newInteraction = await Interactions_Albums.create(req.body);
       res.send(newInteraction);
     }
@@ -130,7 +124,6 @@ albumsRouter.get(`/:id`, async (req, res, next) => {
       },
     },
   });
-  console.log(result);
   res.send(result);
 });
 
@@ -170,13 +163,11 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
       },
     },
   });
-  console.log(result);
   res.send(result);
 });
 
 albumsRouter.post("/addalbum", async (req, res, next) => {
   try {
-    console.log(req.body);
     const result = await Album.create(req.body);
     res.send(result);
   } catch (err) {
@@ -186,7 +177,6 @@ albumsRouter.post("/addalbum", async (req, res, next) => {
 
 albumsRouter.put("/album", async (req, res, next) => {
   try {
-    console.log(req.body);
     const result = await Album.create(req.body);
     res.send(result);
   } catch (err) {

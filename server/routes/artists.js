@@ -7,7 +7,6 @@ const { Op } = require("sequelize");
 artistsRouter.get("/all", async (req, res, next) => {
   try {
     if (req.query.searchText) {
-      console.log("intro");
       const result = await Artist.findAll({
         attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
         where: {
@@ -76,7 +75,6 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
       },
     }
   });
-  console.log(result);
   res.send(result);
 });
 
@@ -99,13 +97,11 @@ artistsRouter.get(`/:id`, async (req, res, next) => {
       ],
     },
   });
-  console.log(result);
   res.send(result);
 });
 
 artistsRouter
 .post('/interaction', async (req, res) => {
-  console.log(req.body);
   try {
     const count = await Interactions_Artists.count({
       where: {
@@ -113,7 +109,6 @@ artistsRouter
         album_id: req.body.song_id,
       },
     });
-    console.log(count);
     if (count !== 0) {
       const result = await Interactions_Artists.findOne({
         where: {
@@ -131,7 +126,6 @@ artistsRouter
       );
       res.send(updatedInteraction);
     } else {
-      console.log(req.body);
       const newInteraction = await Interactions_Artists.create(req.body);
       res.send(newInteraction);
     }
@@ -143,7 +137,6 @@ artistsRouter
 
 artistsRouter.post("/", async (req, res, next) => {
   try {
-    console.log(req.body);
     const result = await Artist.create(req.body);
     res.send(result);
   } catch (err) {

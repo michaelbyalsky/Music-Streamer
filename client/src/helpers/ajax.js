@@ -11,7 +11,7 @@ function create(endpoint, data) {
 // function update(endpoint, updates) {
 //     return network(endpoint, {
 //         method: 'PUT',
-//         bode: updates
+//         body: updates
 //     })
 // }
 

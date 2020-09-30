@@ -23,7 +23,7 @@ module.exports = {
     await queryInterface.renameColumn("users","createdAt","created_at")
     await queryInterface.renameColumn("users","updatedAt","updated_at")
     await queryInterface.renameColumn("list_of_songs","updatedAt","updated_at")
-    await queryInterface.renameColumn("list_of_songs","updatedAt","updated_at")
+    await queryInterface.renameColumn("list_of_songs","createdAt","created_at")
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -48,6 +48,6 @@ module.exports = {
     await queryInterface.renameColumn("users","created_at","createdAt")
     await queryInterface.renameColumn("users","updated_at","updatedAt")
     await queryInterface.renameColumn("list_of_songs","updated_at","updatedAt")
-    await queryInterface.renameColumn("list_of_songs","updated_at","updatedAt")
+    await queryInterface.renameColumn("list_of_songs","created_at","createdAt")
   }
 };

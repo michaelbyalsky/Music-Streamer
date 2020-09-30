@@ -4,11 +4,7 @@ const { Playlist, Song, Artist, Album, List_of_songs, Interactions_Playlists } =
 
 playlistsRouter.get("/top_playlist", async (req, res) => {
   try {
-    const result = await Playlist.findAll({
-      include: {
-        model: Interactions_Playlists,
-      }
-    });
+    const result = await Playlist.findAll();
     res.send(result);
   } catch (err) {
     console.log(err);

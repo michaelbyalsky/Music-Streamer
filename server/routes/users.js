@@ -28,6 +28,7 @@ usersRouter.post("/validation", async (req, res, next) => {
       raw: true,
       nest: true,
     });
+    console.log(result);
     const validPass = await bcrypt.compare(
       req.body.password,
       result.user_password
@@ -40,7 +41,7 @@ usersRouter.post("/validation", async (req, res, next) => {
       res.cookie('token', token)
       res.cookie('name', result.name)
       res.cookie('id', result.id)
-      res.header('Authorization', token);
+      res.header('Authorization', token).json({message: "success"});
     }
   } catch (err) {
     console.log(err);
