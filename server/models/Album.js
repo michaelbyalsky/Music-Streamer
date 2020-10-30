@@ -10,20 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Artist, {
-          foreignKey: 'artist_id'
+          foreignKey: 'artistId'
       })
       this.hasMany(models.Song, {
-          foreignKey: 'album_id'
+          foreignKey: 'albumId'
       })
       this.hasMany(models.InteractionsAlbums , {
-        foreignKey: 'album_id',
+        foreignKey: 'albumId',
       })
     }
   };
   Album.init({
     name: DataTypes.STRING,
-    artist_id: DataTypes.INTEGER,
-    cover_img: DataTypes.TEXT,
+    artistId: DataTypes.INTEGER,
+    coverImg: DataTypes.TEXT,
 
   }, {
     sequelize,

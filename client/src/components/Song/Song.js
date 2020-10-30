@@ -138,7 +138,7 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
     </Card>
     {openPlaylist && (
           <AddToPlayList
-          songId={songData.unique_id}
+          songId={songData.id}
           openPlaylist={openPlaylist}
           handleClose={handleClose}
           setOpenPlaylist={setOpenPlaylist}

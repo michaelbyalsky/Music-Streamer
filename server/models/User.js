@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.Interaction, {
-        foreignKey: 'user_id',
+        foreignKey: 'userId',
         onDelete: 'cascade'
       })
     }
@@ -20,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    birth_date: DataTypes.DATE,
-    user_password: DataTypes.STRING,
+    birthDate: DataTypes.DATE,
+    userPassword: DataTypes.STRING,
     preferences: DataTypes.JSON,
-    remember_token: DataTypes.TINYINT(1)
+    rememberToken: DataTypes.TINYINT(1)
   }, {
     sequelize,
     modelName: 'User',

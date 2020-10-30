@@ -13,25 +13,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Album, {
-        foreignKey: 'album_id',
+        foreignKey: 'albumId',
       });
       this.belongsTo(models.Artist, {
-        foreignKey: 'artist_id',
+        foreignKey: 'artistId',
       });
-      this.hasMany(models.List_of_songs, {
-        foreignKey: 'song_id',
+      this.hasMany(models.ListOfSongs, {
+        foreignKey: 'songId',
       });
       this.hasMany(models.Interaction, {
-        foreignKey: 'song_id',
+        foreignKey: 'songId',
       });
     }
   };
   Song.init({
     title: DataTypes.STRING,
-    album_id: DataTypes.INTEGER,
-    artist_id: DataTypes.INTEGER,
-    youtube_link: DataTypes.STRING,
-    track_number: DataTypes.STRING,
+    albumId: DataTypes.INTEGER,
+    artistId: DataTypes.INTEGER,
+    youtubeLink: DataTypes.STRING,
+    trackNumber: DataTypes.STRING,
     lyrics: DataTypes.STRING,    
   }, {
     sequelize,

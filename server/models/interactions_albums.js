@@ -11,16 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Album, {
-        foreignKey: 'album_id'
+        foreignKey: 'albumId'
       })
     }
   };
   InteractionsAlbums.init({
-    user_id: DataTypes.INTEGER,
-    album_id: DataTypes.INTEGER,
-    artist_id: DataTypes.INTEGER,
-    is_like: DataTypes.BOOLEAN,
-    play_count: DataTypes.INTEGER
+    userId: DataTypes.INTEGER,
+    albumId: DataTypes.INTEGER,
+    artistId: DataTypes.INTEGER,
+    isLike: DataTypes.BOOLEAN,
+    playCount: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'InteractionsAlbums',

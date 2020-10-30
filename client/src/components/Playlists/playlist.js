@@ -58,7 +58,7 @@ export default function Playlist({ playlistData }) {
     let body = {
       user_id: Cookies.get("id"),
       playlist_id: Playlist.id,
-      is_like: playlist.Interactions_Playlists === [] ? true : !playlist.Interactions_Playlists.is_like
+      is_like: playlist.InteractionsPlaylists === [] ? true : !playlist.InteractionsPlaylists.is_like
     }
     console.log(body);
     create(`/api/v1/playlists/interaction`, body)

@@ -50,6 +50,8 @@ export default function AddPlayList({
   });
 
   const onAddPlaylist = (data) => {
+  
+    console.table(data);
     create("/api/v1/playlists/add", data)
       .then((result) => {
         setOpenAddPlaylist(false);
@@ -64,9 +66,14 @@ export default function AddPlayList({
   };
 
   const onAddSong = (data) => {
-    data.song_id = songId;
-    create("/api/v1/Playlists/addsong", data)
+    let body = {
+      playlistId: data.playlistId,
+      songId: songId
+    }
+    console.table(body);
+    create("/api/v1/Playlists/addsong", body)
       .then((result) => {
+        handleClose();
         setOpenPlaylist(false);
       })
       .catch((err) => {
@@ -99,13 +106,13 @@ export default function AddPlayList({
                   id="selectArtist"
                   placeholder="Playlist"
                   inputRef={addToPlaylist({ required: true })}
-                  name="playlist_id"
+                  name="playlistId"
                 >
                   <option aria-label="None"></option>
                   {playlistsData.map((playlist) => {
                     return (
-                      <option value={playlist.playlist_id}>
-                        {playlist.playlist_name}
+                      <option value={playlist.id}>
+                        {playlist.name}
                       </option>
                     );
                   })}

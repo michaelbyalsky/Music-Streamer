@@ -11,18 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.List_of_songs, {
-        foreignKey: 'playlist_id',
+      this.hasMany(models.ListOfSongs, {
+        foreignKey: 'playlistId',
       });
-      this.hasMany(models.Interactions_Playlists , {
-        foreignKey: 'playlist_id',
+      this.hasMany(models.InteractionsPlaylists , {
+        foreignKey: 'playlistId',
       })
     }
   };
 
   Playlist.init({
     name: DataTypes.INTEGER,
-    cover_img: DataTypes.TEXT,  
+    coverImg: DataTypes.TEXT,  
   }, {
     sequelize,
     modelName: 'Playlist',

@@ -1,6 +1,6 @@
 const express = require("express");
 const playlistsRouter = express.Router();
-const { Playlist, Song, Artist, Album, List_of_songs, Interactions_Playlists } = require("../../models");
+const { Playlist, Song, Artist, Album, ListOfSongs, InteractionsPlaylists } = require("../../models");
 
 playlistsRouter.get("/top_playlist", async (req, res) => {
   try {
@@ -14,7 +14,7 @@ playlistsRouter.get("/top_playlist", async (req, res) => {
 playlistsRouter.get(`/top/:id`, async (req, res, next) => {
   const result = await Playlist.findAll({
     include: {
-      model: Interactions_Playlists,
+      model: InteractionsPlaylists,
       where: {
         user_id: req.params.id,
       },
@@ -34,7 +34,7 @@ playlistsRouter.get(`/:id`, async (req, res) => {
       },
       // attributes: ['id', 'name', 'cover_img', 'createdAt', 'updatedAt'],
       include: {
-        model: List_of_songs,
+        model: ListOfSongs,
         include: {
           model: Song,
         },
@@ -51,7 +51,7 @@ playlistsRouter
 .post('/interaction', async (req, res) => {
   console.log(req.body);
   try {
-    const count = await Interactions_Playlists.count({
+    const count = await InteractionsPlaylists.count({
       where: {
         user_id: req.body.user_id,
         playlist_id: req.body.playlist_id,
@@ -59,14 +59,14 @@ playlistsRouter
     });
     console.log(count);
     if (count !== 0) {
-      const result = await Interactions_Playlists.findOne({
+      const result = await InteractionsPlaylists.findOne({
         where: {
           user_id: req.body.user_id,
           playlist_id: req.body.playlist_id,
         },
         raw: true
       });
-      const updatedInteraction = await Interactions_Playlists.update(
+      const updatedInteraction = await InteractionsPlaylists.update(
         {play_count: result.play_count + 1},
           {where: {
             user_id: req.body.user_id,
@@ -76,7 +76,7 @@ playlistsRouter
       res.send(updatedInteraction);
     } else {
       console.log(req.body);
-      const newInteraction = await Interactions_Playlists.create(req.body);
+      const newInteraction = await InteractionsPlaylists.create(req.body);
       res.send(newInteraction);
     }
   } catch (err) {
@@ -85,7 +85,8 @@ playlistsRouter
   }
 })
 
-playlistsRouter.post("/addsong", async (req, res) => {
+playlistsRouter.post("/add", async (req, res) => {
+  console.log(req.body);
   try {
     const result = await Playlist.create(req.body);
     res.send(result);
@@ -95,9 +96,14 @@ playlistsRouter.post("/addsong", async (req, res) => {
   }
 });
 
-playlistsRouter.post("/add", async (req, res) => {
+playlistsRouter.post("/addsong", async (req, res) => {
+  console.log(req.body);
+  const data = {
+    songId: req.body.songId,
+    playlistId: Number(req.body.playlistId)
+  }
   try {
-    const result = await List_of_songs.create(req.body);
+    const result = await ListOfSongs.create(data);
     res.send(result);
   } catch (err) {
     console.log(err);

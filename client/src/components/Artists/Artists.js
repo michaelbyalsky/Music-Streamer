@@ -11,7 +11,7 @@ export default function Albums() {
   const [searchText, setSearchText] = useState([]); // search input text
 
   useEffect(() => {
-    read('artists/all')
+    read('/api/v1/artists/all')
     .then(result => {
       setArtistsData(result)
     }).catch(err => {

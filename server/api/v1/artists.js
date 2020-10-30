@@ -1,7 +1,7 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const artistsRouter = express.Router();
-const { Artist, Album, Song, Interactions_Artists } = require("../../models");
+const { Artist, Album, Song, InteractionsArtists } = require("../../models");
 const { Op } = require("sequelize");
 
 artistsRouter.get("/all", async (req, res, next) => {
@@ -69,7 +69,7 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
       ],
     },
     include: {
-      model: Interactions_Artists,
+      model: InteractionsArtists,
       where: {
         user_id: req.params.id,
       },
@@ -103,21 +103,21 @@ artistsRouter.get(`/:id`, async (req, res, next) => {
 artistsRouter
 .post('/interaction', async (req, res) => {
   try {
-    const count = await Interactions_Artists.count({
+    const count = await InteractionsArtists.count({
       where: {
         user_id: req.body.user_id,
         album_id: req.body.song_id,
       },
     });
     if (count !== 0) {
-      const result = await Interactions_Artists.findOne({
+      const result = await InteractionsArtists.findOne({
         where: {
           user_id: req.body.user_id,
           album_id: req.body.song_id,
         },
         raw: true
       });
-      const updatedInteraction = await Interactions_Artists.update(
+      const updatedInteraction = await InteractionsArtists.update(
         {play_count: result.play_count + 1},
           {where: {
             user_id: req.body.user_id,
@@ -126,7 +126,7 @@ artistsRouter
       );
       res.send(updatedInteraction);
     } else {
-      const newInteraction = await Interactions_Artists.create(req.body);
+      const newInteraction = await InteractionsArtists.create(req.body);
       res.send(newInteraction);
     }
   } catch (err) {

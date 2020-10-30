@@ -27,7 +27,7 @@ export default function Songs() {
       <div className="songsWrapper">
         {songsData &&
           songsData.map((songData) => {
-            return <div key={songData.song_name}><Song songsData={songsData} songData={songData} setSongsData={setSongsData} /></div>;
+            return <div key={songData.title}><Song songsData={songsData} songData={songData} setSongsData={setSongsData} /></div>;
           })}
           </div>
       </div>
