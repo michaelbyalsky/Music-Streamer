@@ -12,70 +12,73 @@ import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Grid from "@material-ui/core/Grid";
 import { useForm } from "react-hook-form";
-import { create, read } from '../../helpers/ajax'
+import { create, read } from "../../helpers/ajax";
 
 export default function AddPlayList({
-    handleClose,
-    openPlaylist,
-    setOpenPlaylist,
-    songId
+  handleClose,
+  openPlaylist,
+  setOpenPlaylist,
+  songId,
 }) {
-    const [playlistsData, setPlaylistsData] = useState(null);
-    const [openAddPlaylist, setOpenAddPlaylist] = React.useState(false);
+  const [playlistsData, setPlaylistsData] = useState(null);
+  const [openAddPlaylist, setOpenAddPlaylist] = React.useState(false);
 
-    useEffect(() => {
-        read('/api/v1/playlists/top_playlist')
-        .then(result => {
-          setPlaylistsData(result)
-        })
-        .catch(err => {
-          console.log(err.message);
-        })
-      }, []);
-
-
-    const {
-        register: addToPlaylist,
-        errors: songError,
-        handleSubmit: submitSong,
-      } = useForm({
-        mode: "onBlur",
+  useEffect(() => {
+    read("/api/v1/playlists/top_playlist")
+      .then((result) => {
+        setPlaylistsData(result);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
-    
-      const {
-        register: addPlaylist,
-        errors: playlistError,
-        handleSubmit: submitPlaylist,
-      } = useForm({
-        mode: "onBlur",
+  }, []);
+
+  const {
+    register: addToPlaylist,
+    errors: songError,
+    handleSubmit: submitSong,
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const {
+    register: addPlaylist,
+    errors: playlistError,
+    handleSubmit: submitPlaylist,
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const onAddPlaylist = (data) => {
+    create("/api/v1/playlists/add", data)
+      .then((result) => {
+        setOpenAddPlaylist(false);
+      })
+      .then((res) => {
+        read("/api/v1/playlists/top_playlist").then((res) => {
+          setPlaylistsData(res);
+        });
+      }).catch(err => {
+        console.error(err)
       });
+  };
 
-      const onAddPlaylist = (data) => {
-        create("/api/v1/playlists/add", data)
-          .then((result) => {
-            setOpenAddPlaylist(false)
-          })
-          .then((res) => {
-            read("/api/v1/playlists/top_playlist").then((res) => {
-              setPlaylistsData(res)
-            });
-          });
-      };
-
-      const onAddSong = (data) => {
-        data.song_id = songId
-        create('/api/v1/Playlists/addsong', data)
-        .then(result => {
-            setOpenPlaylist(false);
-
-        })
-      };
+  const onAddSong = (data) => {
+    data.song_id = songId;
+    create("/api/v1/Playlists/addsong", data)
+      .then((result) => {
+        setOpenPlaylist(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
-      <>
-       <Dialog
-         open={openPlaylist}
-         onClose={handleClose}
+    <>
+      <Dialog
+        open={openPlaylist}
+        onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
         <form
@@ -88,7 +91,9 @@ export default function AddPlayList({
           <DialogContent>
             {playlistsData && (
               <Grid item>
-                <InputLabel htmlFor="selectPlaylist">Choose playlist</InputLabel>
+                <InputLabel htmlFor="selectPlaylist">
+                  Choose playlist
+                </InputLabel>
                 <Select
                   native
                   id="selectArtist"
@@ -108,10 +113,10 @@ export default function AddPlayList({
               </Grid>
             )}
             <IconButton onClick={() => setOpenAddPlaylist(true)}>
-            <AddCircleOutlineIcon />
+              <AddCircleOutlineIcon />
             </IconButton>
           </DialogContent>
-  
+
           <DialogActions>
             <Button onClick={handleClose} color="primary">
               Cancel
@@ -121,59 +126,59 @@ export default function AddPlayList({
             </Button>
           </DialogActions>
         </form>
-      </Dialog>  
-   
-    {openAddPlaylist &&
-         <Dialog
-         open={openAddPlaylist}
-         onClose={() => setOpenAddPlaylist(false)}
-         aria-labelledby="form-dialog-title"
-       >
-         <form
-           // className={classes.root}
-           onSubmit={submitPlaylist(onAddPlaylist)}
-           noValidate
-           autoComplete="off"
-         >
-           <DialogTitle id="form-dialog-title">Add Playlist</DialogTitle>
-           <DialogContent>
-           <TextField
-                 id="playlist_name"
-                 type="text"
-                 label="Playlist name"
-                 name="playlist_name"
-                 variant="filled"
-                 inputRef={addPlaylist({ required: true })}
-                 error={playlistError.playlist_name ? true : false}
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
-               />
-               <TextField
-                 id="cover_img"
-                 type="text"
-                 label="Playlist img"
-                 name="cover_img"
-                 variant="filled"
-                 inputRef={addPlaylist({ required: true })}
-                 error={playlistError.created_at ? true : false}
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
-               />
-           </DialogContent>
-   
-           <DialogActions>
-             <Button onClick={() => setOpenAddPlaylist(false)} color="primary">
-               Cancel
-             </Button>
-             <Button type="submit" color="primary">
-               Submit
-             </Button>
-           </DialogActions>
-         </form>
-       </Dialog>
-    }
+      </Dialog>
+
+      {openAddPlaylist && (
+        <Dialog
+          open={openAddPlaylist}
+          onClose={() => setOpenAddPlaylist(false)}
+          aria-labelledby="form-dialog-title"
+        >
+          <form
+            // className={classes.root}
+            onSubmit={submitPlaylist(onAddPlaylist)}
+            noValidate
+            autoComplete="off"
+          >
+            <DialogTitle id="form-dialog-title">Add Playlist</DialogTitle>
+            <DialogContent>
+              <TextField
+                id="playlist_name"
+                type="text"
+                label="Playlist name"
+                name="playlist_name"
+                variant="filled"
+                inputRef={addPlaylist({ required: true })}
+                error={playlistError.playlist_name ? true : false}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                id="cover_img"
+                type="text"
+                label="Playlist img"
+                name="cover_img"
+                variant="filled"
+                inputRef={addPlaylist({ required: true })}
+                error={playlistError.created_at ? true : false}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </DialogContent>
+
+            <DialogActions>
+              <Button onClick={() => setOpenAddPlaylist(false)} color="primary">
+                Cancel
+              </Button>
+              <Button type="submit" color="primary">
+                Submit
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+      )}
     </>
   );
 }

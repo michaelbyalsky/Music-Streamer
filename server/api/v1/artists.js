@@ -46,7 +46,7 @@ artistsRouter.get("/all", async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(400).send("data not found");
+    res.status(400).json({message: "not found"});
   }
 });
 

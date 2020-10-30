@@ -12,6 +12,8 @@ export default function Songs() {
     .then(result => {
       console.log(result);
       setSongsData(result)
+    }).catch(err => {
+      console.error(err)
     })
   }, []);
 

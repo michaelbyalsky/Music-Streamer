@@ -92,6 +92,8 @@ export default function SingleSong({ match }) {
     read(`/api/v1/songs/${match.params.id}`).then((res) => {
       console.log(res);
       setSongData(res);
+    }).catch(err => {
+      console.error(err)
     });
   };
 

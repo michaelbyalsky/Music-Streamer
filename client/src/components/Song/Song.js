@@ -66,7 +66,7 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
       is_like: song.Interactions[0].is_like === null ? true : !song.Interactions[0].is_like
     }
     console.log(body);
-    create(`/interactions/addinteraction`, body)
+    create(`/api/v1/interactions/addinteraction`, body)
     .then(response => {
       console.log(response);
     }) 

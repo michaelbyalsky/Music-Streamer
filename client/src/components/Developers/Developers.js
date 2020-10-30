@@ -55,6 +55,8 @@ export default function Developers() {
     create('/api/v1/songs/addsong', data)
     .then(result => {
         console.log(result)
+    }).catch(err => {
+      console.error(err)
     })
   };
 
@@ -81,6 +83,8 @@ export default function Developers() {
         read("/api/v1/artists/all").then((res) => {
           setArtistsData(res);
         });
+      }).catch(err => {
+        console.error(err)
       });
   };
 
@@ -93,6 +97,8 @@ export default function Developers() {
         read("/api/v1/albums/all").then((res) => {
           setAlbumsData(res);
         });
+      }).catch(err => {
+        console.error(err)
       });
   };
 
@@ -100,10 +106,14 @@ export default function Developers() {
     read("/api/v1/albums/all").then((res) => {
       console.log(res);
       setAlbumsData(res);
+    }).catch(err => {
+      console.error(err)
     });
     read("/api/v1/artists/all").then((res) => {
       console.log(res);
         setArtistsData(res);
+      }).catch(err => {
+        console.error(err)
       });
   }, []);
 

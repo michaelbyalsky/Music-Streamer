@@ -61,7 +61,7 @@ export default function Playlist({ playlistData }) {
       is_like: playlist.Interactions_Playlists === [] ? true : !playlist.Interactions_Playlists.is_like
     }
     console.log(body);
-    create(`/playlists/interaction`, body)
+    create(`/api/v1/playlists/interaction`, body)
     .then(response => {
       console.log(response);
     }) 

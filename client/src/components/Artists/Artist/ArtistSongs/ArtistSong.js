@@ -39,6 +39,8 @@ export default function ArtistSongs({ match }) {
     read(`/artists/${match.params.id}`).then((res) => {
       console.log(res);
       SetArtistData(res);
+    }).catch(err => {
+      console.error(err)
     });
   };
 

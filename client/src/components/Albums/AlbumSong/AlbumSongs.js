@@ -40,6 +40,8 @@ export default function AlbumSongs({ match }) {
     read(`/albums/${match.params.id}`).then((res) => {
       console.log(res);
       setAlbumData(res);
+    }).catch(err => {
+      console.error(err)
     });
   };
 

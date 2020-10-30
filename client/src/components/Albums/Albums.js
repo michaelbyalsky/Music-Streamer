@@ -13,6 +13,8 @@ export default function Albums() {
     read('/api/v1/albums/all')
     .then(result => {
       setAlbumsData(result)
+    }).catch(err => {
+      console.error(err)
     })
   }, []);
   return (

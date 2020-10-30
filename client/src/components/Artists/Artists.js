@@ -14,6 +14,8 @@ export default function Albums() {
     read('artists/all')
     .then(result => {
       setArtistsData(result)
+    }).catch(err => {
+      console.error(err)
     })
   }, []);
   return (

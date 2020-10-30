@@ -124,6 +124,8 @@ export default function NavBar(props) {
     } 
     read(`/api/v1/songs/all?searchText=${searchText}`).then((result) => {
       setSearchResult(result);
+    }).catch(err => {
+      console.error(err)
     });
   }, [searchText]);
 

@@ -40,14 +40,17 @@ export default function Home() {
     read('/api/v1/songs/all')
     .then(result => {
       setSongsData(result)
+    }).catch(err => {
+      console.error(err)
     })
   }
 
   const getAlbums = () => {
     read('/api/v1/albums/all')
     .then(result => {
-      console.log(result);
       setAlbumsData(result)
+    }).catch(err => {
+      console.error(err)
     })  
   }
 
@@ -55,6 +58,8 @@ export default function Home() {
     read('/api/v1/artists/all')
     .then(result => {
       setArtistsData(result)
+    }).catch(err => {
+      console.error(err)
     }) 
   }
 
@@ -62,6 +67,8 @@ export default function Home() {
     read('/api/v1/playlists/top_playlist')
     .then(result => {
       setPlaylistsData(result)
+    }).catch(err => {
+      console.error(err)
     }) 
   }
 

@@ -66,6 +66,8 @@ export default function CenteredTabs() {
       setArtistsData(null)
       setAlbumsData(null)
       setPlaylistsData(null)
+    }).catch(err => {
+      console.error(err)
     });
   };
 
@@ -83,6 +85,8 @@ export default function CenteredTabs() {
       setArtistsData(null)
       setSongsData(null)
       setPlaylistsData(null)
+    }).catch(err => {
+      console.error(err);
     });
   };
 
@@ -99,7 +103,9 @@ export default function CenteredTabs() {
       setAlbumsData(null)
       setSongsData(null)
       setPlaylistsData(null)
-    });
+    }).catch(err => {
+      console.error(err);
+    });;
   };
 
   const getPlaylists = () => {
@@ -115,7 +121,9 @@ export default function CenteredTabs() {
       setArtistsData(null)
       setSongsData(null)
       setAlbumsData(null)
-    });
+    }).catch(err => {
+      console.error(err);
+    });;
   };
 
   useEffect(() => {

@@ -77,7 +77,7 @@ function Login() {
       email: user,
       password: password,
     };
-    create(`users/validation`, body)
+    create(`/users/validation`, body)
       .then(async (res) => {
         console.log(res);
         let id = res.user_id;

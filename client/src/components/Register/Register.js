@@ -57,7 +57,9 @@ function Register(props) {
 		.then(res => {
 			console.log(res);
 			history.push('/')
-		})
+		}).catch(err => {
+			console.error(err)
+		  })
 	}
 
 	return (

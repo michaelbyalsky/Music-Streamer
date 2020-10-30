@@ -65,7 +65,9 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
     create(`/albums/interaction`, body)
     .then(response => {
       console.log(response);
-    }) 
+    }).catch(err => {
+      console.error(err);
+    }); 
   }
 
 
