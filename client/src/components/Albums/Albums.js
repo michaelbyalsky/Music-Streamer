@@ -10,7 +10,7 @@ export default function Albums() {
   const [albumsData, setAlbumsData] = useState(null);
 
   useEffect(() => {
-    read('albums/all')
+    read('/api/v1/albums/all')
     .then(result => {
       setAlbumsData(result)
     })

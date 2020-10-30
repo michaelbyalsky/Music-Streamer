@@ -1,6 +1,6 @@
 const express = require("express");
 const playlistsRouter = express.Router();
-const { Playlist, Song, Artist, Album, List_of_songs, Interactions_Playlists } = require("../models");
+const { Playlist, Song, Artist, Album, List_of_songs, Interactions_Playlists } = require("../../models");
 
 playlistsRouter.get("/top_playlist", async (req, res) => {
   try {

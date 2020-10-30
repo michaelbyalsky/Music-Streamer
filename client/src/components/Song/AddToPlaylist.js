@@ -24,7 +24,7 @@ export default function AddPlayList({
     const [openAddPlaylist, setOpenAddPlaylist] = React.useState(false);
 
     useEffect(() => {
-        read('/playlists/top_playlist')
+        read('/api/v1/playlists/top_playlist')
         .then(result => {
           setPlaylistsData(result)
         })
@@ -51,12 +51,12 @@ export default function AddPlayList({
       });
 
       const onAddPlaylist = (data) => {
-        create("/playlists/add", data)
+        create("/api/v1/playlists/add", data)
           .then((result) => {
             setOpenAddPlaylist(false)
           })
           .then((res) => {
-            read("/playlists/top_playlist").then((res) => {
+            read("/api/v1/playlists/top_playlist").then((res) => {
               setPlaylistsData(res)
             });
           });
@@ -64,7 +64,7 @@ export default function AddPlayList({
 
       const onAddSong = (data) => {
         data.song_id = songId
-        create('/Playlists/addsong', data)
+        create('/api/v1/Playlists/addsong', data)
         .then(result => {
             setOpenPlaylist(false);
 

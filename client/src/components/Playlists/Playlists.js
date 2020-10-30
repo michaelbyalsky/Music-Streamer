@@ -7,7 +7,7 @@ export default function Playlists() {
   const [playlistsData, setPlaylistsData] = useState(null);
 
   useEffect(() => {
-    read("playlists/top_playlist")
+    read("/api/v1/playlists/top_playlist")
       .then((result) => {
         setPlaylistsData(result);
       })

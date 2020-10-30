@@ -37,14 +37,14 @@ export default function Home() {
   }
 
   const getSongs = () => {
-    read('songs/all')
+    read('/api/v1/songs/all')
     .then(result => {
       setSongsData(result)
     })
   }
 
   const getAlbums = () => {
-    read('albums/all')
+    read('/api/v1/albums/all')
     .then(result => {
       console.log(result);
       setAlbumsData(result)
@@ -52,14 +52,14 @@ export default function Home() {
   }
 
   const getArtists = () => {
-    read('artists/all')
+    read('/api/v1/artists/all')
     .then(result => {
       setArtistsData(result)
     }) 
   }
 
   const getPlaylists = () => {
-    read('playlists/top_playlist')
+    read('/api/v1/playlists/top_playlist')
     .then(result => {
       setPlaylistsData(result)
     }) 

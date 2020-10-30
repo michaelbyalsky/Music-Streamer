@@ -54,7 +54,7 @@ export default function CenteredTabs() {
   };
 
   const getSongs = () => {
-    read(`songs/top/${userId}`).then((result) => {
+    read(`/api/v1/songs/top/${userId}`).then((result) => {
       if (!Array.isArray(result)) {
         let temp = []
         temp.push(result);
@@ -70,7 +70,7 @@ export default function CenteredTabs() {
   };
 
   const getAlbums = () => {
-    read(`albums/top/${userId}`).then((result) => {
+    read(`api/v1/albums/top/${userId}`).then((result) => {
       console.log(result);
       if (!Array.isArray(result)) {
         let temp = []
@@ -87,7 +87,7 @@ export default function CenteredTabs() {
   };
 
   const getArtists = () => {
-    read(`artists/top/${userId}`).then((result) => {
+    read(`/api/v1/artists/top/${userId}`).then((result) => {
       if (!Array.isArray(result)) {
         let temp = []
         temp.push(result);
@@ -103,7 +103,7 @@ export default function CenteredTabs() {
   };
 
   const getPlaylists = () => {
-    read(`playlists/top/${userId}`).then((result) => {
+    read(`/api/v1/playlists/top/${userId}`).then((result) => {
       if (!Array.isArray(result)) {
         let temp = []
         temp.push(result);

@@ -122,7 +122,7 @@ export default function NavBar(props) {
     if(searchText.length === 0) {
       setAnchorEl(null);
     } 
-    read(`/songs/all?searchText=${searchText}`).then((result) => {
+    read(`/api/v1/songs/all?searchText=${searchText}`).then((result) => {
       setSearchResult(result);
     });
   }, [searchText]);
@@ -140,9 +140,9 @@ const handleSearch = (e) => {
 
 const onSongChoose = (chosenSong) => {
   if(location.pathname === '/') {
-    history.push(`/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
+    history.push(`/api/v1/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
   } else {
-    history.push(`/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
+    history.push(`/api/v1/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
     setSongData(chosenSong)
   }
   setSearchText('')

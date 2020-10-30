@@ -1,8 +1,8 @@
 const express = require("express");
 const interactionsRouter = express.Router();
-const { Artist, Album, Song, Interaction } = require("../models");
+const { Artist, Album, Song, Interaction } = require("../../models");
 const { Op } = require("sequelize");
-const interaction = require("../models/interaction");
+const interaction = require("../..//models/interaction");
 
 //create or updates interactions using stored procedure
 interactionsRouter.post("/addinteraction", async (req, res, next) => {

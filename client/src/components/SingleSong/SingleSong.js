@@ -89,7 +89,7 @@ export default function SingleSong({ match }) {
   }, [songData]);
 
   const fetchSong = () => {
-    read(`/songs/${match.params.id}`).then((res) => {
+    read(`/api/v1/songs/${match.params.id}`).then((res) => {
       console.log(res);
       setSongData(res);
     });
@@ -100,13 +100,13 @@ export default function SingleSong({ match }) {
     let url;
     switch (type) {
       case "Album":
-        url = `/albums/${parsed[type]}`;
+        url = `/api/v1/albums/${parsed[type]}`;
         break;
       case "Artist":
-        url = `/artists/${parsed[type]}`;
+        url = `/api/v1/artists/${parsed[type]}`;
         break;
       case "Playlist":
-        url = `/playlists/${parsed[type]}`;
+        url = `/api/v1/playlists/${parsed[type]}`;
     }
     read(url).then((res) => {
       console.log(res);
@@ -122,7 +122,7 @@ export default function SingleSong({ match }) {
       song_id: song.song_id,
       is_like: song.is_like,
     };
-    create(`/interactions/addinteraction`, body).then((response) => {
+    create(`/api/v1/interactions/addinteraction`, body).then((response) => {
       console.log(response);
     });
   };

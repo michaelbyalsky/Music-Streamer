@@ -1,7 +1,7 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const artistsRouter = express.Router();
-const { Artist, Album, Song, Interactions_Artists } = require("../models");
+const { Artist, Album, Song, Interactions_Artists } = require("../../models");
 const { Op } = require("sequelize");
 
 artistsRouter.get("/all", async (req, res, next) => {

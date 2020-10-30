@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const { Album, Artist, Song, Interactions_Albums } = require("../models");
+const { Album, Artist, Song, Interactions_Albums } = require("../../models");
 const albumsRouter = express.Router();
 const Op = Sequelize.Op;
 

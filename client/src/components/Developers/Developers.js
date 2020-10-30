@@ -52,7 +52,7 @@ export default function Developers() {
   });
   const onAddSong = (data) => {
     console.log(data);
-    create('songs/addsong', data)
+    create('/api/v1/songs/addsong', data)
     .then(result => {
         console.log(result)
     })
@@ -73,35 +73,35 @@ export default function Developers() {
   };
 
   const onAddArtist = (data) => {
-    create("artists/addartist", data)
+    create("/api/v1/artists/addartist", data)
       .then((result) => {
         setOpenArtist(false);
       })
       .then((res) => {
-        read("artists/all").then((res) => {
+        read("/api/v1/artists/all").then((res) => {
           setArtistsData(res);
         });
       });
   };
 
   const onAddAlbum = (data) => {
-    create("albums/addalbum", data)
+    create("/api/v1/albums/addalbum", data)
       .then((result) => {
         setOpenAlbums(false);
       })
       .then((res) => {
-        read("albums/all").then((res) => {
+        read("/api/v1/albums/all").then((res) => {
           setAlbumsData(res);
         });
       });
   };
 
   useEffect(() => {
-    read("albums/all").then((res) => {
+    read("/api/v1/albums/all").then((res) => {
       console.log(res);
       setAlbumsData(res);
     });
-    read("artists/all").then((res) => {
+    read("/api/v1/artists/all").then((res) => {
       console.log(res);
         setArtistsData(res);
       });

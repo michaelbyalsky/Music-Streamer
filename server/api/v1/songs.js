@@ -1,7 +1,6 @@
 const express = require("express");
 const songsRouter = express.Router();
-const verify = require("./verifyToken");
-const { Song, Album, Artist, Interaction } = require("../models");
+const { Song, Album, Artist, Interaction } = require("../../models");
 
 songsRouter.get("/all", async (req, res, next) => {
   try {

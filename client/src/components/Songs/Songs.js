@@ -8,7 +8,7 @@ export default function Songs() {
   const [songsData, setSongsData] = useState(null);
 
   useEffect(() => {
-    read('songs/all')
+    read('/api/v1/songs/all')
     .then(result => {
       console.log(result);
       setSongsData(result)
