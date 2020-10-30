@@ -36,7 +36,7 @@ export default function AddArtist({
             margin="dense"
             id="name"
             label="Album Name"
-            name="album_name"
+            name="albumName"
             type="text"
             fullWidth
           />
@@ -46,7 +46,7 @@ export default function AddArtist({
             margin="dense"
             id="name"
             label="Cover Img"
-            name="cover_img"
+            name="coverImg"
             type="text"
             fullWidth
           />
@@ -76,8 +76,8 @@ export default function AddArtist({
             inputRef={addAlbum}
             autoFocus
             margin="dense"
-            id="created_at"
-            name="created_at"
+            id="createdAt"
+            name="createdAt"
             type="date"
             fullWidth
           />

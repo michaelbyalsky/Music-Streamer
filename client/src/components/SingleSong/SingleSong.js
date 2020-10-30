@@ -117,12 +117,12 @@ export default function SingleSong({ match }) {
   };
 
   const onSongLike = (song) => {
-    song.is_like = song.is_like === null ? true : !song.is_like;
+    song.isLike = song.isLike === null ? true : !song.isLike;
     setSongData(song);
     let body = {
-      user_id: localStorage.getItem("id"),
-      song_id: song.song_id,
-      is_like: song.is_like,
+      userId: localStorage.getItem("id"),
+      songId: song.songId,
+      isLike: song.isLike,
     };
     create(`/api/v1/interactions/addinteraction`, body).then((response) => {
       console.log(response);
@@ -186,13 +186,13 @@ export default function SingleSong({ match }) {
                   }
                   title={`${songData.title}`}
                   subheader={
-                    songData.created_at && songData.created_at.slice(0, 10)
+                    songData.createdAt && songData.createdAt.slice(0, 10)
                   }
                 />
                 <div>
                   <YouTube
                     videoId={
-                      songData.youtube_link.split("embed/")[1].split("?list")[0]
+                      songData.youtubeLink.split("embed/")[1].split("?list")[0]
                     }
                     opts={opts}
                     onReady={(e) => onReady(e)}
@@ -205,7 +205,7 @@ export default function SingleSong({ match }) {
                     onClick={() => onSongLike(songData)}
                   >
                     <FavoriteIcon
-                      color={songData.is_like ? "error" : "action"}
+                      color={songData.isLike ? "error" : "action"}
                     />
                   </IconButton>
                   <IconButton onClick={() => setOpenPlaylist(true)}>
@@ -251,7 +251,7 @@ export default function SingleSong({ match }) {
       </div>
       {openPlaylist && (
         <AddToPlayList
-          songId={songData.unique_id}
+          songId={songData.id}
           openPlaylist={openPlaylist}
           handleClose={handleClose}
           setOpenPlaylist={setOpenPlaylist}

@@ -78,12 +78,12 @@ export default function Playlist({ playlistData }) {
         }
         titleTypographyProps={{variant:'subtitle1'}}
         title={`${playlistData.name}`}
-        subheader={playlistData.created_at && playlistData.created_at.slice(0, 10)}
+        subheader={playlistData.createdAt && playlistData.createdAt.slice(0, 10)}
       />
       <CardMedia
         className={classes.media}
-        image={playlistData.cover_img}
-        title={playlistData.album_name}
+        image={playlistData.coverImg}
+        title={playlistData.name}
       />
       <CardActions disableSpacing>
         {/* <IconButton aria-label="add to favorites">

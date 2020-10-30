@@ -10,9 +10,9 @@ albumsRouter.get("/all", async (req, res, next) => {
       const result = await Album.findAll({
         attributes: [
           "id",
-          "artist_id",
+          "artistId",
           "name",
-          "cover_img",
+          "coverImg",
           "createdAt",
           "updatedAt",
         ],
@@ -23,7 +23,7 @@ albumsRouter.get("/all", async (req, res, next) => {
         },
         include: {
           model: Artist,
-          attributes: ["name", "artist_img", "createdAt", "updatedAt"],
+          attributes: ["name", "artistImg", "createdAt", "updatedAt"],
         },
         include: {
           model: Interactions_Albums,
@@ -36,7 +36,7 @@ albumsRouter.get("/all", async (req, res, next) => {
           "id",
           "artist_id",
           "name",
-          "cover_img",
+          "coverImg",
           "createdAt",
           "updatedAt",
         ],
@@ -95,9 +95,9 @@ albumsRouter.get(`/:id`, async (req, res, next) => {
   const result = await Album.findOne({
     attributes: [
       "id",
-      "artist_id",
+      "artistId",
       "name",
-      "cover_img",
+      "coverImg",
       "createdAt",
       "updatedAt",
     ],
@@ -109,18 +109,18 @@ albumsRouter.get(`/:id`, async (req, res, next) => {
       attributes: [
         "id",
         "title",
-        "artist_id",
-        "youtube_link",
-        "album_id",
+        "artistId",
+        "youtubeLink",
+        "albumId",
         "length",
-        "track_number",
+        "trackNumber",
         "lyrics",
         "createdAt",
         "updatedAt",
       ],
       include: {
         model: Artist,
-        attributes: ["id", "name", "artist_img"],
+        attributes: ["id", "name", "artistImg"],
       },
     },
   });
@@ -131,9 +131,9 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
   const result = await Album.findAll({
     attributes: [
       "id",
-      "artist_id",
+      "artistId",
       "name",
-      "cover_img",
+      "coverImg",
       "createdAt",
       "updatedAt",
     ],
@@ -142,18 +142,18 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
       attributes: [
         "id",
         "title",
-        "artist_id",
-        "youtube_link",
-        "album_id",
+        "artistId",
+        "youtubeLink",
+        "albumId",
         "length",
-        "track_number",
+        "trackNumber",
         "lyrics",
         "createdAt",
         "updatedAt",
       ],
       include: {
         model: Artist,
-        attributes: ["id", "name", "artist_img"],
+        attributes: ["id", "name", "artistImg"],
       },
     },
     include: {

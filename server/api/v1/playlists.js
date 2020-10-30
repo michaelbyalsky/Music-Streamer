@@ -53,24 +53,24 @@ playlistsRouter
   try {
     const count = await InteractionsPlaylists.count({
       where: {
-        user_id: req.body.user_id,
-        playlist_id: req.body.playlist_id,
+        userId: req.body.userId,
+        playlistId: req.body.playlistId,
       },
     });
     console.log(count);
     if (count !== 0) {
       const result = await InteractionsPlaylists.findOne({
         where: {
-          user_id: req.body.user_id,
-          playlist_id: req.body.playlist_id,
+          userId: req.body.userId,
+          playlistId: req.body.playlistId,
         },
         raw: true
       });
       const updatedInteraction = await InteractionsPlaylists.update(
-        {play_count: result.play_count + 1},
+        {playCount: result.playCount + 1},
           {where: {
-            user_id: req.body.user_id,
-            playlist_id: req.body.playlist_id
+            userId: req.body.userId,
+            playlistId: req.body.playlistId
           }},
       );
       res.send(updatedInteraction);

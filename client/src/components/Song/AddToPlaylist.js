@@ -153,7 +153,7 @@ export default function AddPlayList({
                 id="playlist_name"
                 type="text"
                 label="Playlist name"
-                name="playlist_name"
+                name="name"
                 variant="filled"
                 inputRef={addPlaylist({ required: true })}
                 error={playlistError.playlist_name ? true : false}
@@ -165,7 +165,7 @@ export default function AddPlayList({
                 id="cover_img"
                 type="text"
                 label="Playlist img"
-                name="cover_img"
+                name="coverImg"
                 variant="filled"
                 inputRef={addPlaylist({ required: true })}
                 error={playlistError.created_at ? true : false}

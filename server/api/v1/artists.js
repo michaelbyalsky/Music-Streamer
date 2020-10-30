@@ -8,7 +8,7 @@ artistsRouter.get("/all", async (req, res, next) => {
   try {
     if (req.query.searchText) {
       const result = await Artist.findAll({
-        attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
+        attributes: ["id", "name", "artistImg", "createdAt", "updatedAt"],
         where: {
           name: {
             [Op.like]: `%${req.query.searchText}%`,
@@ -18,9 +18,9 @@ artistsRouter.get("/all", async (req, res, next) => {
           model: Album,
           attributes: [
             "id",
-            "artist_id",
+            "artistId",
             "name",
-            "cover_img",
+            "coverImg",
             "createdAt",
             "updatedAt",
           ],
@@ -29,14 +29,14 @@ artistsRouter.get("/all", async (req, res, next) => {
       res.json(result);
     } else {
       const result = await Artist.findAll({
-        attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
+        attributes: ["id", "name", "artistImg", "createdAt", "updatedAt"],
         include: {
           model: Album,
           attributes: [
             "id",
-            "artist_id",
+            "artistId",
             "name",
-            "cover_img",
+            "coverImg",
             "createdAt",
             "updatedAt",
           ],
@@ -58,11 +58,11 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
       attributes: [
         "id",
         "title",
-        "artist_id",
-        "youtube_link",
-        "album_id",
+        "artistId",
+        "youtubeLink",
+        "albumId",
         "length",
-        "track_number",
+        "trackNumber",
         "lyrics",
         "createdAt",
         "updatedAt",
@@ -80,17 +80,17 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
 
 artistsRouter.get(`/:id`, async (req, res, next) => {
   const result = await Artist.findOne({
-    attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
+    attributes: ["id", "name", "artistImg", "createdAt", "updatedAt"],
     include: {
       model: Song,
       attributes: [
         "id",
         "title",
-        "artist_id",
-        "youtube_link",
-        "album_id",
+        "artistId",
+        "youtubeLink",
+        "albumId",
         "length",
-        "track_number",
+        "trackNumber",
         "lyrics",
         "createdAt",
         "updatedAt",
@@ -105,23 +105,23 @@ artistsRouter
   try {
     const count = await InteractionsArtists.count({
       where: {
-        user_id: req.body.user_id,
-        album_id: req.body.song_id,
+        userId: req.body.userId,
+        albumId: req.body.songId,
       },
     });
     if (count !== 0) {
       const result = await InteractionsArtists.findOne({
         where: {
-          user_id: req.body.user_id,
-          album_id: req.body.song_id,
+          userId: req.body.userId,
+          albumId: req.body.songId,
         },
         raw: true
       });
       const updatedInteraction = await InteractionsArtists.update(
         {play_count: result.play_count + 1},
           {where: {
-            user_id: req.body.user_id,
-            album_id: req.body.song_id
+            userId: req.body.userId,
+            albumId: req.body.songId
           }},
       );
       res.send(updatedInteraction);

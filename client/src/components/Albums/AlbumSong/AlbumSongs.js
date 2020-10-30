@@ -37,7 +37,7 @@ export default function AlbumSongs({ match }) {
   }, []);
 
   const fetchAlbum = () => {
-    read(`/albums/${match.params.id}`).then((res) => {
+    read(`/api/v1/albums/${match.params.id}`).then((res) => {
       console.log(res);
       setAlbumData(res);
     }).catch(err => {
@@ -58,18 +58,18 @@ export default function AlbumSongs({ match }) {
                     <img
                       className={classes.img}
                       alt="complex"
-                      src={albumData.cover_img}
+                      src={albumData.coverImg}
                     />
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>
-                  <Grid item xs con ntainer direction="column" spacing={2}>
+                  <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
                       <Typography gutterBottom variant="subtitle1">
-                        {albumData.album_name}
+                        {albumData.albumName}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
-                        {albumData.artist_name}
+                        {albumData.artistName}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
                         {albumData.Songs.length} songs

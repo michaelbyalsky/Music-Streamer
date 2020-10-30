@@ -31,7 +31,7 @@ usersRouter.post("/validation", async (req, res, next) => {
     console.log(result);
     const validPass = await bcrypt.compare(
       req.body.password,
-      result.user_password
+      result.userPassword
     );
     if (!validPass) {
       return res.status(400).send({message : "invalidPassword"});
@@ -69,8 +69,8 @@ usersRouter.post("/register", async (req, res, next) => {
     const register = await User.create({
       name: req.body.name,
       email: req.body.email,
-      birth_date: req.body.birthDate,
-      user_password: hashedPassword,
+      birthDate: req.body.birthDate,
+      userPassword: hashedPassword,
     });
     console.log(register);
     res.status(201).send({message: "success"});

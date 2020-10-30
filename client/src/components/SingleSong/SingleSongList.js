@@ -30,7 +30,7 @@ export default function AlignItemsList({data, onSongChoose, index}) {
           primary={data.title}
           secondary={
             <React.Fragment >
-                   <iframe className={classes.player} height="100px" width="200px" src={data.youtube_link} frameBorder="0" allowFullScreen></iframe>
+                   <iframe className={classes.player} height="100px" width="200px" src={data.youtubeLink} frameBorder="0" allowFullScreen></iframe>
             </React.Fragment>
           }
         />

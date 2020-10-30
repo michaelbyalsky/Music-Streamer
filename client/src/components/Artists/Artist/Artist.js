@@ -54,7 +54,7 @@ export default function Artist({ artistData }) {
       />
       <CardMedia
         className={classes.media}
-        image={artistData.artist_img}
+        image={artistData.artistImg}
       />
       <CardActions disableSpacing>
         {/* <IconButton aria-label="add to favorites">

@@ -21,18 +21,18 @@ usersRouter.post("/validation", async (req, res, next) => {
       res.status(400).send({message : "email not exists"});
     }
     const result = await User.findOne({
-      attributes: ["id", "name", "email", "user_password"],
+      attributes: ["id", "name", "email", "userPassword"],
       where: {
         email: req.body.email,
       },
       raw: true,
       nest: true,
     });
-    console.log(result);
     const validPass = await bcrypt.compare(
       req.body.password,
-      result.user_password
+      result.userPassword
     );
+    console.log(validPass);
     if (!validPass) {
       return res.status(400).send({message : "invalidPassword"});
     } else {

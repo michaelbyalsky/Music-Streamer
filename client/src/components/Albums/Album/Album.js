@@ -45,30 +45,30 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
 
   console.log(albumData);
 
-  const onAlbumLike = (album) => {
-    console.log(albumsData);
-    // let copyData = Array.from(albumsData)
-    // copyData.forEach(data => {
-    //   if (data.id === album.id) {
-    //     console.log(data);
-    //     console.log(album);
-    //     data.Interactions_Albums.is_like = album.Interactions_Albums === undefined ? true : !album.Interactions_Albums[0].is_like
-    //   }
-    // })
-    // setAlbumsData(copyData)
-    let body = {
-      user_id: Cookies.get("id"),
-      album_id: album.id,
-      is_like: album.Interactions_Albums === [] ? true : !album.Interactions_Albums.is_like
-    }
-    console.log(body);
-    create(`/albums/interaction`, body)
-    .then(response => {
-      console.log(response);
-    }).catch(err => {
-      console.error(err);
-    }); 
-  }
+  // const onAlbumLike = (album) => {
+  //   console.log(albumsData);
+  //   // let copyData = Array.from(albumsData)
+  //   // copyData.forEach(data => {
+  //   //   if (data.id === album.id) {
+  //   //     console.log(data);
+  //   //     console.log(album);
+  //   //     data.Interactions_Albums.is_like = album.Interactions_Albums === undefined ? true : !album.Interactions_Albums[0].is_like
+  //   //   }
+  //   // })
+  //   // setAlbumsData(copyData)
+  //   let body = {
+  //     user_id: Cookies.get("id"),
+  //     album_id: album.id,
+  //     is_like: album.InteractionsAlbums === [] ? true : !album.InteractionsAlbums.isLike
+  //   }
+  //   console.log(body);
+  //   create(`/albums/interaction`, body)
+  //   .then(response => {
+  //     console.log(response);
+  //   }).catch(err => {
+  //     console.error(err);
+  //   }); 
+  // }
 
 
   return (
@@ -81,26 +81,26 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
         }
         titleTypographyProps={{variant:'subtitle1'}}
         title={`${albumData.name}`}
-        subheader={albumData.created_at && albumData.created_at.slice(0, 10)}
+        subheader={albumData.createdAt && albumData.createdAt.slice(0, 10)}
       />
       <CardMedia
         className={classes.media}
-        image={albumData.cover_img}
-        title={albumData.album_name}
+        image={albumData.coverImg}
+        title={albumData.albumName}
       />
       <CardActions disableSpacing>
       {/* <IconButton aria-label="add to favorites" onClick={() => onAlbumLike(albumData)}>
       {albumData.Interactions_Albums &&
-          <FavoriteIcon color={albumData.Interactions_Albums.is_like ? "error" : "action"} />
+          <FavoriteIcon color={albumData.InteractionsAlbums.is_like ? "error" : "action"} />
           }
           {!albumData.Interactions_Albums &&
           <FavoriteIcon color="action" />
           }
         </IconButton> */}
         <Link to={`/Albums/${albumData.id}`}>
-        <IconButton onClick={() => onAlbumLike(albumData)} >
+        {/* <IconButton onClick={() => onAlbumLike(albumData)} > */}
           <QueueMusicIcon/>
-        </IconButton>
+        {/* </IconButton> */}
         </Link>
       </CardActions>
     </Card>

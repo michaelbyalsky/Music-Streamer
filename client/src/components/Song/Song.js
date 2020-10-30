@@ -56,14 +56,14 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
     let copyData = Array.from(songsData)
     copyData.forEach(data => {
       if (data.id === song.id) {
-        data.Interactions[0].is_like = song.Interactions[0].is_like === null ? true : !song.Interactions[0].is_like
+        data.Interactions[0].isLike = song.Interactions[0].isLike === null ? true : !song.Interactions[0].is_like
       }
     })
     setSongsData(copyData)
     let body = {
-      user_id: Cookies.get("id"),
-      song_id: song.id,
-      is_like: song.Interactions[0].is_like === null ? true : !song.Interactions[0].is_like
+      userId: Cookies.get("id"),
+      songId: song.id,
+      isLike: song.Interactions[0].isLike === null ? true : !song.Interactions[0].isLike
     }
     console.log(body);
     create(`/api/v1/interactions/addinteraction`, body)
@@ -88,7 +88,7 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar src={songData.cover_img} aria-label="recipe" className={classes.avatar}>
+          <Avatar src={songData.coverImg} aria-label="recipe" className={classes.avatar}>
           </Avatar>
         }
         action={
@@ -101,7 +101,7 @@ export default function RecipeReviewCard({ songsData, setSongsData, songData }) 
         subheader={songData.created_at && songData.created_at.slice(0, 10)}
       />
       <div className="video-con">
-      <iframe src={songData.youtube_link} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+      <iframe src={songData.youtubeLink} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
       </div>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={() => onSongLike(songData)}>

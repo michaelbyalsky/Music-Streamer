@@ -68,7 +68,7 @@ function Login() {
     if (rememberMeValue && token){
       setLoggedIn(true)
       setUserName(Cookies.get("name"))
-      history.push("/home")
+      history.push("/")
     }
   }, []);
   
@@ -89,7 +89,7 @@ function Login() {
         setUserName(name)
         setLoggedIn(true)
         }
-        history.push("/Home");
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);

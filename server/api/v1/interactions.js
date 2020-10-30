@@ -2,7 +2,7 @@ const express = require("express");
 const interactionsRouter = express.Router();
 const { Artist, Album, Song, Interaction } = require("../../models");
 const { Op } = require("sequelize");
-const interaction = require("../..//models/interaction");
+const interaction = require("../../models/interaction");
 
 //create or updates interactions using stored procedure
 interactionsRouter.post("/addinteraction", async (req, res, next) => {
@@ -10,24 +10,24 @@ interactionsRouter.post("/addinteraction", async (req, res, next) => {
   try {
     const count = await Interaction.count({
       where: {
-        user_id: req.body.user_id,
-        song_id: req.body.song_id,
+        userId: req.body.userId,
+        songId: req.body.songId,
       },
     });
     console.log(count);
     if (count !== 0) {
       const result = await Interaction.findOne({
         where: {
-          user_id: req.body.user_id,
-          song_id: req.body.song_id,
+          userId: req.body.userId,
+          songId: req.body.songId,
         },
         raw: true
       });
       const updatedInteraction = await Interaction.update(
         {play_count: result.play_count + 1},
           {where: {
-            user_id: req.body.user_id,
-            song_id: req.body.song_id
+            userId: req.body.userId,
+            songId: req.body.songId
           }},
       );
       res.send(updatedInteraction);
