@@ -67,17 +67,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SingleSong({ match }) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [relatedData, setRelatedData] = useState(null);
   const [nextSong, setNextSong] = useState(1);
   const { playSongValue } = React.useContext(AuthApi);
   const [songData, setSongData] = playSongValue;
   const params = useParams();
   const location = useLocation();
-  const [openPlaylist, setOpenPlaylist] = React.useState(false);
-
+  const [openPlaylist, setOpenPlaylist] = useState(false);
 
   const parsed = queryString.parse(location.search);
+  const type = Object.keys(parsed)[0]
 
   useEffect(() => {
     fetchSong();
@@ -98,7 +98,7 @@ export default function SingleSong({ match }) {
   };
 
   const fetchRelated = () => {
-    let type = Object.keys(parsed)[0];
+    // let type = Object.keys(parsed)[0];
     let url;
     switch (type) {
       case "Album":
@@ -110,9 +110,15 @@ export default function SingleSong({ match }) {
       case "Playlist":
         url = `/api/v1/playlists/${parsed[type]}`;
     }
+    console.log(url);
     read(url).then((res) => {
       console.log(res);
-      setRelatedData(res.Songs);
+      if(type === "Playlist") {
+        setRelatedData(res.ListOfSongs);
+      } else {
+        setRelatedData(res.Songs);
+
+      }
     });
   };
 
@@ -138,7 +144,8 @@ export default function SingleSong({ match }) {
   };
 
   const onSongChoose = (data, index) => {
-    setSongData(data);
+    let copyData = type === "Playlist" ? data.Song : data 
+    setSongData(copyData);
     if (index === relatedData.length - 1) {
       setNextSong(0);
     } else {
@@ -147,7 +154,11 @@ export default function SingleSong({ match }) {
   };
 
   const onEnd = (event) => {
-    setSongData(relatedData[nextSong]);
+    if(type === "Playlist"){
+      setSongData(relatedData.Song[nextSong]);
+    } else {
+      setSongData(relatedData[nextSong]);
+    }
     if (nextSong === relatedData.length - 1) {
       setNextSong(0);
     } else {
@@ -237,6 +248,7 @@ export default function SingleSong({ match }) {
                   return (
                     <div key={index}>
                       <SingleSongLists
+                        type={type}
                         index={index}
                         data={data}
                         onSongChoose={onSongChoose}

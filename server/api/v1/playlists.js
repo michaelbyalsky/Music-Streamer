@@ -27,8 +27,6 @@ playlistsRouter.get(`/top/:id`, async (req, res, next) => {
 playlistsRouter.get(`/:id`, async (req, res) => {
   try {
     const result = await Playlist.findOne({
-      raw: true,
-      nest: true,
       where: {
         id: req.params.id,
       },

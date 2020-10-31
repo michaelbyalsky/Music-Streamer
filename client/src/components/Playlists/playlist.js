@@ -56,9 +56,9 @@ export default function Playlist({ playlistData }) {
     // })
     // setAlbumsData(copyData)
     let body = {
-      user_id: Cookies.get("id"),
-      playlist_id: Playlist.id,
-      is_like: playlist.InteractionsPlaylists === [] ? true : !playlist.InteractionsPlaylists.is_like
+      userId: Cookies.get("id"),
+      playlistId: playlistData.id,
+      // isLike: playlist.InteractionsPlaylists === [] ? true : !playlist.InteractionsPlaylists.isLike
     }
     console.log(body);
     create(`/api/v1/playlists/interaction`, body)

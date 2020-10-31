@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     albumId: DataTypes.INTEGER,
     artistId: DataTypes.INTEGER,
-    isLike: DataTypes.BOOLEAN,
+    isLike: {
+     type: DataTypes.BOOLEAN,
+     defaultValue: false
+    },
     playCount: DataTypes.INTEGER
   }, {
     sequelize,

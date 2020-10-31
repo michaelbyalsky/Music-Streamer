@@ -20,17 +20,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AlignItemsList({data, onSongChoose, index}) {
+export default function AlignItemsList({type, data, onSongChoose, index}) {
   const classes = useStyles();
+  console.log(data);
 
   return (
     <List className={classes.root} >
       <IconButton type="button" alignItems="flex-start" onClick={() => onSongChoose(data, index)}>
         <ListItemText 
-          primary={data.title}
+          primary={type === "Playlist" ? data.Song.title : data.title}
           secondary={
             <React.Fragment >
-                   <iframe className={classes.player} height="100px" width="200px" src={data.youtubeLink} frameBorder="0" allowFullScreen></iframe>
+                   <iframe className={classes.player} height="100px" width="200px" src={type === "Playlist" ? data.Song.youtubeLink : data.youtubeLink} frameBorder="0" allowFullScreen></iframe>
             </React.Fragment>
           }
         />

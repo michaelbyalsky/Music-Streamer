@@ -41,13 +41,13 @@ export default function SongsList({song, index, type}) {
             </Link>
             }
             {type === 'Playlist' &&
-              <Link to={`/songs/${song.id}?${type}=${song.playlistId}`}>
+              <Link to={`/songs/${song.Song.id}?${type}=${song.playlistId}`}>
             <IconButton>
               <PlayCircleOutlineIcon/>
             </IconButton>
             </Link>
             }
-            <ListItemText id={index} primary={`${index + 1}. ${song.title} `} />
+            <ListItemText id={index} primary={`${index + 1}. ${song.Song.title} `} />
             <ListItemSecondaryAction>
             </ListItemSecondaryAction>
           </ListItem>

@@ -10,6 +10,7 @@ import Artist from '../Artists/Artist/Artist'
 import Playlist from '../Playlists/playlist'
 import { useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import mixpanel from 'mixpanel-browser'
 
 export default function Home() {
   const history = useHistory()
@@ -73,6 +74,8 @@ export default function Home() {
   }
 
   useEffect(() => {
+    mixpanel.init("dca95b214ba0460f962ec440eeea5fc8");
+    mixpanel.track("App Launched");
     checkValidation();
     getAlbums();
     getSongs();

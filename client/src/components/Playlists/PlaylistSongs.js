@@ -55,7 +55,7 @@ export default function AlbumSongs({ match, history }) {
                     <img
                       className={classes.img}
                       alt="complex"
-                      src={playlistData.cover_img}
+                      src={playlistData.coverImg}
                     />
                   </ButtonBase>
                 </Grid>
@@ -85,7 +85,7 @@ export default function AlbumSongs({ match, history }) {
               </Grid>
             </Paper>
             <div className={classes.paper}>
-              {playlistData.Songs.map((song, index) => {
+              {playlistData.ListOfSongs.map((song, index) => {
                 return <SongsList type="Playlist" index={index} song={song} />;
               })}
             </div>

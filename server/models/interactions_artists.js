@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   InteractionsArtists.init({
     userId: DataTypes.INTEGER,
     artistId: DataTypes.INTEGER,
-    isLike: DataTypes.BOOLEAN,
+    isLike: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+     },
     playCount: DataTypes.INTEGER
   }, {
     sequelize,
