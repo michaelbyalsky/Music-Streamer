@@ -26,7 +26,7 @@ albumsRouter.get("/all", async (req, res, next) => {
           attributes: ["name", "artistImg", "createdAt", "updatedAt"],
         },
         include: {
-          model: Interactions_Albums,
+          model: InteractionsAlbums,
         },
       });
       res.json(result);
@@ -83,7 +83,7 @@ albumsRouter.post("/interaction", async (req, res) => {
       );
     } else {
       const newInteraction = await Interactions_Albums.create(req.body);
-      res.send(newInteraction);
+      res.json(newInteraction);
     }
   } catch (err) {
     console.log(err);
@@ -124,7 +124,7 @@ albumsRouter.get(`/:id`, async (req, res, next) => {
       },
     },
   });
-  res.send(result);
+  res.json(result);
 });
 
 albumsRouter.get(`/top/:id`, async (req, res, next) => {
@@ -163,13 +163,13 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
       },
     },
   });
-  res.send(result);
+  res.json(result);
 });
 
 albumsRouter.post("/addalbum", async (req, res, next) => {
   try {
     const result = await Album.create(req.body);
-    res.send(result);
+    res.json(result);
   } catch (err) {
     res.status(400).send("bad body");
   }
@@ -178,7 +178,7 @@ albumsRouter.post("/addalbum", async (req, res, next) => {
 albumsRouter.put("/album", async (req, res, next) => {
   try {
     const result = await Album.create(req.body);
-    res.send(result);
+    res.json(result);
   } catch (err) {
     res.status(400).send("bad body");
   }

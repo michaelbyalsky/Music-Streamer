@@ -12,9 +12,9 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import { create } from "../../helpers/ajax";
-import { useHistory, Link } from 'react-router-dom'
-import AuthApi from '../../helpers/context'
-import Cookies from 'js-cookie'
+import { useHistory, Link } from "react-router-dom";
+import AuthApi from "../../helpers/context";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -51,27 +51,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login() {
-  const { userValue, loggedInValue } = React.useContext(AuthApi)
-  const [userName, setUserName] = userValue
-  const [loggedIn, setLoggedIn] = loggedInValue
+  const { loggedInValue } = React.useContext(AuthApi);
+  const [loggedIn, setLoggedIn] = loggedInValue;
   const classes = useStyles();
   // const [state, dispatch] = useReducer(appReducer, false)
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const history = useHistory()
+  const [error, setError] = useState(null);
+  const history = useHistory();
   // const [redirect, setRedirect] = useState(false)
-  
+
   useEffect(() => {
     let rememberMeValue = Cookies.get("rememberMe");
-    let token = Cookies.get("token")
-    if (rememberMeValue && token){
-      setLoggedIn(true)
-      setUserName(Cookies.get("name"))
-      history.push("/")
+    let token = Cookies.get("token");
+    if (rememberMeValue && token) {
+      setLoggedIn(true);
+      history.push("/");
     }
   }, []);
-  
+
   const login = (e) => {
     let body = {
       email: user,
@@ -80,25 +79,23 @@ function Login() {
     create(`/users/validation`, body)
       .then(async (res) => {
         console.log(res);
-        let id = res.user_id;
-        let name = res.user_name
-        if(rememberMe) {
-          Cookies.set('rememberMe', true)
-          setUserName(name)
-      } else {
-        setUserName(name)
-        setLoggedIn(true)
+        if (rememberMe) {
+          Cookies.set("rememberMe", true);
+        } else {
+          setLoggedIn(true);
         }
         history.push("/");
       })
       .catch((err) => {
-        console.log(err);
-      setLoggedIn(false)
+        if (typeof err === "string"){
+          setError(err);
+        }
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
+        setLoggedIn(false);
       });
   };
-
-  
-  
 
   return (
     <main className={classes.main}>
@@ -112,7 +109,10 @@ function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={e => e.preventDefault() && false }>
+        <form
+          className={classes.form}
+          onSubmit={(e) => e.preventDefault() && false}
+        >
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="User">User</InputLabel>
             <Input
@@ -144,6 +144,11 @@ function Login() {
             />
             Remember me
           </label>
+          {error && (
+            <div>
+              <label style={{ color: 'red'}}>{error}</label>
+            </div>
+          )}
           <Button
             type="submit"
             fullWidth
@@ -155,15 +160,16 @@ function Login() {
             Sign in
           </Button>
           <Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="secondary"
-						component={Link}
-						to="/register"
-						className={classes.submit}>
-						Register
-          			</Button>
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="secondary"
+            component={Link}
+            to="/register"
+            className={classes.submit}
+          >
+            Register
+          </Button>
         </form>
       </Paper>
     </main>

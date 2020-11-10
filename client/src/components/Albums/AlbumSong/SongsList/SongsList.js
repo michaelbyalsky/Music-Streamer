@@ -47,7 +47,7 @@ export default function SongsList({song, index, type}) {
             </IconButton>
             </Link>
             }
-            <ListItemText id={index} primary={`${index + 1}. ${song.Song.title} `} />
+            <ListItemText id={index} primary={`${index + 1}. ${type === 'Playlist' ? song.Song.title : song.title } `} />
             <ListItemSecondaryAction>
             </ListItemSecondaryAction>
           </ListItem>

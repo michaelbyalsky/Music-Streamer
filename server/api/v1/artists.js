@@ -75,7 +75,7 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
       },
     }
   });
-  res.send(result);
+  res.json(result);
 });
 
 artistsRouter.get(`/:id`, async (req, res, next) => {
@@ -97,7 +97,7 @@ artistsRouter.get(`/:id`, async (req, res, next) => {
       ],
     },
   });
-  res.send(result);
+  res.json(result);
 });
 
 artistsRouter
@@ -124,10 +124,10 @@ artistsRouter
             albumId: req.body.songId
           }},
       );
-      res.send(updatedInteraction);
+      res.json(updatedInteraction);
     } else {
       const newInteraction = await InteractionsArtists.create(req.body);
-      res.send(newInteraction);
+      res.json(newInteraction);
     }
   } catch (err) {
     console.log(err);
@@ -138,7 +138,7 @@ artistsRouter
 artistsRouter.post("/", async (req, res, next) => {
   try {
     const result = await Artist.create(req.body);
-    res.send(result);
+    res.json(result);
   } catch (err) {
     res.status(400).send("bad body");
   }

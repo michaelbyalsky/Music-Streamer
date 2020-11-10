@@ -39,21 +39,21 @@ export default function CenteredTabs() {
   const [albumsData, setAlbumsData] = useState(null);
   const [artistsData, setArtistsData] = useState(null);
   const [playlistsData, setPlaylistsData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(Cookies.get('id'));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const checkValidation = () => {
-    const token = Cookies.get("token");
-    if (!token) {
-      return history.push("./");
-    }
-    setUserId(Cookies.get("id"));
-  };
+
+  useEffect(() => {
+    getSongs()
+  }, [])
 
   const getSongs = () => {
+    setArtistsData(null)
+    setAlbumsData(null)
+    setPlaylistsData(null)
     read(`/api/v1/songs/top/${userId}`).then((result) => {
       if (!Array.isArray(result)) {
         let temp = []
@@ -63,16 +63,16 @@ export default function CenteredTabs() {
       } else {
         setSongsData(result);
       }
-      setArtistsData(null)
-      setAlbumsData(null)
-      setPlaylistsData(null)
     }).catch(err => {
       console.error(err)
     });
   };
 
   const getAlbums = () => {
-    read(`api/v1/albums/top/${userId}`).then((result) => {
+    setArtistsData(null)
+    setSongsData(null)
+    setPlaylistsData(null)
+    read(`/api/v1/albums/top/${userId}`).then((result) => {
       console.log(result);
       if (!Array.isArray(result)) {
         let temp = []
@@ -82,15 +82,15 @@ export default function CenteredTabs() {
       } else {
         setAlbumsData(result);
       }
-      setArtistsData(null)
-      setSongsData(null)
-      setPlaylistsData(null)
     }).catch(err => {
       console.error(err);
     });
   };
 
   const getArtists = () => {
+    setAlbumsData(null)
+    setSongsData(null)
+    setPlaylistsData(null)
     read(`/api/v1/artists/top/${userId}`).then((result) => {
       if (!Array.isArray(result)) {
         let temp = []
@@ -100,15 +100,15 @@ export default function CenteredTabs() {
       } else {
         setArtistsData(result);
       }
-      setAlbumsData(null)
-      setSongsData(null)
-      setPlaylistsData(null)
     }).catch(err => {
       console.error(err);
     });;
   };
 
   const getPlaylists = () => {
+    setArtistsData(null)
+    setSongsData(null)
+    setAlbumsData(null)
     read(`/api/v1/playlists/top/${userId}`).then((result) => {
       if (!Array.isArray(result)) {
         let temp = []
@@ -118,17 +118,11 @@ export default function CenteredTabs() {
       } else {
         setPlaylistsData(result);
       }
-      setArtistsData(null)
-      setSongsData(null)
-      setAlbumsData(null)
     }).catch(err => {
       console.error(err);
     });;
   };
 
-  useEffect(() => {
-    checkValidation();
-  }, []);
 
   return (
     <div className={classes.main}>

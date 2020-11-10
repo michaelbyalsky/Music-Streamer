@@ -6,15 +6,11 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import ListItem from "@material-ui/core/ListItem";
-import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import "./NavBar.css";
 import AuthApi from "../../helpers/context";
-import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { read } from "../../helpers/ajax";
-import List from "@material-ui/core/List";
 import Popover from '@material-ui/core/Popover'
 import PlayCircleFilledRounded from '@material-ui/icons/PlayCircleFilledRounded'
 import { Link, useLocation, useHistory, useParams } from 'react-router-dom'
@@ -95,12 +91,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar(props) {
-  const { userValue, searchQueryValue, searchTextValue, playSongValue } = React.useContext(
+  const { playSongValue } = React.useContext(
     AuthApi
   );
   const [songData, setSongData] = playSongValue
-  const [userName, setUserName] = userValue;
-  const [searchText, setSearchText] = searchQueryValue;
+  const [searchText, setSearchText] = useState("");
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [searchResult, setSearchResult] = useState("");
@@ -114,7 +109,7 @@ export default function NavBar(props) {
   const onLogout = () => {
     Cookies.remove('token');
     Cookies.remove('rememberMe');
-    history.push("/")
+    history.push("/login")
     window.location.reload();
     };
 
@@ -141,10 +136,11 @@ const handleSearch = (e) => {
 }
 
 const onSongChoose = (chosenSong) => {
+  console.log(chosenSong);
   if(location.pathname === '/') {
-    history.push(`/api/v1/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
+    history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`)
   } else {
-    history.push(`/api/v1/Songs/${chosenSong.unique_id}?Artist=${chosenSong.artist_id}`)
+    history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`)
     setSongData(chosenSong)
   }
   setSearchText('')
@@ -216,11 +212,9 @@ const onSongChoose = (chosenSong) => {
           </div>
           <Grid item xs={6}>
           </Grid>
-          {userName &&
           <MenuItem>
-            <Typography color="initial">{`Hello ${userName}`}</Typography>
+            <Typography color="initial">{`Hello ${Cookies.get('name')}`}</Typography>
           </MenuItem>
-}
           <IconButton color="action" onClick={onLogout} className={classes.title} variant="h6" noWrap>
           <ExitToAppIcon/>
           </IconButton>

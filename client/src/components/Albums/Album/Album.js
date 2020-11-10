@@ -45,30 +45,34 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
 
   console.log(albumData);
 
-  // const onAlbumLike = (album) => {
-  //   console.log(albumsData);
-  //   // let copyData = Array.from(albumsData)
-  //   // copyData.forEach(data => {
-  //   //   if (data.id === album.id) {
-  //   //     console.log(data);
-  //   //     console.log(album);
-  //   //     data.Interactions_Albums.is_like = album.Interactions_Albums === undefined ? true : !album.Interactions_Albums[0].is_like
-  //   //   }
-  //   // })
-  //   // setAlbumsData(copyData)
-  //   let body = {
-  //     user_id: Cookies.get("id"),
-  //     album_id: album.id,
-  //     is_like: album.InteractionsAlbums === [] ? true : !album.InteractionsAlbums.isLike
-  //   }
-  //   console.log(body);
-  //   create(`/albums/interaction`, body)
-  //   .then(response => {
-  //     console.log(response);
-  //   }).catch(err => {
-  //     console.error(err);
-  //   }); 
-  // }
+  const onAlbumLike = (album) => {
+  let copyData = Array.from(albumsData)
+  copyData.forEach((data) => {
+      if (data.id === album.id) {
+        albumData.Interactions[0].isLike =
+        data.InteractionsAlbums.length === 0
+            ? true
+            : !data.InteractionsAlbums[0].isLike
+            ? true
+            : !album.InteractionsAlbums[0].isLike;
+      }
+    });
+    setAlbumsData(copyData)
+        let body = {
+      userId: Cookies.get("id"),
+      albumId: album.id,
+      isLike:
+      albumData.InteractionsAlbums.length === 0
+      ? true
+      : !albumData.InteractionsAlbums[0].isLike
+      ? true
+      : !album.InteractionsAlbums[0].isLike
+    };
+    console.log(body);
+    create(`/api/v1/albums/interaction`, body).then((response) => {
+      console.log(response);
+    });
+  };
 
 
   return (
@@ -89,14 +93,15 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
         title={albumData.albumName}
       />
       <CardActions disableSpacing>
-      {/* <IconButton aria-label="add to favorites" onClick={() => onAlbumLike(albumData)}>
-      {albumData.Interactions_Albums &&
-          <FavoriteIcon color={albumData.InteractionsAlbums.is_like ? "error" : "action"} />
+      <IconButton aria-label="add to favorites" onClick={() => onAlbumLike(albumData)}>
+      {albumData.InteractionsAlbums &&
+          <FavoriteIcon color={albumData.InteractionsAlbums.length === 0
+            ? "error"
+            : albumData.InteractionsAlbums[0].isLike
+            ? "error"
+            : "action"} />
           }
-          {!albumData.Interactions_Albums &&
-          <FavoriteIcon color="action" />
-          }
-        </IconButton> */}
+        </IconButton>
         <Link to={`/Albums/${albumData.id}`}>
         {/* <IconButton onClick={() => onAlbumLike(albumData)} > */}
           <QueueMusicIcon/>

@@ -5,7 +5,7 @@ const { Playlist, Song, Artist, Album, ListOfSongs, InteractionsPlaylists } = re
 playlistsRouter.get("/top_playlist", async (req, res) => {
   try {
     const result = await Playlist.findAll();
-    res.send(result);
+    res.json(result);
   } catch (err) {
     console.log(err);
   }
@@ -21,7 +21,7 @@ playlistsRouter.get(`/top/:id`, async (req, res, next) => {
     }
   });
   console.log(result);
-  res.send(result);
+  res.json(result);
 });
 
 playlistsRouter.get(`/:id`, async (req, res) => {
@@ -71,11 +71,11 @@ playlistsRouter
             playlistId: req.body.playlistId
           }},
       );
-      res.send(updatedInteraction);
+      res.json(updatedInteraction);
     } else {
       console.log(req.body);
       const newInteraction = await InteractionsPlaylists.create(req.body);
-      res.send(newInteraction);
+      res.json(newInteraction);
     }
   } catch (err) {
     console.log(err);
@@ -87,7 +87,7 @@ playlistsRouter.post("/add", async (req, res) => {
   console.log(req.body);
   try {
     const result = await Playlist.create(req.body);
-    res.send(result);
+    res.json(result);
   } catch (err) {
     console.log(err);
     res.status(400).send(err);
@@ -102,7 +102,7 @@ playlistsRouter.post("/addsong", async (req, res) => {
   }
   try {
     const result = await ListOfSongs.create(data);
-    res.send(result);
+    res.json(result);
   } catch (err) {
     console.log(err);
     res.status(400).send(err);

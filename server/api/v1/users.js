@@ -6,11 +6,11 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../../models");
 
 usersRouter.post("/validation", async (req, res, next) => {
-  console.log(req.body);
   try {
     const validation = loginValidation(req.body);
+    console.log(validation);
     if (validation.error) {
-      return res.status(400).send(validation.error.details[0].message);
+      return res.json({message: validation.error.details[0].message});
     }
     const count = await User.count({
       where: {
@@ -18,7 +18,7 @@ usersRouter.post("/validation", async (req, res, next) => {
       },
     });
     if (count === 0) {
-      res.status(400).send({message : "email not exists"});
+      return res.json({message : "email not exists"});
     }
     const result = await User.findOne({
       attributes: ["id", "name", "email", "user_password"],
@@ -28,13 +28,12 @@ usersRouter.post("/validation", async (req, res, next) => {
       raw: true,
       nest: true,
     });
-    console.log(result);
     const validPass = await bcrypt.compare(
       req.body.password,
       result.userPassword
     );
     if (!validPass) {
-      return res.status(400).send({message : "invalidPassword"});
+      return res.status(400).json({message : "invalidPassword"});
     } else {
       const token = jwt.sign({ id: result.id, name: result.name }, process.env.TOKEN_SECRET);
       console.log(token);
@@ -53,7 +52,7 @@ usersRouter.post("/register", async (req, res, next) => {
   try {
     const validation = registerValidation(req.body);
     if (validation.error) {
-      return res.status(400).send(validation.error.details[0].message);
+      return res.status(400).json({message: validation.error.details[0].message});
     }
     const count = await User.count({
       where: {
@@ -61,7 +60,7 @@ usersRouter.post("/register", async (req, res, next) => {
       },
     });
     if (count !== 0) {
-      return res.status(400).send("email already exists");
+      return res.status(400).json({message: "email already exists"});
     }
     //hash
     const salt = await bcrypt.genSalt(10);
@@ -73,7 +72,7 @@ usersRouter.post("/register", async (req, res, next) => {
       userPassword: hashedPassword,
     });
     console.log(register);
-    res.status(201).send({message: "success"});
+    res.status(201).json({message: "success"});
   } catch (err) {
     res.status(400).send(err);
   }

@@ -30,11 +30,11 @@ interactionsRouter.post("/addinteraction", async (req, res, next) => {
             songId: req.body.songId
           }},
       );
-      res.send(updatedInteraction);
+      res.json(updatedInteraction);
     } else {
       console.log(req.body);
       const newInteraction = await Interaction.create(req.body);
-      res.send(newInteraction);
+      res.json(newInteraction);
     }
   } catch (err) {
     console.log(err);

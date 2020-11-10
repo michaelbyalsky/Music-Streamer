@@ -19,8 +19,8 @@ import SingleSongLists from "./SingleSongList";
 import Container from "@material-ui/core/Container";
 import YouTube from "react-youtube";
 import AuthApi from "../../helpers/context";
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import AddToPlayList from '../Song/AddToPlaylist'
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
+import AddToPlayList from "../Song/AddToPlaylist";
 
 const queryString = require("query-string");
 
@@ -77,7 +77,7 @@ export default function SingleSong({ match }) {
   const [openPlaylist, setOpenPlaylist] = useState(false);
 
   const parsed = queryString.parse(location.search);
-  const type = Object.keys(parsed)[0]
+  const type = Object.keys(parsed)[0];
 
   useEffect(() => {
     fetchSong();
@@ -89,12 +89,14 @@ export default function SingleSong({ match }) {
   }, [songData]);
 
   const fetchSong = () => {
-    read(`/api/v1/songs/${match.params.id}`).then((res) => {
-      console.log(res);
-      setSongData(res);
-    }).catch(err => {
-      console.error(err)
-    });
+    read(`/api/v1/songs/${match.params.id}`)
+      .then((res) => {
+        console.log(res);
+        setSongData(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const fetchRelated = () => {
@@ -111,15 +113,16 @@ export default function SingleSong({ match }) {
         url = `/api/v1/playlists/${parsed[type]}`;
     }
     console.log(url);
-    read(url).then((res) => {
-      console.log(res);
-      if(type === "Playlist") {
-        setRelatedData(res.ListOfSongs);
-      } else {
-        setRelatedData(res.Songs);
-
-      }
-    });
+    read(url)
+      .then((res) => {
+        console.log(res);
+        if (type === "Playlist") {
+          setRelatedData(res.ListOfSongs);
+        } else {
+          setRelatedData(res.Songs);
+        }
+      })
+      .catch((err) => console.error(err));
   };
 
   const onSongLike = (song) => {
@@ -132,7 +135,7 @@ export default function SingleSong({ match }) {
     };
     create(`/api/v1/interactions/addinteraction`, body).then((response) => {
       console.log(response);
-    });
+    }).catch((err) => console.error(err));
   };
 
   const handleExpandClick = () => {
@@ -144,7 +147,7 @@ export default function SingleSong({ match }) {
   };
 
   const onSongChoose = (data, index) => {
-    let copyData = type === "Playlist" ? data.Song : data 
+    let copyData = type === "Playlist" ? data.Song : data;
     setSongData(copyData);
     if (index === relatedData.length - 1) {
       setNextSong(0);
@@ -154,7 +157,7 @@ export default function SingleSong({ match }) {
   };
 
   const onEnd = (event) => {
-    if(type === "Playlist"){
+    if (type === "Playlist") {
       setSongData(relatedData.Song[nextSong]);
     } else {
       setSongData(relatedData[nextSong]);

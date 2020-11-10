@@ -36,7 +36,7 @@ songsRouter.get(`/:id`, async (req, res) => {
         },
       },
     });
-    res.send(result);
+    res.json(result);
   } catch (error) {
     res.status(400).send(error);
   }
@@ -68,7 +68,7 @@ songsRouter.get(`/top/:id`, async (req, res) => {
 songsRouter.post("/addsong", async (req, res) => {
   try {
     const result = await Song.create(req.body);
-    res.send(result);
+    res.json(result);
   } catch (err) {
     console.log(err);
     res.status(400).send(err);

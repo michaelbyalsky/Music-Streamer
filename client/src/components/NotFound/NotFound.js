@@ -13,10 +13,10 @@ export default function NotFound() {
 		let loggedIn = Cookies.get('token')
 		if (loggedIn) {
 			setLoggedIn(true)
-			history.push('/home')
+			history.push('/')
 		} else {
 			setLoggedIn(false)
-			history.push('/')
+			history.push('/login')
 		}
 	}
     return (

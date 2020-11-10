@@ -21,7 +21,7 @@
 //         res.status(500).send('not valid search')
 //         throw err;
 //       }
-//       res.send(result);
+//       res.json(result);
 //     });
 //   } else {
 //     let sql = `SELECT * 
@@ -33,7 +33,7 @@
 //                 `;
 //     let query = db.query(sql, (err, result) => {
 //       if (err) throw err;
-//       res.send(result);
+//       res.json(result);
 //     });
 //   }
 // });
@@ -45,7 +45,7 @@
 //   let query = db.query(sql, (err, result) => {
 //       if(err) throw err;
 //       console.log(result);
-//       res.send(result)
+//       res.json(result)
 //   })
 // })
 

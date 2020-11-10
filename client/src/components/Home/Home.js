@@ -27,15 +27,14 @@ export default function Home() {
     },
   };
 
-  const checkValidation = () => {
-    const token = Cookies.get('token')
-    console.log(token);
-    if(!token) {
-      console.log('hello');
-      history.push('./')
-    }
-    return  
-  }
+  // const checkValidation = () => {
+  //   const token = Cookies.get('token')
+  //   console.log(token);
+  //   if(!token) {
+  //     history.push('/')
+  //   }
+  //   return  
+  // }
 
   const getSongs = () => {
     read('/api/v1/songs/all')
@@ -76,7 +75,6 @@ export default function Home() {
   useEffect(() => {
     mixpanel.init("dca95b214ba0460f962ec440eeea5fc8");
     mixpanel.track("App Launched");
-    checkValidation();
     getAlbums();
     getSongs();
     getArtists();
