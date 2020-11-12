@@ -76,7 +76,7 @@ export default function RecipeReviewCard({
           ? true
           : songData.Interactions[0].isLike
           ? true
-          : !song.Interactions[0].is_like,
+          : !song.Interactions[0].isLike,
     };
     console.log(body);
     create(`/api/v1/interactions/addinteraction`, body).then((response) => {

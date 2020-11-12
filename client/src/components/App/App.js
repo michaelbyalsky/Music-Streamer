@@ -22,6 +22,7 @@ import NavBar from "../NavBar/NavBar";
 import AuthApi from "../../helpers/context";
 import Cookies from "js-cookie";
 import Defaults from "../Defaults/Defaults";
+import Search from '../Search/Search'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -61,6 +62,7 @@ function App() {
               <Route exact path="/Playlists/:id?" component={playlistSongs} />
               <Route exact path="/Songs/:id" component={SingleSong} />
               <Route exact path="/Defaults" component={Defaults} />
+              <Route exact path="/Search" component={Search} />
               <Route path="*" exact component={NotFound} />
             </Switch>
           ) : (

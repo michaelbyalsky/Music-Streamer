@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const { Album, Artist, Song, Interactions_Albums } = require("../../models");
+const { Album, Artist, Song, InteractionsAlbums } = require("../../models");
 const albumsRouter = express.Router();
 const Op = Sequelize.Op;
 
@@ -44,9 +44,9 @@ albumsRouter.get("/all", async (req, res, next) => {
           model: Artist,
           attributes: ["id", "name", "artist_img", "createdAt", "updatedAt"],
         },
-        // include: {
-        //   model: Interactions_Albums,
-        // },
+        include: {
+          model: InteractionsAlbums,
+        },
       });
       res.json(result);
     }
@@ -57,32 +57,33 @@ albumsRouter.get("/all", async (req, res, next) => {
 });
 
 albumsRouter.post("/interaction", async (req, res) => {
+  console.log(req.body);
   try {
-    const count = await Interactions_Albums.count({
+    const count = await InteractionsAlbums.count({
       where: {
-        user_id: req.body.user_id,
-        album_id: req.body.album_id,
+        userId: req.body.userId,
+        albumId: req.body.userId,
       },
     });
     if (count !== 0) {
-      const result = await Interactions_Albums.findOne({
+      const result = await InteractionsAlbums.findOne({
         where: {
-          user_id: req.body.user_id,
-          album_id: req.body.album_id,
+          userId: req.body.userId,
+          albumId: req.body.albumId,
         },
         raw: true,
       });
-      const updatedInteraction = await Interactions_Albums.update(
-        { play_count: result.play_count + 1 },
+      const updatedInteraction = await InteractionsAlbums.update(
+        { playCount: result.playCount + 1, isLike: req.body.isLike },
         {
           where: {
-            user_id: req.body.user_id,
-            album_id: req.body.album_id,
+            userId: req.body.userId,
+            albumId: req.body.albumId,
           },
         }
       );
     } else {
-      const newInteraction = await Interactions_Albums.create(req.body);
+      const newInteraction = await InteractionsAlbums.create(req.body);
       res.json(newInteraction);
     }
   } catch (err) {
@@ -157,7 +158,7 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
       },
     },
     include: {
-      model: Interactions_Albums,
+      model: InteractionsAlbums,
       where: {
         user_id: req.params.id,
       },

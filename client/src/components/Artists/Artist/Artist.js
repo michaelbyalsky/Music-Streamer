@@ -57,9 +57,9 @@ export default function Artist({ artistData }) {
         image={artistData.artistImg}
       />
       <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton> */}
+        </IconButton>
         <Link to={`/Artists/${artistData.id}`}>
         <IconButton>
           <QueueMusicIcon/>
