@@ -54,7 +54,9 @@ songsRouter.get(`/top/:id`, async (req, res) => {
       include: {
         model: Interaction,
         where: {
-          userId: req.params.id
+          userId: req.params.id,
+          isLike: true
+
         }
       }
     });

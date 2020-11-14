@@ -25,6 +25,9 @@ artistsRouter.get("/all", async (req, res, next) => {
             "updatedAt",
           ],
         },
+        include: {
+          model: InteractionsArtists
+        }
       });
       res.json(result);
     } else {
@@ -41,6 +44,9 @@ artistsRouter.get("/all", async (req, res, next) => {
             "updatedAt",
           ],
         },
+        include: {
+          model: InteractionsArtists
+        }
       });
       res.json(result);
     }
@@ -71,7 +77,8 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
     include: {
       model: InteractionsArtists,
       where: {
-        user_id: req.params.id,
+        userId: req.params.id,
+        isLike: true
       },
     }
   });
@@ -102,26 +109,27 @@ artistsRouter.get(`/:id`, async (req, res, next) => {
 
 artistsRouter
 .post('/interaction', async (req, res) => {
+  console.log(req.body);
   try {
     const count = await InteractionsArtists.count({
       where: {
         userId: req.body.userId,
-        albumId: req.body.songId,
+        artistId: req.body.artistId,
       },
     });
     if (count !== 0) {
       const result = await InteractionsArtists.findOne({
         where: {
           userId: req.body.userId,
-          albumId: req.body.songId,
+          artistId: req.body.artistId,
         },
         raw: true
       });
       const updatedInteraction = await InteractionsArtists.update(
-        {play_count: result.play_count + 1},
+        {playCount: result.playCount + 1, isLike: req.body.isLike},
           {where: {
             userId: req.body.userId,
-            albumId: req.body.songId
+            artistId: req.body.artistId
           }},
       );
       res.json(updatedInteraction);

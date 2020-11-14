@@ -148,7 +148,7 @@ export default function CenteredTabs() {
           {songsData.map((songData, i) => {
             return (
               <div key={i}>
-                <Song songData={songData} />
+                <Song songsData={songsData} setSongsData={setSongsData} songData={songData} />
               </div>
             );
           })}
@@ -174,7 +174,7 @@ export default function CenteredTabs() {
           {artistsData.map((artistData, i) => {
             return (
               <div key={i}>
-                <Artist artistData={artistData} />
+                <Artist artistsData={artistsData} setArtistsData={setArtistsData} artistData={artistData} />
               </div>
             );
           })}
@@ -185,7 +185,7 @@ export default function CenteredTabs() {
           {playlistsData.map((playlistData, i) => {
             return (
               <div key={i}>
-                <Playlist playlistData={playlistData} />
+                <Playlist playlistsData={playlistsData} setPlaylistsData={setPlaylistsData} playlistData={playlistData} />
               </div>
             );
           })}

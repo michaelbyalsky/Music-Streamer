@@ -28,7 +28,7 @@ export default function Albums() {
     <div className="albumWrapper">
       {artistsData &&
         artistsData.map((artistData, index) => {
-        return <Artist key={index} artistData={artistData} />;
+        return <Artist key={index} artistsData={artistsData} setArtistsData={setArtistsData} artistData={artistData} />;
         })}
         </div>
     </div>

@@ -61,12 +61,7 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
     let body = {
       userId: Cookies.get("id"),
       albumId: album.id,
-      isLike:
-        albumData.InteractionsAlbums.length === 0
-          ? true
-          : albumData.InteractionsAlbums[0].isLike === true
-          ? false
-          : true,
+      isLike: albumData.InteractionsAlbums[0].isLike,
     };
     console.log(body);
     create(`/api/v1/albums/interaction`, body).then((response) => {
@@ -100,7 +95,7 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
             <FavoriteIcon
               color={
                 albumData.InteractionsAlbums.length === 0
-                  ? "error"
+                  ? "action"
                   : albumData.InteractionsAlbums[0].isLike
                   ? "error"
                   : "action"

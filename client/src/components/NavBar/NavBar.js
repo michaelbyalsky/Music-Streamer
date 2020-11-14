@@ -11,13 +11,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import "./NavBar.css";
 import AuthApi from "../../helpers/context";
 import { read } from "../../helpers/ajax";
-import Popover from '@material-ui/core/Popover'
-import PlayCircleFilledRounded from '@material-ui/icons/PlayCircleFilledRounded'
-import { Link, useLocation, useHistory, useParams } from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Cookies from 'js-cookie'
+import Popover from "@material-ui/core/Popover";
+import PlayCircleFilledRounded from "@material-ui/icons/PlayCircleFilledRounded";
+import { Link, useLocation, useHistory, useParams } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -27,10 +27,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
+    flexGrow: 1,
   },
   search: {
     position: "relative",
@@ -48,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   pop: {
-    width: "30%"
+    width: "30%",
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -91,10 +88,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar(props) {
-  const { playSongValue } = React.useContext(
-    AuthApi
-  );
-  const [songData, setSongData] = playSongValue
+  const { playSongValue } = React.useContext(AuthApi);
+  const [songData, setSongData] = playSongValue;
   const [searchText, setSearchText] = useState("");
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -107,52 +102,49 @@ export default function NavBar(props) {
   };
 
   const onLogout = () => {
-    Cookies.remove('token');
-    Cookies.remove('rememberMe');
-    history.push("/login")
+    Cookies.remove("token");
+    Cookies.remove("rememberMe");
+    history.push("/login");
     window.location.reload();
-    };
+  };
 
   useEffect(() => {
-    if(searchText.length === 0) {
+    if (searchText.length === 0) {
       setAnchorEl(null);
-    } 
-    read(`/api/v1/songs/all?searchText=${searchText}`).then((result) => {
-      setSearchResult(result);
-    }).catch(err => {
-      console.error(err)
-    });
+    }
+    read(`/api/v1/songs/all?searchText=${searchText}`)
+      .then((result) => {
+        setSearchResult(result);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [searchText]);
 
   useEffect(() => {
-    setTimeout(() => {    
-      handleClose()
+    setTimeout(() => {
+      handleClose();
     }, 100);
-    }, [location])
+  }, [location]);
 
-const handleSearch = (e) => {
-  setSearchText(e.target.value)
-  setAnchorEl(e.currentTarget)
-}
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+    setAnchorEl(e.currentTarget);
+  };
 
-const onSongChoose = (chosenSong) => {
-  console.log(chosenSong);
-  if(location.pathname === '/') {
-    history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`)
-  } else {
-    history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`)
-    setSongData(chosenSong)
-  }
-  setSearchText('')
-}
-
-
-
-
+  const onSongChoose = (chosenSong) => {
+    console.log(chosenSong);
+    if (location.pathname === "/") {
+      history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`);
+    } else {
+      history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`);
+      setSongData(chosenSong);
+    }
+    setSearchText("");
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
 
   return (
     <div className={classes.grow}>
@@ -161,11 +153,11 @@ const onSongChoose = (chosenSong) => {
           <Typography className={classes.title} variant="h6" noWrap>
             ZionMusic
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
+          {/* <div className={classes.search}> */}
+          {/* <div className={classes.searchIcon}>
               <SearchIcon />
-            </div>
-            <InputBase
+            </div> */}
+          {/* <InputBase
               autoFocus={true}
               value={searchText}
               onChange={(e) => handleSearch(e)}
@@ -176,8 +168,8 @@ const onSongChoose = (chosenSong) => {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
-            />
-            {searchResult && (
+            /> */}
+          {/* {searchResult && (
               <Popover
               disableAutoFocus 
               className={classes.pop}
@@ -194,8 +186,8 @@ const onSongChoose = (chosenSong) => {
                   vertical: "top",
                   horizontal: "center",
                 }}
-              >
-                {searchResult.map((song, i) => {
+              > */}
+          {/* {searchResult.map((song, i) => {
                   return (
                     <div key={i}>
                     <ListItem >
@@ -208,17 +200,26 @@ const onSongChoose = (chosenSong) => {
                   );
                 })}
               </Popover>
-            )}
-          </div>
-          <Grid item xs={6}>
-          </Grid>
+            )} */}
+          {/* </div> */}
+          {/* <Grid item xs={6}>
+          </Grid> */}
+          <div style={{display: 'flex'}}>
           <MenuItem>
-            <Typography color="initial">{`Hello ${Cookies.get('name')}`}</Typography>
+            <Typography color="initial">{`Hello ${Cookies.get(
+              "name"
+            )}`}</Typography>
           </MenuItem>
-          <IconButton color="action" onClick={onLogout} className={classes.title} variant="h6" noWrap>
-          <ExitToAppIcon/>
+          <IconButton
+            color="action"
+            onClick={onLogout}
+            className={classes.title}
+            variant="h6"
+            noWrap
+          >
+            <ExitToAppIcon />
           </IconButton>
-    
+          </div>
         </Toolbar>
       </AppBar>
     </div>

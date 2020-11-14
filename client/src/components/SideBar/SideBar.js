@@ -16,6 +16,8 @@ import clsx from "clsx";
 import "./SideBar.css";
 import HomeIcon from '@material-ui/icons/Home';
 import StarsIcon from '@material-ui/icons/Stars';
+import SearchIcon from "@material-ui/icons/Search";
+
 
 
 const drawerWidth = "auto";
@@ -89,6 +91,13 @@ export default function SideBar() {
       }}
     >
       <List>
+        <NavLink to={`/search`} activeStyle={{backgroundColor: 'grey'}} >
+          <ListItem>
+            <IconButton aria-label="Home">
+              <SearchIcon />
+            </IconButton>
+          </ListItem>
+        </NavLink>
         <NavLink to={`/`} activeStyle={{backgroundColor: 'grey'}} >
           <ListItem>
             <IconButton aria-label="Home">

@@ -37,35 +37,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Playlist({ playlistData }) {
+export default function Playlist({ playlistData, playlistsData, setPlaylistsData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
   const onPlaylistLike = (playlist) => {
-    // let copyData = Array.from(albumsData)
-    // copyData.forEach(data => {
-    //   if (data.id === album.id) {
-    //     console.log(data);
-    //     console.log(album);
-    //     data.Interactions_Albums.is_like = album.Interactions_Albums === undefined ? true : !album.Interactions_Albums[0].is_like
-    //   }
-    // })
-    // setAlbumsData(copyData)
+    let copyData = Array.from(playlistsData);
+    console.log(copyData);
+    let currentPlaylist;
+    debugger
+    copyData.forEach((data) => {
+      if (data.id === playlist.id) {
+        debugger
+        currentPlaylist = data
+        if(data.InteractionsPlaylists.length === 0){
+          data.InteractionsPlaylists.push({isLike: true})
+        } else if(data.InteractionsPlaylists[0].isLike === true){
+          data.InteractionsPlaylists[0].isLike = false
+        } else {
+          data.InteractionsPlaylists[0].isLike = true
+        }
+      }
+    });
+    setPlaylistsData(copyData);
     let body = {
-      userId: Cookies.get("id"),
-      playlistId: playlistData.id,
-      // isLike: playlist.InteractionsPlaylists === [] ? true : !playlist.InteractionsPlaylists.isLike
-    }
+      userId: Number(Cookies.get("id")),
+      playlistId: playlist.id,
+      isLike: currentPlaylist.InteractionsPlaylists[0].isLike,
+    };
     console.log(body);
-    create(`/api/v1/playlists/interaction`, body)
-    .then(response => {
+    create(`/api/v1/playlists/interaction`, body).then((response) => {
       console.log(response);
-    }) 
-  }
+    });
+  };
 
 
   return (
@@ -86,11 +93,17 @@ export default function Playlist({ playlistData }) {
         title={playlistData.name}
       />
       <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton> */}
+        <IconButton onClick={() => onPlaylistLike(playlistData)} aria-label="add to favorites">
+          <FavoriteIcon color={
+                playlistData.InteractionsPlaylists.length === 0
+                  ? "action"
+                  : playlistData.InteractionsPlaylists[0].isLike
+                  ? "error"
+                  : "action"
+              } />
+        </IconButton>
         <Link to={`/playlists/${playlistData.id}`}>
-        <IconButton onClick={() => onPlaylistLike(playlistData)}>
+        <IconButton>
           <PlaylistPlayIcon/>
         </IconButton>
         </Link>

@@ -142,7 +142,7 @@ export default function Developers() {
               id="youtube_link"
               error={errors.youtube_link ? true : false}
               type="text"
-              label="Yotube Link"
+              label="Youtube Link"
               name="youtube_link"
               inputRef={register({ required: true })}
             />

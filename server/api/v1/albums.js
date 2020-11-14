@@ -160,7 +160,9 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
     include: {
       model: InteractionsAlbums,
       where: {
-        user_id: req.params.id,
+        userId: req.params.id,
+        isLike: true
+
       },
     },
   });

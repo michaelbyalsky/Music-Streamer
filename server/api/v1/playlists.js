@@ -4,7 +4,11 @@ const { Playlist, Song, Artist, Album, ListOfSongs, InteractionsPlaylists } = re
 
 playlistsRouter.get("/top_playlist", async (req, res) => {
   try {
-    const result = await Playlist.findAll();
+    const result = await Playlist.findAll({
+      include: {
+        model: InteractionsPlaylists
+      }
+    });
     res.json(result);
   } catch (err) {
     console.log(err);
@@ -16,7 +20,8 @@ playlistsRouter.get(`/top/:id`, async (req, res, next) => {
     include: {
       model: InteractionsPlaylists,
       where: {
-        user_id: req.params.id,
+        userId: req.params.id,
+        isLike: true
       },
     }
   });

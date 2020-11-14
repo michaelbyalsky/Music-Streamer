@@ -24,7 +24,7 @@ interactionsRouter.post("/addinteraction", async (req, res, next) => {
         raw: true
       });
       const updatedInteraction = await Interaction.update(
-        {play_count: result.play_count + 1},
+        {playCount: result.playCount + 1, isLike: req.body.isLike},
           {where: {
             userId: req.body.userId,
             songId: req.body.songId

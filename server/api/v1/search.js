@@ -32,11 +32,14 @@ searchRouter.get("/", async (req, res) => {
 });
 
 searchRouter.get("/songs", async (req, res) => {
-    const { search } = req.query;
+    const { search, all } = req.query;
     let size = 3;
+    if (all === "all") {
+      size = undefined;
+    }
     try {
-      const albums = await client.search({
-        index: "album",
+      const songs = await client.search({
+        index: "song",
         body: {
           size,
           query: {
@@ -48,7 +51,10 @@ searchRouter.get("/songs", async (req, res) => {
           },
         },
       });
-      res.json(albums);
+      let results = songs.body.hits.hits.map((song) => {
+        return {id: song._source.id, name: song._source.title, artistId: song._source.artistId}
+    })
+      res.json(results);
     } catch (err) {
       res.json(err.message);
     }
@@ -56,7 +62,7 @@ searchRouter.get("/songs", async (req, res) => {
 
 
 searchRouter.get("/albums", async (req, res) => {
-  const { search } = req.query;
+  const { search, all } = req.query;
   let size = 3;
   if (all === "all") {
     size = undefined;
@@ -68,14 +74,17 @@ searchRouter.get("/albums", async (req, res) => {
           size,
         query: {
           wildcard: {
-            title: {
+            name: {
               value: `*${search}`,
             },
           },
         },
       },
     });
-    res.json(albums);
+    let results = albums.body.hits.hits.map((album) => {
+        return {id: album._source.id, name: album._source.name}
+    })
+    res.json(results);
   } catch (err) {
     res.json(err.message);
   }
@@ -89,20 +98,23 @@ searchRouter.get("/artists", async (req, res) => {
       size = undefined;
     }
     try {
-      const artists = client.search({
+      const artists = await client.search({
         index: "artist",
         body: {
-          size,
+            size,
           query: {
             wildcard: {
               name: {
-                value: `*${search}*`,
+                value: `*${search}`,
               },
             },
           },
         },
       });
-      res.json(artists);
+      let results = artists.body.hits.hits.map((artist) => {
+        return {id: artist._source.id, name: artist._source.name}
+    })
+      res.json(results);
     } catch (err) {
       res.json(err);
     }
@@ -115,20 +127,23 @@ searchRouter.get("/artists", async (req, res) => {
       size = undefined;
     }
     try {
-      const playlists = client.search({
+      const playlists = await client.search({
         index: "playlist",
         body: {
-          size,
+            size,
           query: {
             wildcard: {
               name: {
-                value: `*${search}*`,
+                value: `*${search}`,
               },
             },
           },
         },
       });
-      res.json(playlists)
+      let results = playlists.body.hits.hits.map((playlist) => {
+        return {id: playlist._source.id, name: playlist._source.name}
+    })
+      res.json(results)
     } catch (err) {
       console.error(err);
     }
@@ -195,33 +210,33 @@ searchRouter.get("/artists", async (req, res) => {
 //       res.json({ error: e.message });
 //     }
 //   });
-//   searchRouter.get("/artist", async (req, res) => {
-//     try {
-//       const { body: count1 } = await client.count({ index: "artist" });
-//       const allAlbums = await Artist.findAll({
-//         include: [
-//           {
-//             model: Album,
-//             attributes: ["name"],
-//           },
-//         ],
-//       });
-//       const body = allAlbums.flatMap((doc) => [
-//         { index: { _index: "artists",  _type: "artist" } },
-//         doc,
-//       ]);
-//       const { body: bulkResponse } = await client.bulk({ refresh: true, body });
-//       console.log(bulkResponse);
-//       if (bulkResponse.errors) {
-//         return res.json(bulkResponse.errors);
-//       }
-//       const { body: count } = await client.count({ index: "artist" });
-//       console.log(count);
-//       res.send(count);
-//     } catch (e) {
-//       res.json({ error: e.message });
-//     }
-//   });
+  searchRouter.get("/artist-create", async (req, res) => {
+    try {
+      const { body: count1 } = await client.count({ index: "artist" });
+      const allArtists = await Artist.findAll({
+        include: [
+          {
+            model: Album,
+            attributes: ["name"],
+          },
+        ],
+      });
+      const body = allArtists.flatMap((doc) => [
+          { index: { _index: "artist",  _type: "artist" } },
+          doc,
+        ]);
+      const { body: bulkResponse } = await client.bulk({ refresh: true, body });
+      console.log(bulkResponse);
+      if (bulkResponse.errors) {
+        return res.json(bulkResponse.errors);
+      }
+      const { body: count } = await client.count({ index: "artist" });
+      console.log(count);
+      res.send(count);
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  });
 //   searchRouter.get("/playlists", async (req, res) => {
 //     try {
 //       const { body: count1 } = await client.count({ index: "playlist" });

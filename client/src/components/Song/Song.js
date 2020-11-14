@@ -62,21 +62,16 @@ export default function RecipeReviewCard({
         songData.Interactions[0].isLike =
           songData.Interactions.length === 0
             ? true
-            : !songData.Interactions[0].isLike
-            ? true
-            : !song.Interactions[0].isLike;
+            : songData.Interactions[0].isLike === true
+            ? false
+            : true;
       }
     });
     setSongsData(copyData);
     let body = {
-      userId: Cookies.get("id"),
+      userId: Number(Cookies.get("id")),
       songId: song.id,
-      isLike:
-        songData.Interactions.length === 0
-          ? true
-          : songData.Interactions[0].isLike
-          ? true
-          : !song.Interactions[0].isLike,
+      isLike: songData.Interactions[0].isLike,
     };
     console.log(body);
     create(`/api/v1/interactions/addinteraction`, body).then((response) => {
@@ -129,7 +124,7 @@ export default function RecipeReviewCard({
               <FavoriteIcon
                 color={
                   songData.Interactions.length === 0
-                    ? "error"
+                    ? "action"
                     : songData.Interactions[0].isLike
                     ? "error"
                     : "action"

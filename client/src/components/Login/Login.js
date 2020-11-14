@@ -54,13 +54,11 @@ function Login() {
   const { loggedInValue } = React.useContext(AuthApi);
   const [loggedIn, setLoggedIn] = loggedInValue;
   const classes = useStyles();
-  // const [state, dispatch] = useReducer(appReducer, false)
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
   const history = useHistory();
-  // const [redirect, setRedirect] = useState(false)
 
   useEffect(() => {
     let rememberMeValue = Cookies.get("rememberMe");
@@ -139,7 +137,7 @@ function Login() {
             <input
               name="rememberMe"
               checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.value)}
+              onChange={(e) => setRememberMe(() => !rememberMe)}
               type="checkbox"
             />
             Remember me
