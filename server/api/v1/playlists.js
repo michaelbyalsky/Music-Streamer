@@ -7,6 +7,7 @@ const {
   Album,
   ListOfSongs,
   InteractionsPlaylists,
+  Interaction,
 } = require("../../models");
 
 playlistsRouter.get("/top_playlist", async (req, res) => {
@@ -46,6 +47,9 @@ playlistsRouter.get(`/:id`, async (req, res) => {
         model: ListOfSongs,
         include: {
           model: Song,
+          include: {
+            model: Interaction,
+          },
         },
       },
     });

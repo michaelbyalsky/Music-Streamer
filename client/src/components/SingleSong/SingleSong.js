@@ -10,17 +10,17 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { create, read } from "../../helpers/ajax";
 import SideBar from "../SideBar/SideBar";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SingleSongLists from "./SingleSongList";
 import Container from "@material-ui/core/Container";
 import YouTube from "react-youtube";
 import AuthApi from "../../helpers/context";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import AddToPlayList from "../Song/AddToPlaylist";
+import Cookies from 'js-cookie'
 
 const queryString = require("query-string");
 
@@ -70,11 +70,11 @@ export default function SingleSong({ match }) {
   const [expanded, setExpanded] = useState(false);
   const [relatedData, setRelatedData] = useState(null);
   const [nextSong, setNextSong] = useState(1);
-  const { playSongValue } = React.useContext(AuthApi);
-  const [songData, setSongData] = playSongValue;
-  const params = useParams();
+  const [songData, setSongData] = useState(null);
   const location = useLocation();
   const [openPlaylist, setOpenPlaylist] = useState(false);
+
+console.log(songData);
 
   const parsed = queryString.parse(location.search);
   const type = Object.keys(parsed)[0];
@@ -113,6 +113,7 @@ export default function SingleSong({ match }) {
     }
     read(url)
       .then((res) => {
+        console.log(res);
         if (type === "Playlist") {
           setRelatedData(res.ListOfSongs);
         } else {
@@ -122,13 +123,15 @@ export default function SingleSong({ match }) {
       .catch((err) => console.error(err));
   };
 
+  
+
   const onSongLike = (song) => {
-    song.isLike = song.isLike === null ? true : !song.isLike;
+    song.Interactions[0].isLike = song.Interactions.length === 0 ? true : !song.Interactions[0].isLike;
     setSongData(song);
     let body = {
-      userId: localStorage.getItem("id"),
-      songId: song.songId,
-      isLike: song.isLike,
+      userId: Cookies.get("id"),
+      songId: song.id,
+      isLike: song.Interactions[0].isLike,
     };
     create(`/api/v1/interactions/addinteraction`, body).catch((err) =>
       console.error(err)
@@ -215,9 +218,13 @@ export default function SingleSong({ match }) {
                     aria-label="add to favorites"
                     onClick={() => onSongLike(songData)}
                   >
-                    <FavoriteIcon
-                      color={songData.isLike ? "error" : "action"}
-                    />
+                    {/* <FavoriteIcon
+                      color={songData.Interactions.length === 0
+                        ? "action"
+                        : songData.Interactions[0].isLike
+                        ? "error"
+                        : "action"}
+                    /> */}
                   </IconButton>
                   <IconButton onClick={() => setOpenPlaylist(true)}>
                     <PlaylistAddIcon />

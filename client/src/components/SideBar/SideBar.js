@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { List, Drawer, ListItem, IconButton } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
 import ComputerIcon from "@material-ui/icons/Computer";
 import AlbumIcon from "@material-ui/icons/Album";
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     whiteSpace: "nowrap",
     height: "100%",
-    width: "80%",
     position: "relative",
   },
   drawerOpen: {

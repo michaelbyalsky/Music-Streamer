@@ -8,12 +8,9 @@ import "react-multi-carousel/lib/styles.css";
 import Album from "../Albums/Album/Album";
 import Artist from "../Artists/Artist/Artist";
 import Playlist from "../Playlists/playlist";
-import { useHistory } from "react-router-dom";
-import Cookies from "js-cookie";
 import mixpanel from "mixpanel-browser";
 
 export default function Home() {
-  const history = useHistory();
   const [songsData, setSongsData] = useState(null);
   const [albumsData, setAlbumsData] = useState(null);
   const [artistsData, setArtistsData] = useState(null);

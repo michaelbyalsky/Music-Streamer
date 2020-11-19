@@ -5,16 +5,7 @@ import { blueGrey } from "@material-ui/core/colors";
 import "./SearchTicket.css";
 import Divider from "@material-ui/core/Divider";
 
-const useStyles = makeStyles((theme) => ({
-  blueGrey: {
-    color: theme.palette.getContrastText(blueGrey[500]),
-    backgroundColor: blueGrey[500],
-  },
-}));
-
 function SearchTicket({ ticket, closeSearch, type }) {
-  const classes = useStyles();
-
   return (
     <div>
       {type === "song" && (

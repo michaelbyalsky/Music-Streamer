@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const { Album, Artist, Song, InteractionsAlbums } = require("../../models");
+const { Album, Artist, Song, InteractionsAlbums, Interaction } = require("../../models");
 const albumsRouter = express.Router();
 const Op = Sequelize.Op;
 
@@ -118,6 +118,9 @@ albumsRouter.get(`/:id`, async (req, res, next) => {
         "createdAt",
         "updatedAt",
       ],
+      include: {
+        model: Interaction
+      },
       include: {
         model: Artist,
         attributes: ["id", "name", "artistImg"],

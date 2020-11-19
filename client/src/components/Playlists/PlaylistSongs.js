@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import SongsList from "../Albums/AlbumSong/SongsList/SongsList";
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AlbumSongs({ match, history }) {
-  const [searchText, setSearchText] = useState(""); // search input text
   const [playlistData, setPlaylistData] = useState(null);
   const classes = useStyles();
 
@@ -72,12 +72,11 @@ export default function AlbumSongs({ match, history }) {
                       </Typography>
                     </Grid>
                     <Grid item>
+                    <Link to={`/songs/${playlistData.ListOfSongs[0].Song.id}?Playlist=${playlistData.ListOfSongs[0].playlistId}`}>
                       <Button variant="body2" style={{ cursor: "pointer" }}>
                         Play
                       </Button>
-                      <Button variant="body2" style={{ cursor: "pointer" }}>
-                        Add to library
-                      </Button>
+                      </Link>
                     </Grid>
                   </Grid>
                 </Grid>

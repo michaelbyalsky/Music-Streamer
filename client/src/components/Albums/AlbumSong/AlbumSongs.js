@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import NavBar from "../../NavBar/NavBar";
 import SideBar from "../../SideBar/SideBar";
 import { read } from "../../../helpers/ajax";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import SongsList from "./SongsList/SongsList";
+import { Link } from 'react-router-dom'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,12 +80,13 @@ export default function AlbumSongs({ match }) {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Button variant="body2" style={{ cursor: "pointer" }}>
-                        Play
-                      </Button>
-                      <Button variant="body2" style={{ cursor: "pointer" }}>
-                        Add to library
-                      </Button>
+                      <Link
+                        to={`/songs/${albumData.Songs[0].id}?Album=${albumData.Songs[0].albumId}`}
+                      >
+                        <Button variant="body2" style={{ cursor: "pointer" }}>
+                          Play
+                        </Button>
+                      </Link>
                     </Grid>
                   </Grid>
                 </Grid>

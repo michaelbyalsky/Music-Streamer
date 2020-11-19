@@ -34,6 +34,9 @@ songsRouter.get(`/:id`, async (req, res) => {
           model: Album,
         },
       },
+      include: {
+        model: Interaction
+      }
     });
     res.json(result);
   } catch (error) {
