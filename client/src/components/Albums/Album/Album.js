@@ -43,12 +43,13 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  console.log(albumData);
-
   const onAlbumLike = (album) => {
     let copyData = Array.from(albumsData);
     copyData.forEach((data) => {
       if (data.id === album.id) {
+        if (albumData.InteractionsAlbums.length === 0) {
+          albumData.InteractionsAlbums.push({});
+        }
         albumData.InteractionsAlbums[0].isLike =
           albumData.InteractionsAlbums.length === 0
             ? true
@@ -63,10 +64,7 @@ export default function Album({ albumData, albumsData, setAlbumsData }) {
       albumId: album.id,
       isLike: albumData.InteractionsAlbums[0].isLike,
     };
-    console.log(body);
-    create(`/api/v1/albums/interaction`, body).then((response) => {
-      console.log(response);
-    });
+    create(`/api/v1/albums/interaction`, body);
   };
 
   return (

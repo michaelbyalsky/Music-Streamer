@@ -53,12 +53,13 @@ export default function RecipeReviewCard({
   const [expanded, setExpanded] = React.useState(false);
   const [openPlaylist, setOpenPlaylist] = React.useState(false);
 
-  console.log(songsData);
-
   const onSongLike = (song) => {
     let copyData = Array.from(songsData);
     copyData.forEach((data) => {
       if (data.id === song.id) {
+        if (songData.Interactions.length === 0) {
+          songData.Interactions.push({});
+        }
         songData.Interactions[0].isLike =
           songData.Interactions.length === 0
             ? true
@@ -73,10 +74,9 @@ export default function RecipeReviewCard({
       songId: song.id,
       isLike: songData.Interactions[0].isLike,
     };
-    console.log(body);
-    create(`/api/v1/interactions/addinteraction`, body).then((response) => {
-      console.log(response);
-    });
+    create(`/api/v1/interactions/addinteraction`, body).catch((err) =>
+      console.error(err)
+    );
   };
 
   const handleExpandClick = () => {

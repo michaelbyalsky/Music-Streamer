@@ -37,11 +37,9 @@ export default function AlbumSongs({ match, history }) {
 
   const fetchPlaylist = () => {
     read(`/api/v1/playlists/${match.params.id}`).then((res) => {
-      console.log(res);
       res.length !== 0 ? setPlaylistData(res) : setPlaylistData(null);
     });
   };
-
 
   return (
     <>

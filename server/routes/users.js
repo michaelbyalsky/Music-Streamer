@@ -8,9 +8,7 @@ const { User } = require("../models");
 usersRouter.post("/validation", async (req, res, next) => {
   try {
     const validation = loginValidation(req.body);
-    console.log(validation);
     if (validation.error) {
-      console.log();
       return res.status(400).json(validation.error.details[0].message);
     }
     const count = await User.count({
@@ -33,12 +31,10 @@ usersRouter.post("/validation", async (req, res, next) => {
       req.body.password,
       result.userPassword
     );
-    console.log(validPass);
     if (!validPass) {
       return res.status(400).json({message : "invalidPassword"});
     } else {
       const token = jwt.sign({ id: result.id, name: result.name }, process.env.TOKEN_SECRET);
-      console.log(token);
       res.cookie('token', token)
       res.cookie('name', result.name)
       res.cookie('id', result.id)
@@ -73,7 +69,6 @@ usersRouter.post("/register", async (req, res, next) => {
       birth_date: req.body.birthDate,
       user_password: hashedPassword,
     });
-    console.log(register);
     res.status(201).json({message: "success"});
   } catch (err) {
     res.status(400).send(err);

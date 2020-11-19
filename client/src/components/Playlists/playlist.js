@@ -1,18 +1,18 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Link } from 'react-router-dom'
-import CardMedia from '@material-ui/core/CardMedia';
-import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
-import { create } from '../../helpers/ajax'
-import Cookies from 'js-cookie'
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardActions from "@material-ui/core/CardActions";
+import IconButton from "@material-ui/core/IconButton";
+import { red } from "@material-ui/core/colors";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Link } from "react-router-dom";
+import CardMedia from "@material-ui/core/CardMedia";
+import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
+import { create } from "../../helpers/ajax";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,21 +23,25 @@ const useStyles = makeStyles((theme) => ({
     width: 330,
   },
   expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: "rotate(180deg)",
   },
   avatar: {
     backgroundColor: red[500],
   },
 }));
 
-export default function Playlist({ playlistData, playlistsData, setPlaylistsData }) {
+export default function Playlist({
+  playlistData,
+  playlistsData,
+  setPlaylistsData,
+}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -46,19 +50,18 @@ export default function Playlist({ playlistData, playlistsData, setPlaylistsData
   };
   const onPlaylistLike = (playlist) => {
     let copyData = Array.from(playlistsData);
-    console.log(copyData);
     let currentPlaylist;
-    debugger
+    debugger;
     copyData.forEach((data) => {
       if (data.id === playlist.id) {
-        debugger
-        currentPlaylist = data
-        if(data.InteractionsPlaylists.length === 0){
-          data.InteractionsPlaylists.push({isLike: true})
-        } else if(data.InteractionsPlaylists[0].isLike === true){
-          data.InteractionsPlaylists[0].isLike = false
+        debugger;
+        currentPlaylist = data;
+        if (data.InteractionsPlaylists.length === 0) {
+          data.InteractionsPlaylists.push({ isLike: true });
+        } else if (data.InteractionsPlaylists[0].isLike === true) {
+          data.InteractionsPlaylists[0].isLike = false;
         } else {
-          data.InteractionsPlaylists[0].isLike = true
+          data.InteractionsPlaylists[0].isLike = true;
         }
       }
     });
@@ -68,12 +71,8 @@ export default function Playlist({ playlistData, playlistsData, setPlaylistsData
       playlistId: playlist.id,
       isLike: currentPlaylist.InteractionsPlaylists[0].isLike,
     };
-    console.log(body);
-    create(`/api/v1/playlists/interaction`, body).then((response) => {
-      console.log(response);
-    });
+    create(`/api/v1/playlists/interaction`, body);
   };
-
 
   return (
     <Card className={classes.root}>
@@ -83,9 +82,11 @@ export default function Playlist({ playlistData, playlistsData, setPlaylistsData
             <MoreVertIcon />
           </IconButton>
         }
-        titleTypographyProps={{variant:'subtitle1'}}
+        titleTypographyProps={{ variant: "subtitle1" }}
         title={`${playlistData.name}`}
-        subheader={playlistData.createdAt && playlistData.createdAt.slice(0, 10)}
+        subheader={
+          playlistData.createdAt && playlistData.createdAt.slice(0, 10)
+        }
       />
       <CardMedia
         className={classes.media}
@@ -93,19 +94,24 @@ export default function Playlist({ playlistData, playlistsData, setPlaylistsData
         title={playlistData.name}
       />
       <CardActions disableSpacing>
-        <IconButton onClick={() => onPlaylistLike(playlistData)} aria-label="add to favorites">
-          <FavoriteIcon color={
-                playlistData.InteractionsPlaylists.length === 0
-                  ? "action"
-                  : playlistData.InteractionsPlaylists[0].isLike
-                  ? "error"
-                  : "action"
-              } />
+        <IconButton
+          onClick={() => onPlaylistLike(playlistData)}
+          aria-label="add to favorites"
+        >
+          <FavoriteIcon
+            color={
+              playlistData.InteractionsPlaylists.length === 0
+                ? "action"
+                : playlistData.InteractionsPlaylists[0].isLike
+                ? "error"
+                : "action"
+            }
+          />
         </IconButton>
         <Link to={`/playlists/${playlistData.id}`}>
-        <IconButton>
-          <PlaylistPlayIcon/>
-        </IconButton>
+          <IconButton>
+            <PlaylistPlayIcon />
+          </IconButton>
         </Link>
       </CardActions>
     </Card>

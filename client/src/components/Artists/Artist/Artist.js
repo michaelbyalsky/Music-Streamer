@@ -42,21 +42,19 @@ const useStyles = makeStyles((theme) => ({
 export default function Artist({ artistData, artistsData, setArtistsData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  console.log(artistData);
 
   const onArtistLike = (artist) => {
     let copyData = Array.from(artistsData);
-    console.log(copyData);
     let currentArtist;
     copyData.forEach((data) => {
       if (data.id === artist.id) {
-        currentArtist = data
-        if(data.InteractionsArtists.length === 0){
-          data.InteractionsArtists.push({isLike: true})
-        } else if(data.InteractionsArtists[0].isLike === true){
-          data.InteractionsArtists[0].isLike = false
+        currentArtist = data;
+        if (data.InteractionsArtists.length === 0) {
+          data.InteractionsArtists.push({ isLike: true });
+        } else if (data.InteractionsArtists[0].isLike === true) {
+          data.InteractionsArtists[0].isLike = false;
         } else {
-          data.InteractionsArtists[0].isLike = true
+          data.InteractionsArtists[0].isLike = true;
         }
       }
     });
@@ -66,10 +64,7 @@ export default function Artist({ artistData, artistsData, setArtistsData }) {
       artistId: artist.id,
       isLike: currentArtist.InteractionsArtists[0].isLike,
     };
-    console.log(body);
-    create(`/api/v1/artists/interaction`, body).then((response) => {
-      console.log(response);
-    });
+    create(`/api/v1/artists/interaction`, body);
   };
 
   return (
@@ -89,13 +84,15 @@ export default function Artist({ artistData, artistsData, setArtistsData }) {
           onClick={() => onArtistLike(artistData)}
           aria-label="add to favorites"
         >
-          <FavoriteIcon color={
-                artistData.InteractionsArtists.length === 0
-                  ? "action"
-                  : artistData.InteractionsArtists[0].isLike
-                  ? "error"
-                  : "action"
-              } />
+          <FavoriteIcon
+            color={
+              artistData.InteractionsArtists.length === 0
+                ? "action"
+                : artistData.InteractionsArtists[0].isLike
+                ? "error"
+                : "action"
+            }
+          />
         </IconButton>
         <Link to={`/Artists/${artistData.id}`}>
           <IconButton>

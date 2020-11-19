@@ -1,14 +1,13 @@
-import React from 'react'
-import Cookies from 'js-cookie'
+import React from "react";
+import Cookies from "js-cookie";
 
 function network(endpoint, { body, ...customConfig } = {}) {
-  const token = Cookies.get('token')
-  console.log(token);
+  const token = Cookies.get("token");
   const headers = {
     "Content-Type": "application/json",
   };
   if (token) {
-    headers.Authorization = token
+    headers.Authorization = token;
   }
   const config = {
     method: body ? "POST" : "GET",
@@ -23,12 +22,11 @@ function network(endpoint, { body, ...customConfig } = {}) {
   }
 
   return fetch(`${endpoint}`, config).then(async (response) => {
-    console.log(response);
     const data = await response.json();
     if (response.status === 401) {
-      logout()
-      window.location.assign(window.location)
-      return
+      logout();
+      window.location.assign(window.location);
+      return;
     }
     if (response.ok) {
       return data;
@@ -39,7 +37,7 @@ function network(endpoint, { body, ...customConfig } = {}) {
 }
 
 function logout() {
-  Cookies.remove('token')
+  Cookies.remove("token");
 }
 
 export default network;

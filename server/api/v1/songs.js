@@ -12,11 +12,10 @@ songsRouter.get("/all", async (req, res, next) => {
         model: Album,
       },
       include: {
-         model: Interaction,
-         required: false,
-      }
+        model: Interaction,
+        required: false,
+      },
     });
-    console.log(result);
     res.json(result);
   } catch (error) {
     res.status(400).send(error);
@@ -55,12 +54,10 @@ songsRouter.get(`/top/:id`, async (req, res) => {
         model: Interaction,
         where: {
           userId: req.params.id,
-          isLike: true
-
-        }
-      }
+          isLike: true,
+        },
+      },
     });
-    console.log(result);
     res.json(result);
   } catch (error) {
     res.status(400).send(error);

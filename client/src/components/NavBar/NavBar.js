@@ -133,7 +133,6 @@ export default function NavBar(props) {
   };
 
   const onSongChoose = (chosenSong) => {
-    console.log(chosenSong);
     if (location.pathname === "/") {
       history.push(`/songs/${chosenSong.id}?Artist=${chosenSong.artistId}`);
     } else {
@@ -204,21 +203,21 @@ export default function NavBar(props) {
           {/* </div> */}
           {/* <Grid item xs={6}>
           </Grid> */}
-          <div style={{display: 'flex'}}>
-          <MenuItem>
-            <Typography color="initial">{`Hello ${Cookies.get(
-              "name"
-            )}`}</Typography>
-          </MenuItem>
-          <IconButton
-            color="action"
-            onClick={onLogout}
-            className={classes.title}
-            variant="h6"
-            noWrap
-          >
-            <ExitToAppIcon />
-          </IconButton>
+          <div style={{ display: "flex" }}>
+            <MenuItem>
+              <Typography color="initial">{`Hello ${Cookies.get(
+                "name"
+              )}`}</Typography>
+            </MenuItem>
+            <IconButton
+              color="action"
+              onClick={onLogout}
+              className={classes.title}
+              variant="h6"
+              noWrap
+            >
+              <ExitToAppIcon />
+            </IconButton>
           </div>
         </Toolbar>
       </AppBar>

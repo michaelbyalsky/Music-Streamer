@@ -76,7 +76,6 @@ function Login() {
     };
     create(`/users/validation`, body)
       .then(async (res) => {
-        console.log(res);
         if (rememberMe) {
           Cookies.set("rememberMe", true);
         } else {
@@ -85,7 +84,7 @@ function Login() {
         history.push("/");
       })
       .catch((err) => {
-        if (typeof err === "string"){
+        if (typeof err === "string") {
           setError(err);
         }
         setTimeout(() => {
@@ -97,9 +96,6 @@ function Login() {
 
   return (
     <main className={classes.main}>
-      {/* {redirect && 
-      <Redirect to={`./Home`} />
-      }   */}
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -144,7 +140,7 @@ function Login() {
           </label>
           {error && (
             <div>
-              <label style={{ color: 'red'}}>{error}</label>
+              <label style={{ color: "red" }}>{error}</label>
             </div>
           )}
           <Button

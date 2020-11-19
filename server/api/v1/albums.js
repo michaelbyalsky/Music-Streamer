@@ -57,7 +57,6 @@ albumsRouter.get("/all", async (req, res, next) => {
 });
 
 albumsRouter.post("/interaction", async (req, res) => {
-  console.log(req.body);
   try {
     const count = await InteractionsAlbums.count({
       where: {
@@ -161,8 +160,7 @@ albumsRouter.get(`/top/:id`, async (req, res, next) => {
       model: InteractionsAlbums,
       where: {
         userId: req.params.id,
-        isLike: true
-
+        isLike: true,
       },
     },
   });

@@ -90,11 +90,6 @@ const Search = () => {
   const [artists, setArtists] = useState([]);
   const classes = useStyles();
 
-  console.log(playlists);
-  console.log(songs);
-  console.log(albums);
-  console.log(artists);
-
   const closeSearch = useCallback(() => {
     setSearchValue("");
     setArtists([]);
@@ -148,21 +143,36 @@ const Search = () => {
     songs &&
     songs.length > 0 &&
     songs.map((song) => (
-      <SearchTicket ticket={song} key={song.id} type="song" closeSearch={closeSearch} />
+      <SearchTicket
+        ticket={song}
+        key={song.id}
+        type="song"
+        closeSearch={closeSearch}
+      />
     ));
 
   const artistsResults =
     artists &&
     artists.length > 0 &&
     artists.map((artist) => (
-      <SearchTicket ticket={artist} key={artist.id} type="artist" closeSearch={closeSearch} />
+      <SearchTicket
+        ticket={artist}
+        key={artist.id}
+        type="artist"
+        closeSearch={closeSearch}
+      />
     ));
 
   const albumsResults =
     albums &&
     albums.length > 0 &&
     albums.map((album) => (
-      <SearchTicket ticket={album} key={album.id} type="album" closeSearch={closeSearch} />
+      <SearchTicket
+        ticket={album}
+        key={album.id}
+        type="album"
+        closeSearch={closeSearch}
+      />
     ));
 
   const playlistsResults =
@@ -170,7 +180,7 @@ const Search = () => {
     playlists.length > 0 &&
     playlists.map((playlist) => (
       <SearchTicket
-      type="playlist"
+        type="playlist"
         ticket={playlist}
         key={playlist.id}
         closeSearch={closeSearch}

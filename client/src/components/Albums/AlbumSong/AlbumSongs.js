@@ -13,7 +13,7 @@ import SongsList from "./SongsList/SongsList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 1000
+    width: 1000,
   },
   paper: {
     padding: theme.spacing(2),
@@ -37,12 +37,13 @@ export default function AlbumSongs({ match }) {
   }, []);
 
   const fetchAlbum = () => {
-    read(`/api/v1/albums/${match.params.id}`).then((res) => {
-      console.log(res);
-      setAlbumData(res);
-    }).catch(err => {
-      console.error(err)
-    });
+    read(`/api/v1/albums/${match.params.id}`)
+      .then((res) => {
+        setAlbumData(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -92,7 +93,14 @@ export default function AlbumSongs({ match }) {
             </Paper>
             <div className={classes.paper}>
               {albumData.Songs.map((song, index) => {
-               return <SongsList key={song.title} type="Album" index={index} song={song} />;
+                return (
+                  <SongsList
+                    key={song.title}
+                    type="Album"
+                    index={index}
+                    song={song}
+                  />
+                );
               })}
             </div>
           </div>

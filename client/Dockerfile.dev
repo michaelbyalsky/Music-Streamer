@@ -1,0 +1,10 @@
+FROM node:12
+
+WORKDIR /usr/app/clients
+
+COPY ./package.json ./
+RUN npm install
+
+COPY . . 
+
+CMD [ "npm", "start" ]

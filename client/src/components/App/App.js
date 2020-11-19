@@ -22,13 +22,11 @@ import NavBar from "../NavBar/NavBar";
 import AuthApi from "../../helpers/context";
 import Cookies from "js-cookie";
 import Defaults from "../Defaults/Defaults";
-import Search from '../Search/Search'
+import Search from "../Search/Search";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [songData, setSongData] = useState(null);
-
-  console.log(loggedIn);
 
   useEffect(() => {
     if (Cookies.get("token")) {

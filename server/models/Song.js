@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     albumId: DataTypes.INTEGER,
     artistId: DataTypes.INTEGER,
     youtubeLink: DataTypes.STRING,
-    trackNumber: DataTypes.STRING,
+    trackNumber: {
+      type: DataTypes.STRING,
+      defaultValue: "1"
+    },
     lyrics: DataTypes.STRING,    
   }, {
     sequelize,

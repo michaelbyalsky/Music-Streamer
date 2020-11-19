@@ -32,8 +32,6 @@ describe("api v1", () => {
       .send(userMock)
       .expect(200);
 
-    console.log("---------------------", response.header);
-
     header = response.header;
     await request(app)
       .post("/artists")

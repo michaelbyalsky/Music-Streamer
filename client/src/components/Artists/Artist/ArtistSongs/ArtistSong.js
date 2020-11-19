@@ -9,10 +9,9 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import SongsList from "../../../Albums/AlbumSong/SongsList/SongsList";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 1000
+    width: 1000,
   },
   paper: {
     padding: theme.spacing(2),
@@ -36,14 +35,14 @@ export default function ArtistSongs({ match }) {
   }, []);
 
   const fetchAlbum = () => {
-    read(`/api/v1/artists/${match.params.id}`).then((res) => {
-      console.log(res);
-      SetArtistData(res);
-    }).catch(err => {
-      console.error(err)
-    });
+    read(`/api/v1/artists/${match.params.id}`)
+      .then((res) => {
+        SetArtistData(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
-
 
   return (
     <>
@@ -86,11 +85,10 @@ export default function ArtistSongs({ match }) {
                   </Grid>
                 </Grid>
               </Grid>
-            
             </Paper>
             <div className={classes.paper}>
               {artistData.Songs.map((song, index) => {
-               return <SongsList type="Artist" index={index} song={song} />;
+                return <SongsList type="Artist" index={index} song={song} />;
               })}
             </div>
           </div>

@@ -50,7 +50,6 @@ export default function AddPlayList({
   });
 
   const onAddPlaylist = (data) => {
-  
     console.table(data);
     create("/api/v1/playlists/add", data)
       .then((result) => {
@@ -60,16 +59,17 @@ export default function AddPlayList({
         read("/api/v1/playlists/top_playlist").then((res) => {
           setPlaylistsData(res);
         });
-      }).catch(err => {
-        console.error(err)
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 
   const onAddSong = (data) => {
     let body = {
       playlistId: data.playlistId,
-      songId: songId
-    }
+      songId: songId,
+    };
     console.table(body);
     create("/api/v1/Playlists/addsong", body)
       .then((result) => {
@@ -110,11 +110,7 @@ export default function AddPlayList({
                 >
                   <option aria-label="None"></option>
                   {playlistsData.map((playlist) => {
-                    return (
-                      <option value={playlist.id}>
-                        {playlist.name}
-                      </option>
-                    );
+                    return <option value={playlist.id}>{playlist.name}</option>;
                   })}
                 </Select>
               </Grid>

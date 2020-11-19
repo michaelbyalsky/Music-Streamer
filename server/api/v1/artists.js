@@ -26,8 +26,8 @@ artistsRouter.get("/all", async (req, res, next) => {
           ],
         },
         include: {
-          model: InteractionsArtists
-        }
+          model: InteractionsArtists,
+        },
       });
       res.json(result);
     } else {
@@ -45,14 +45,14 @@ artistsRouter.get("/all", async (req, res, next) => {
           ],
         },
         include: {
-          model: InteractionsArtists
-        }
+          model: InteractionsArtists,
+        },
       });
       res.json(result);
     }
   } catch (err) {
     console.log(err);
-    res.status(400).json({message: "not found"});
+    res.status(400).json({ message: "not found" });
   }
 });
 
@@ -78,9 +78,9 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
       model: InteractionsArtists,
       where: {
         userId: req.params.id,
-        isLike: true
+        isLike: true,
       },
-    }
+    },
   });
   res.json(result);
 });
@@ -107,9 +107,7 @@ artistsRouter.get(`/:id`, async (req, res, next) => {
   res.json(result);
 });
 
-artistsRouter
-.post('/interaction', async (req, res) => {
-  console.log(req.body);
+artistsRouter.post("/interaction", async (req, res) => {
   try {
     const count = await InteractionsArtists.count({
       where: {
@@ -123,14 +121,16 @@ artistsRouter
           userId: req.body.userId,
           artistId: req.body.artistId,
         },
-        raw: true
+        raw: true,
       });
       const updatedInteraction = await InteractionsArtists.update(
-        {playCount: result.playCount + 1, isLike: req.body.isLike},
-          {where: {
+        { playCount: result.playCount + 1, isLike: req.body.isLike },
+        {
+          where: {
             userId: req.body.userId,
-            artistId: req.body.artistId
-          }},
+            artistId: req.body.artistId,
+          },
+        }
       );
       res.json(updatedInteraction);
     } else {
@@ -141,7 +141,7 @@ artistsRouter
     console.log(err);
     res.status(400).send("bad");
   }
-})
+});
 
 artistsRouter.post("/", async (req, res, next) => {
   try {

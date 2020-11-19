@@ -20,13 +20,11 @@ const albumMock = {
 let header;
 
 describe("check albums routs", () => {
-    beforeAll(async () => {
-        const response = await request(app)
+  beforeAll(async () => {
+    const response = await request(app)
       .post("/users/validation")
       .send(userMock)
       .expect(200);
-
-    console.log(response);
 
     header = response.header;
 

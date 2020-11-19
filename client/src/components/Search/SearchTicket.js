@@ -15,8 +15,6 @@ const useStyles = makeStyles((theme) => ({
 function SearchTicket({ ticket, closeSearch, type }) {
   const classes = useStyles();
 
-  console.log(ticket);
-
   return (
     <div>
       {type === "song" && (

@@ -24,7 +24,14 @@ export default function Playlists() {
         <div className="albumWrapper">
           {playlistsData &&
             playlistsData.map((playlistData, index) => {
-              return <Playlist key={index} playlistsData={playlistsData} setPlaylistsData={setPlaylistsData} playlistData={playlistData} />;
+              return (
+                <Playlist
+                  key={index}
+                  playlistsData={playlistsData}
+                  setPlaylistsData={setPlaylistsData}
+                  playlistData={playlistData}
+                />
+              );
             })}
         </div>
       </div>

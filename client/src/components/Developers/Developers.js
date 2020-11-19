@@ -12,8 +12,8 @@ import { read } from "../../helpers/ajax";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Grid from "@material-ui/core/Grid";
-import AddArtist from './AddArtist/AddArtist'
-import AddAlbum from './AddAlbum/AddAlbum'
+import AddArtist from "./AddArtist/AddArtist";
+import AddAlbum from "./AddAlbum/AddAlbum";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginTop: "1rem",
-  }
+  },
 }));
 
 export default function Developers() {
@@ -51,13 +51,9 @@ export default function Developers() {
     mode: "onBlur",
   });
   const onAddSong = (data) => {
-    console.log(data);
-    create('/api/v1/songs/addsong', data)
-    .then(result => {
-        console.log(result)
-    }).catch(err => {
-      console.error(err)
-    })
+    create("/api/v1/songs/addsong", data).catch((err) => {
+      console.error(err);
+    });
   };
 
   const handleClickOpenArtists = () => {
@@ -68,14 +64,13 @@ export default function Developers() {
     setOpenAlbums(true);
   };
 
-
   const handleClose = () => {
     setOpenArtist(false);
-    setOpenAlbums(false)
+    setOpenAlbums(false);
   };
 
   const onAddArtist = (data) => {
-    create("/api/v1/artists/addartist", data)
+    create("/api/v1/artists", data)
       .then((result) => {
         setOpenArtist(false);
       })
@@ -83,8 +78,9 @@ export default function Developers() {
         read("/api/v1/artists/all").then((res) => {
           setArtistsData(res);
         });
-      }).catch(err => {
-        console.error(err)
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 
@@ -97,23 +93,26 @@ export default function Developers() {
         read("/api/v1/albums/all").then((res) => {
           setAlbumsData(res);
         });
-      }).catch(err => {
-        console.error(err)
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 
   useEffect(() => {
-    read("/api/v1/albums/all").then((res) => {
-      console.log(res);
-      setAlbumsData(res);
-    }).catch(err => {
-      console.error(err)
-    });
-    read("/api/v1/artists/all").then((res) => {
-      console.log(res);
+    read("/api/v1/albums/all")
+      .then((res) => {
+        setAlbumsData(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    read("/api/v1/artists/all")
+      .then((res) => {
         setArtistsData(res);
-      }).catch(err => {
-        console.error(err)
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }, []);
 
@@ -143,7 +142,7 @@ export default function Developers() {
               error={errors.youtube_link ? true : false}
               type="text"
               label="Youtube Link"
-              name="youtube_link"
+              name="youtubeLink"
               inputRef={register({ required: true })}
             />
             <TextField
@@ -156,10 +155,10 @@ export default function Developers() {
               inputRef={register({ required: true })}
             />
             <TextField
-              id="created_at"
+              id="createdAt"
               type="date"
               label="Created At"
-              name="created_at"
+              name="createdAt"
               variant="filled"
               inputRef={register({ required: true })}
               error={errors.created_at ? true : false}
@@ -174,10 +173,9 @@ export default function Developers() {
                   <Select
                     native
                     id="selectArtist"
-                    name="id"
+                    name="artistId"
                     placeholder="Artist"
                     inputRef={register({ required: true })}
-                 
                   >
                     <option aria-label="None"></option>
                     {artistsData.map((artist, index) => {
@@ -203,7 +201,7 @@ export default function Developers() {
                   <Select
                     native
                     id="selectAlbums"
-                    name="id"
+                    name="albumId"
                     placeholder="Albums"
                     inputRef={register({ required: true })}
                   >
@@ -234,28 +232,26 @@ export default function Developers() {
             </Button>
           </form>
           {openArtist && (
-          <AddArtist 
-          openArtist={openArtist} 
-          handleSubmit2={handleSubmit2} 
-          onAddArtist={onAddArtist} 
-          artistsData={artistsData}
-          addArtist={addArtist}
-          handleClose={handleClose}
-          />
-          )
-            }
-      
-        {openAlbums && (
-          <AddAlbum
-          openAlbums={openAlbums}
-          handleClose={handleClose}
-          SubmitAlbum={SubmitAlbum}
-          onAddAlbum={onAddAlbum}
-          addAlbum={addAlbum}
-          artistsData={artistsData}
-          />
-        )}
-         
+            <AddArtist
+              openArtist={openArtist}
+              handleSubmit2={handleSubmit2}
+              onAddArtist={onAddArtist}
+              artistsData={artistsData}
+              addArtist={addArtist}
+              handleClose={handleClose}
+            />
+          )}
+
+          {openAlbums && (
+            <AddAlbum
+              openAlbums={openAlbums}
+              handleClose={handleClose}
+              SubmitAlbum={SubmitAlbum}
+              onAddAlbum={onAddAlbum}
+              addAlbum={addAlbum}
+              artistsData={artistsData}
+            />
+          )}
         </div>
       </div>
     </>

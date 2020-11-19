@@ -91,7 +91,6 @@ export default function SingleSong({ match }) {
   const fetchSong = () => {
     read(`/api/v1/songs/${match.params.id}`)
       .then((res) => {
-        console.log(res);
         setSongData(res);
       })
       .catch((err) => {
@@ -112,10 +111,8 @@ export default function SingleSong({ match }) {
       case "Playlist":
         url = `/api/v1/playlists/${parsed[type]}`;
     }
-    console.log(url);
     read(url)
       .then((res) => {
-        console.log(res);
         if (type === "Playlist") {
           setRelatedData(res.ListOfSongs);
         } else {
@@ -133,9 +130,9 @@ export default function SingleSong({ match }) {
       songId: song.songId,
       isLike: song.isLike,
     };
-    create(`/api/v1/interactions/addinteraction`, body).then((response) => {
-      console.log(response);
-    }).catch((err) => console.error(err));
+    create(`/api/v1/interactions/addinteraction`, body).catch((err) =>
+      console.error(err)
+    );
   };
 
   const handleExpandClick = () => {

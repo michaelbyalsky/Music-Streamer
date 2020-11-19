@@ -1,0 +1,55 @@
+version: "3.1"
+services:
+  db-spotify:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: "spotify_dev"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "3307:3306"
+    expose:
+      - "3307"
+    volumes:
+      - ./my-db:/var/lib/mysql        
+  api-spotify:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    volumes:
+      - 'usr/app/server/node_modules'
+      - ./server:/usr/app/server
+    stdin_open: true
+    ports:
+      - 8080:8080
+    environment:
+      HOST: "db-spotify"
+      USER: "root"
+      PASSWORD: "password"
+      DATABASE: "db-spotify"
+      PORT: 8080
+      TOKEN_SECRET: "sdfsdfsdfsdfsdfsdfsdf"
+      SEARCH_ID: ":ZWFzdHVzMi5henVyZS5lbGFzdGljLWNsb3VkLmNvbTo5MjQzJDY5OTYwMGY5NjkxYzQxNGI5NTE2MzUwMWEzOWU3YWQwJDYwMjk1YWQ1ZDU0YzQyMmNhMzg5NThmMWYzYmY0YTQ5"
+      SEARCH_USER: "elastic"
+      SEARCH_PASS: "KAOu1p0Z17ILViWuzby0RMUI"
+    depends_on:
+      - db-spotify
+
+  app-spotify:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile.dev
+    stdin_open: true
+    volumes:
+      - '/usr/app/client/node_modules'
+      - ./client:/usr/app/client
+    ports:
+      - 3030:3000
+    depends_on:
+      - api-spotify
+      
+volumes:
+  db-spotify:
+    driver: local      

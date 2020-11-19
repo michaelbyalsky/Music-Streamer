@@ -1,11 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  List,
-  Drawer,
-  ListItem,
-  IconButton,
-} from "@material-ui/core";
+import { List, Drawer, ListItem, IconButton } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
 import ComputerIcon from "@material-ui/icons/Computer";
@@ -14,11 +9,9 @@ import MusicNoteIcon from "@material-ui/icons/MusicNote";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import clsx from "clsx";
 import "./SideBar.css";
-import HomeIcon from '@material-ui/icons/Home';
-import StarsIcon from '@material-ui/icons/Stars';
+import HomeIcon from "@material-ui/icons/Home";
+import StarsIcon from "@material-ui/icons/Stars";
 import SearchIcon from "@material-ui/icons/Search";
-
-
 
 const drawerWidth = "auto";
 
@@ -38,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     height: "100%",
     width: "80%",
-    position: "relative"
+    position: "relative",
   },
   drawerOpen: {
     width: drawerWidth,
@@ -91,14 +84,14 @@ export default function SideBar() {
       }}
     >
       <List>
-        <NavLink to={`/search`} activeStyle={{backgroundColor: 'grey'}} >
+        <NavLink to={`/search`} activeStyle={{ backgroundColor: "grey" }}>
           <ListItem>
             <IconButton aria-label="Home">
               <SearchIcon />
             </IconButton>
           </ListItem>
         </NavLink>
-        <NavLink to={`/`} activeStyle={{backgroundColor: 'grey'}} >
+        <NavLink to={`/`} activeStyle={{ backgroundColor: "grey" }}>
           <ListItem>
             <IconButton aria-label="Home">
               <HomeIcon />
