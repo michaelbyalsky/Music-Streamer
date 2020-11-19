@@ -1,9 +1,7 @@
-import { Input } from "@material-ui/core";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { read } from "../../helpers/ajax";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
-import Divider from "@material-ui/core/Divider";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
 import SearchTicket from "./SearchTicket";

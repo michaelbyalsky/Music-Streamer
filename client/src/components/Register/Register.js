@@ -11,7 +11,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link, useHistory } from "react-router-dom";
-import { read, create } from "../../helpers/ajax";
+import { create } from "../../helpers/ajax";
 
 const styles = (theme) => ({
   main: {

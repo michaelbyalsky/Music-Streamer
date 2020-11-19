@@ -6,7 +6,6 @@ import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -45,9 +44,6 @@ export default function Playlist({
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
   const onPlaylistLike = (playlist) => {
     let copyData = Array.from(playlistsData);
     let currentPlaylist;

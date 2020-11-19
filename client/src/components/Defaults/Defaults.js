@@ -6,7 +6,6 @@ import Tab from "@material-ui/core/Tab";
 import SideBar from "../SideBar/SideBar";
 import { read } from "../../helpers/ajax";
 import Cookies from "js-cookie";
-import { useHistory } from "react-router-dom";
 import Artist from "../Artists/Artist/Artist";
 import Song from "../Song/Song";
 import Album from "../Albums/Album/Album";

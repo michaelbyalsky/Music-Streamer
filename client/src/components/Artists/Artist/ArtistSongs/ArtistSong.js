@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import SongsList from "../../../Albums/AlbumSong/SongsList/SongsList";
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,12 +76,11 @@ export default function ArtistSongs({ match }) {
                       </Typography>
                     </Grid>
                     <Grid item>
+                    <Link to={`/songs/${artistData.Songs[0].id}?Artist=${artistData.Songs[0].artistId}`}>
                       <Button variant="body2" style={{ cursor: "pointer" }}>
                         Play
                       </Button>
-                      <Button variant="body2" style={{ cursor: "pointer" }}>
-                        Add to library
-                      </Button>
+                      </Link>
                     </Grid>
                   </Grid>
                 </Grid>

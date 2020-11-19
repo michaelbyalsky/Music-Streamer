@@ -1,7 +1,7 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const artistsRouter = express.Router();
-const { Artist, Album, Song, InteractionsArtists } = require("../../models");
+const { Artist, Album, Song, InteractionsArtists, Interaction } = require("../../models");
 const { Op } = require("sequelize");
 
 artistsRouter.get("/all", async (req, res, next) => {
@@ -73,6 +73,9 @@ artistsRouter.get(`/top/:id`, async (req, res, next) => {
         "createdAt",
         "updatedAt",
       ],
+      include: {
+        model: Interaction
+      },
     },
     include: {
       model: InteractionsArtists,
