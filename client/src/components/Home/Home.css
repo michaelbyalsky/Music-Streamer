@@ -1,0 +1,14 @@
+/* .songsWrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 250px);
+    grid-auto-rows: auto;
+    grid-gap: 1rem;
+    } */
+    
+    .main {
+        display: grid;
+        grid-template-columns: 5% 95%;
+        margin-top: 2rem;
+    }
+    
+    
