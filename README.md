@@ -10,7 +10,7 @@
 * React youtube
 * network wrapper based in java-script Fetch API
 
-#### server side
+#### Server side
 * Node.js Express server
 * MySql database controlled by sequelize ORM. 
 * Authentication based on JWT, JOI, BCRYPT libraries.
